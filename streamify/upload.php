@@ -111,9 +111,11 @@ if (isset($_FILES['video_file'])) {
         $user_id = $user['userid'];
         $server = get_server($user_id);
         $server_key = $server['id'];
+        $status = 'processing';
 
-        $stmt = $connection->prepare("INSERT INTO videos (user_id, name, server_id) VALUES (?, ?, ?)");
-        $stmt->bind_param("isi", $user_id, $video_name, $server_key);
+        $stmt = $connection->prepare("INSERT INTO videos (user_id, name, server_id, status) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("isis", $user_id, $video_name, $server_key, $status);        
+        
         if ($stmt->execute()) {
             $video_key = $stmt->insert_id;
             $stmt->close();

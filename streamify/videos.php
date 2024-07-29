@@ -103,8 +103,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Embed Code</th>
-                <th>Embed URL</th>
+                <th>Details</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -117,8 +116,39 @@
                 <tr>
                     <td><?php echo $row_index++; ?></td>
                     <td><?php echo htmlspecialchars($row['name']); ?></td>
-                    <td><?php echo htmlspecialchars($row['id']); ?></td>
-                    <td><?php echo htmlspecialchars($row['id']); ?></td>
+                    <td>
+                    <?php
+                        if($row['status']=='processing'){
+                            echo '<div id="stats-'.$row['id'].'">Processing...</div>';
+                            echo '
+                            <script>
+                                function fetchStats() {
+                                    const id = '.$row['id'].';
+                                    const xhr = new XMLHttpRequest();
+                                    xhr.open("GET", `read_file?id=${id}`, true);
+                                    xhr.onload = function() {
+                                        if (xhr.status === 200) {
+                                            document.getElementById(`stats-${id}`).innerText = xhr.responseText;
+                                        } else {
+                                            console.error("Failed to fetch stats");
+                                        }
+                                    };
+                                    xhr.send();
+                                }
+
+                                // Fetch stats every second (1000 milliseconds)
+                                setInterval(fetchStats, 1000);
+
+                                // Initial fetch
+                                fetchStats();
+                            </script>';
+                        }
+                        else{
+                            echo htmlspecialchars($row['id']); 
+                        }
+                    ?>
+
+                    </td>
                     <td>
                         <form action="register_edit.php" method="post">
                             <input type="hidden" name="video_id" value="<?php echo htmlspecialchars($row['id']); ?>">

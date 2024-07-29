@@ -2,6 +2,7 @@ import json
 import os
 from paramiko import SSHClient, AutoAddPolicy
 from time import sleep
+import re
 
 video_settings = {
     "360p": "640x360", 
@@ -26,19 +27,23 @@ response_file = 'response.json'
 queue_file = 'queue.json'
 
 def respond(video, response_file=response_file):
+
+    video_key = video['video_key']
+    progress_file_path = f'{video_key}.txt'
+
     def progress(done, total):
-        print((done/total)*100)
+        progress_percentage = (done / total) * 100
+        with open(progress_file_path, 'w') as progress_file:
+            progress_file.write(f'{progress_percentage:.2f}\n')
+        print(f'Progress: {progress_percentage:.2f}%')
 
     try:
         domain_name = video['server']['domain']
-        video_key = video['video_key']
         server_ip = video['server']['ip']
         server_username = video['server']['username']
         server_password = video['server']['password']
         video_name = f'{video['video_key']}.{video['video_ext']}'
         video_local_filepath = f'./uploaded_files/{video_name}'
-        print('processing')
-        print(video_local_filepath)
 
         client = SSHClient()
         client.set_missing_host_key_policy(AutoAddPolicy())
@@ -65,12 +70,24 @@ def respond(video, response_file=response_file):
             client.exec_command(f'mkdir -p {quality_dir}')
             command = f"ffmpeg -y -i /home/ubuntu/{video_name} -vf scale={video_setting} -map 0 -b:v {bitrate} -c:a aac -b:a 128k -crf 27 -preset veryfast -hls_time 10 -hls_list_size 0 -hls_segment_filename {quality_dir}/%03d.ts {quality_dir}/playlist.m3u8"
             stdin, stdout, stderr = client.exec_command(command=command)
+
             # Continuously read from stdout and print the output in real-time
+            pattern = re.compile(r"time=(\d+:\d+:\d+\.\d+)")  # Regex pattern to capture the time
             while True:
                 if stdout.channel.recv_ready():
                     output = stdout.channel.recv(1024).decode()
                     print(output, end='')  # Print without adding extra newline
                 if stderr.channel.recv_stderr_ready():
+                    line = stderr.readline()
+                    if not line:
+                        break
+                    
+                    match = pattern.search(line)
+                    if match:
+                        current_time = sum(x * float(t) for x, t in zip([3600, 60, 1, 0.01], match.group(1).split(':')))
+                        progress = (current_time / total_duration) * 100
+                        print(f'Rendering {quality}: {progress:.2f}%')
+
                     error = stderr.channel.recv_stderr(1024).decode()
                     print(error, end='')  # Print without adding extra newline
                 if stdout.channel.exit_status_ready():
@@ -114,17 +131,14 @@ def respond(video, response_file=response_file):
         response = {
             'success': True,
             'video': video,
-            'master_manifest_url': final_master_manifest_url,
-            'exception': None
+            'master_manifest_url': final_master_manifest_url
         }
         os.remove(video_local_filepath)
     except Exception as e:
-        print(e)
         response = {
             'success': False,
             'video': video,
-            'master_manifest_url': None,
-            'exception': e
+            'master_manifest_url': None
         }
     try:
         if os.path.exists(response_file):
