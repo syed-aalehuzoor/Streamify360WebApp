@@ -1,0 +1,20 @@
+[
+    {
+        "video_key": 15,
+        "video_resolutions": {
+            "360p": true,
+            "480p": true,
+            "720p": true
+        },
+        "server": {
+            "id": 1,
+            "ip": "48.217.244.62",
+            "username": "ubuntu",
+            "password": "Hurnara12345@",
+            "dedicated": 0,
+            "processing": 0
+        },
+        "user_id": 5,
+        "local_video_url": "./uploaded_files/admit card.pdf"
+    }
+]
