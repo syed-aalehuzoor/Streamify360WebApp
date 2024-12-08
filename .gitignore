@@ -1,0 +1,9 @@
+/node_modules
+/vendor
+/storage
+/scripts/streamify360.pem
+.env
+*.log
+*.sqlite
+.idea
+.vscode

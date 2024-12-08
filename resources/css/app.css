@@ -1,0 +1,29 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+
+
+/* In your app.css or a custom CSS file */
+.premium-locked {
+    background-color: #d3d3d3; /* Light grey */
+    color: #808080; /* Grey text */
+    cursor: not-allowed; /* Disabled cursor */
+    pointer-events: none; /* Prevents clicking */
+    opacity: 0.6; /* Looks disabled */
+    position: relative; /* Needed for the tooltip */
+}
+
+.premium-locked:hover::after {
+    content: 'Premium Feature - Upgrade to Access'; /* Tooltip message */
+    display: block;
+    position: absolute;
+    z-index: 1;
+    border: 1px solid black;
+    background: #eee;
+    padding: .25em;
+}
