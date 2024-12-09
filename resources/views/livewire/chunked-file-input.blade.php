@@ -1,6 +1,5 @@
 <div class="bg-white rounded-xl h-fit border p-6 m-6">
     <input type="file" id="file-{{ $filename }}" accept="{{ $acceptedTypes }}">
-    <div id="status" class="text-red-600 text-sm"></div>
     <div id="file-{{ $filename }}-errorbox" class="text-red-600 text-sm"></div>
     <div id="file-{{ $filename }}-progress-container" class="mt-6 p-4 border border-gray-300 rounded-lg bg-white shadow-lg" style="display: none;">
         <div class="relative h-2 w-full bg-gray-200 rounded-full overflow-hidden">
@@ -16,13 +15,12 @@
         class FileUploader {
             constructor(fileInputId, maxChunkSize = 1024 * 1024 * 10) {
                 this.fileInput = document.getElementById(fileInputId);
-                this.status = document.getElementById('status');
                 this.MAX_CHUNK_SIZE = maxChunkSize;
                 this.CHUNK_SIZE = maxChunkSize;
                 this.eachChunkPercentage = 1;
                 this.currentProgress = 0;
-                this.errorBox = document.getElementById('file-{{ $filename }}-errorbox');
 
+                this.errorBox = document.getElementById('file-{{ $filename }}-errorbox');
                 this.progressBar = document.getElementById('file-{{ $filename }}-progress-bar');
                 this.percentageText = document.getElementById('file-{{ $filename }}-percentage-text');
                 this.progressContainer = document.getElementById('file-{{ $filename }}-progress-container');
@@ -62,7 +60,7 @@
 
             async uploadChunk(formData) {
                 const { success } = await this.callAPI(
-                    '{{ route('upload.chunk') }}',
+                    '/api/upload-chunk',
                     'POST',
                     formData,
                     null
@@ -78,7 +76,7 @@
                     var success = false;
                     var upload_id = '';
                     // Initialize upload
-                    ({ success, upload_id } = await this.callAPI('{{ route('upload.initiate') }}', 'POST'));
+                    ({ success, upload_id } = await this.callAPI('/api/initiate', 'POST'));
                     if (!success) throw new Error('Upload initiation failed');
 
                     this.progressContainer.style.display = 'block';
@@ -115,7 +113,7 @@
                         totalChunks: totalChunks,
                         fileExtension: file.name.split('.').pop()
                     });
-                    ({ success } = await this.callAPI('{{ route('upload.finalize') }}', 'POST', uploadDetails));
+                    ({ success } = await this.callAPI('/api/finalize', 'POST', uploadDetails));
                     if (!success) throw new Error('Upload initiation failed');
                     this.errorBox.innerText = 'Upload completed! Success: ' + success;
 

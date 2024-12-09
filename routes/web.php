@@ -14,7 +14,6 @@ use App\Helpers\EncoderApiAuth;
 use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\PlayerSettingsController;
 use App\Http\Controllers\SubscriptionPlanController;
-use App\Http\Controllers\FileUploadController;
 
 Route::get('/test', function () {
     return view('test');
@@ -27,13 +26,6 @@ Route::get('/test2', function () {
 Route::get('/', function () {
     return view('welcome');
 });
-Route::post('/upload/initiate', [FileUploadController::class, 'initiateUpload'])->name('upload.initiate');
-Route::post('/upload/chunk', [FileUploadController::class, 'uploadChunk'])->name('upload.chunk');
-Route::post('/upload/finalize', [FileUploadController::class, 'finalizeUpload'])->name('upload.finalize');
-
-//Route::post('/initiate-upload', [FileUploadController::class, 'initiateUpload'])->name('upload.initiate');
-//Route::put('/upload-chunk', [FileUploadController::class, 'uploadChunk'])->name('upload.chunk');
-//Route::post('/finalize-upload', [FileUploadController::class, 'finalizeUpload'])->name('upload.finalize');
         
 Route::get('/video/{id}', [PlayerController::class, 'player'])->name('video.player');
 
