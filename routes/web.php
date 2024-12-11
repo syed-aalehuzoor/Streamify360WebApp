@@ -15,9 +15,9 @@ use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\PlayerSettingsController;
 use App\Http\Controllers\SubscriptionPlanController;
 
-Route::get('/test', function () {
-    return view('test');
-});
+use App\Http\Controllers\FileUploadController;
+
+Route::get('/test', [FileUploadController::class, 'cleanupUploads']);
 
 Route::get('/test2', function () {
     return view('test2');

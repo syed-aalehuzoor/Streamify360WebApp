@@ -10,32 +10,8 @@
             </div>
         
             <div x-show="activeTab === 1">
-                <form wire:submit.prevent="uploadVideo" enctype="multipart/form-data" class="flex flex-col gap-4">        
-                    <div>
-                        <label for="video" class="block text-sm font-medium text-gray-700">Video File (required):</label>
-                        <input onchange="uploadChunks('video')" type="file" id="video" class="mt-1 block w-full px-3 py-8 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required
-                            x-on:livewire-upload-start="isUploading = true"
-                            x-on:livewire-upload-finish="isUploading = false"
-                            x-on:livewire-upload-error="isUploading = false"
-                            x-on:livewire-upload-progress="progress = $event.detail.progress">
-                        @error('video') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div id="upload-container" class="mt-6 p-4 border border-gray-300 rounded-lg bg-white shadow-lg" style="display: none;">
-                        <!-- Progress Bar -->
-                        <div class="relative h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                            <div id="progress-bar" class="absolute top-0 left-0 h-full bg-blue-500 transition-all duration-300" style="width: 0%;">
-                            </div>
-                        </div>
-
-                        <!-- Uploading Text and Percentage -->
-                        <div class="flex justify-between items-center mt-3">
-                            <div class="text-sm text-gray-700 font-semibold animate-pulse">
-                                Uploading...
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <div id="video-upload-wrapper">
+                </div>
             </div>
 
             <div x-show="activeTab === 2">
@@ -168,38 +144,9 @@
 
 </div>
 <script>
-
-function updateProgress(progress) {
-    document.getElementById('progress-bar').style.width = `${progress}%`;
-}
-
-function livewireUploadChunk( file, start ){
-    const now = new Date();
-    console.log(`${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`);
-    const chunkEnd  = Math.min( start + @js($chunkSize), file.size );
-    const chunk     = file.slice( start, chunkEnd ); 
-    const totalProgress = Math.round((chunkEnd / file.size) * 100);
-    @this.upload('fileChunk', chunk,(uName)=>{}, ()=>{}, (event)=>{
-        if( event.detail.progress == 100 ){
-          updateProgress(totalProgress);
-          start = chunkEnd;
-          if( start < file.size ){
-            livewireUploadChunk( file, start );
-          }
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+        new FileUploader('video', 'video-upload-wrapper', '.mp4', 1024 * 1024 * 10, (uploadId) => {
+            @this.set('uploadId', uploadId, true);
+        });
     });
-}
-
-function uploadChunks(id){
-    const file = document.querySelector(`#${id}`).files[0];
-    const randomString = Math.random().toString(36).substring(2, 15);
-    const fileExtension = file.name.split('.').pop().toLowerCase();
-    // Send the following later at the next available call to component
-    @this.set('fileName', file.name, true);
-    @this.set('fileKey', randomString, true);
-    @this.set('fileExtension', fileExtension, true);
-    @this.set('fileSize', file.size, true);
-    document.getElementById('upload-container').style.display = 'block';
-    livewireUploadChunk( file, 0 );
-}
 </script>

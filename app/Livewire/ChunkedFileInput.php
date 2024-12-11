@@ -11,7 +11,13 @@ class ChunkedFileInput extends Component
 
     public $filename;
     public $acceptedTypes;
-    public $file;
+    public $uploadId;
+
+    public function updateduploadId()
+    {
+        dd($this->uploadId);
+        return redirect('/home');
+    }
 
     public function render()
     {

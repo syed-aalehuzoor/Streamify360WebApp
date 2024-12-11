@@ -23,35 +23,20 @@ class VideoForm extends Component
     public $subtitle;
     public $thumbnail;
 
-    // Properties for chunked upload
-    public $chunkSize = 1024 * 1024 * 10; // 1MB
-    public $fileName;
-    public $fileExtension;
-    public $fileKey;
-    public $fileSize;
-    public $fileChunk;
-
-    public function updatedFileChunk()
-    {
-        $chunkFileName = $this->fileChunk->getFileName();
-
-        $finalPath = Storage::path('/livewire-tmp/' . $this->fileKey);
-        $tmpPath = Storage::path('/livewire-tmp/' . $chunkFileName);
-        $file = fopen($tmpPath, 'rb');
-        $buff = fread($file, $this->chunkSize);
-        fclose($file);
-        $final = fopen($finalPath, 'ab');
-        fwrite($final, $buff);
-        fclose($final);
-        unlink($tmpPath);
-        $curSize = filesize($finalPath);
+    public $uploadId;
     
-        if ($curSize == $this->fileSize) {
-            $video = $this->createVideo($this->fileName, 'pending'); // Placeholder URL for processing
-            $azurePath = 'videos/' . $video->id . '.' . $this->fileExtension; // Define a path in Azure container
-            Storage::disk('azure')->put($azurePath, fopen($finalPath, 'r+'));
-            $video->update(['video_url' => $azurePath]);
-        }
+    public function updateduploadId()
+    {
+        $finalFile = collect(Storage::files('chunks'))
+            ->first(fn($file) => str_starts_with($file, "chunks/{$this->uploadId}."));
+
+        // Create video and upload to Azure
+        $extension = pathinfo(Storage::path($finalFile), PATHINFO_EXTENSION);
+        $video = $this->createVideo("Untitled", 'pending');
+        $azurePath = "videos/{$video->id}.{$extension}";
+        
+        Storage::disk('azure')->put($azurePath, Storage::get($finalFile));
+        $video->update(['video_url' => $azurePath]);
     }
 
     public function render(){
