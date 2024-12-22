@@ -10,7 +10,9 @@
             </div>
         
             <div x-show="activeTab === 1">
-                <div id="video-upload-wrapper">
+                <div class="flex flex-col gap-4">
+                    <label for="video-upload-wrapper" class="block text-sm font-medium text-gray-700">Video File:</label>
+                    <div id="video-upload-wrapper"></div>
                 </div>
             </div>
 
@@ -141,8 +143,8 @@
             </div>
         </form>
     @endif
-
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         new FileUploader('video', 'video-upload-wrapper', '.mp4', 1024 * 1024 * 10, (uploadId) => {

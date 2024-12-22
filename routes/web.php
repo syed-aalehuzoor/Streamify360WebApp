@@ -14,20 +14,19 @@ use App\Helpers\EncoderApiAuth;
 use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\PlayerSettingsController;
 use App\Http\Controllers\SubscriptionPlanController;
-
-use App\Http\Controllers\FileUploadController;
-
-Route::get('/test', [FileUploadController::class, 'cleanupUploads']);
-
-Route::get('/test2', function () {
-    return view('test2');
-});
+use App\Livewire\PlayerComponent;
 
 Route::get('/', function () {
     return view('welcome');
 });
-        
-Route::get('/video/{id}', [PlayerController::class, 'player'])->name('video.player');
+
+Route::get('/test3', [AnalyticsController::class, 'updateViewsOverTime']); 
+Route::get('/test', [HomeController::class, 'test']);     
+Route::get('/test2', function () {
+    return view('test2');
+});     
+
+Route::get('/video/{id}', PlayerComponent::class)->name('video.player');
 
 Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [AuthController::class, 'google_callback']);
@@ -49,9 +48,10 @@ Route::middleware(
         });
 
         Route::prefix('analytics')->group(function (){
-            Route::get('/video-performance', [AnalyticsController::class, 'video'])->name('video-performance');
+            Route::get('/video-performance', [AnalyticsController::class, 'videos'])->name('video-performance');
+            Route::get('/video-performance/{id}', [AnalyticsController::class, 'video'])->name('video-s-performance');
             Route::get('/audiance', [AnalyticsController::class, 'audiance'])->name('audience-insights');
-        
+            Route::get('/audiance/{id}', [AnalyticsController::class, 'videoAudiance'])->name('video-audience-insights');
         });
 
         Route::prefix('settings')->group(function (){

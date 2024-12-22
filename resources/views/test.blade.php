@@ -1,116 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chunked File Upload Test</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <style>
-        .progress {
-            width: 100%;
-            background-color: #f0f0f0;
-            padding: 3px;
-            border-radius: 3px;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
-        }
-        .progress-bar {
-            display: block;
-            height: 22px;
-            background-color: #659cef;
-            border-radius: 3px;
-            transition: width 500ms ease-in-out;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <title>Document</title>
 </head>
 <body>
-    <div class="container">
-        <h2>File Upload Test</h2>
-        <input type="file" id="fileInput">
-        <div class="progress" style="display:none;">
-            <span class="progress-bar" style="width: 0%;">0%</span>
-        </div>
-        <div id="status"></div>
-    </div>
-    <div id="errorbox">
-
-    </div>
-
+    <h1>
+        {{ $city }}
+    </h1>
+    <h2>
+        {{ $regionName }}
+    </h2>
+    <h3>
+        {{ $country }}
+    </h3>
+    <h1>
+        {{ $operatingSystem }}
+    </h1>
+    <h1>
+        {{ $deviceType }}
+    </h1>
+    <h1>Check HLS Support</h1>
+    <p id="hls-status">Checking HLS support...</p>
     <script>
-        const CHUNK_SIZE = 1024 * 1024; // 1MB chunks
+        // Check if HLS is supported
+        const hlsStatusElement = document.getElementById("hls-status");
         
-        document.getElementById('fileInput').addEventListener('change', async function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const progress = document.querySelector('.progress');
-            const progressBar = document.querySelector('.progress-bar');
-            const status = document.getElementById('status');
-            progress.style.display = 'block';
-            
-            try {
-                // Step 1: Initiate upload
-                const initResponse = await fetch('{{ route('upload.initiate') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        filename: file.name
-                    })
-                });
-                console.log(initResponse);
-                const { upload_id } = await initResponse.json();
-                console.log(upload_id);
-                
-                // Step 2: Upload chunks
-                const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
-                
-                for (let i = 0; i < totalChunks; i++) {
-                    const chunk = file.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
-                    const formData = new FormData();
-                    formData.append('file', chunk);
-                    formData.append('upload_id', upload_id);
-                    formData.append('chunkIndex', i);
-                    
-                    const chunkResponse = await fetch('{{ route('upload.chunk') }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: formData
-                    });
-                    const errorBox = document.getElementById('errorbox');
-                    errorBox.innerHTML = await chunkResponse.text();
-                  
-                    // Update progress
-                    const percentComplete = ((i + 1) / totalChunks) * 100;
-                    progressBar.style.width = percentComplete + '%';
-                    progressBar.textContent = Math.round(percentComplete) + '%';
-                }
-                
-                // Step 3: Finalize upload
-                const fileName = file.name;
-                const fileExtension = fileName.split('.').pop();
-                const finalizeResponse = await fetch('{{ route('upload.finalize') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        upload_id: upload_id,
-                        totalChunks: totalChunks,
-                        fileExtension: fileExtension
-                    })
-                });
-                
-                const result = await finalizeResponse.json();
-                status.textContent = 'Upload completed! File path: ' + result.filepath;
-                
-            } catch (error) {
-                status.textContent = 'Error: ' + error.message;
-                console.error(error);
-            }
-        });
+        if (Hls.isSupported()) {
+            hlsStatusElement.textContent = "HLS is supported in this browser!";
+            hlsStatusElement.style.color = "green";
+        } else {
+            hlsStatusElement.textContent = "HLS is NOT supported in this browser.";
+            hlsStatusElement.style.color = "red";
+        }
     </script>
 </body>
 </html>

@@ -14,6 +14,7 @@ class VideoForm extends Component
 
     public $video_id;
     public $currentStep = 1;
+
     public $youtubeUrl;
     public $driveUrl;
     public $directUrl;

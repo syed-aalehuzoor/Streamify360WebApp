@@ -14,19 +14,19 @@ return [
                 'route' => 'videos.add-new',
                 'label' => 'Upload New',
                 'plans' => ['basic', 'premium', 'enterprise'],
-                'tooltip' => 'Available on all plans'
+                'tooltip' => 'Add New Video!'
             ],
             'all-videos' => [
                 'route' => 'videos.index',
                 'label' => 'All Videos',
                 'plans' => ['basic', 'premium', 'enterprise'],
-                'tooltip' => 'Available on all plans'
+                'tooltip' => 'All Published Videos!'
             ],
             'drafts-videos' => [
                 'route' => 'videos.drafts',
                 'label' => 'Draft Videos',
                 'plans' => ['basic', 'premium', 'enterprise'],
-                'tooltip' => 'Available on all plans'
+                'tooltip' => 'Draft Videos!'
             ],
         ],
     ],
