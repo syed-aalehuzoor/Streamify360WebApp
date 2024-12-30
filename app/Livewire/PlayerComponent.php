@@ -29,10 +29,19 @@ class PlayerComponent extends Component
 
     public function render()
     {
-        return view('livewire.player-component', [
-            'video' => $this->video,
-            'settings' => $this->settings,
-        ]);
+        if($this->video->status == 'live')
+        {
+            return view(
+                'livewire.player-component',
+                [
+                    'video' => $this->video,
+                    'settings' => $this->settings,
+                ]
+            );
+        }
+        else {
+            abort(404);
+        }
     }
 
     public function rendered()

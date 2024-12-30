@@ -9,11 +9,3 @@ use Illuminate\Support\Facades\Schedule;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
-
-Schedule::call(function () {
-    FileUploadController::cleanupUploads();
-})->everyMinute();
-
-Schedule::call(function () {
-    AnalyticsController::updateViewsOverTime();
-})->hourly();

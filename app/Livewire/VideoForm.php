@@ -7,6 +7,8 @@ use Livewire\WithFileUploads;
 use App\Models\Video;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
+use App\Jobs\ProcessVideo;
 
 class VideoForm extends Component
 {
@@ -120,7 +122,9 @@ class VideoForm extends Component
             $thumbnailPath = $this->thumbnail->storeAs('thumbnails', $this->video_id . '.' . $this->thumbnail->getClientOriginalExtension(), 'public');
             $video->update(['thumbnail_url' => $thumbnailPath]);
         }
-        $video->update(['status' => 'Initiated']);
+        ProcessVideo::dispatch($this->video_id);
+        #Http::post('http://127.0.0.1:5000/api/process_video/'.$this->video_id);
+        
         return redirect()->route('videos.index')->with('success', 'Video uploaded is being processed!');
     }
 

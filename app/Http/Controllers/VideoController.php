@@ -9,13 +9,15 @@ use App\Models\Server;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Http;
+use App\Jobs\DeleteVideo;
 
 class VideoController extends Controller
 {
     /**
      * Valid video statuses
      */
-    private const ACTIVE_STATUSES = ['Initiated', 'Processing', 'Live', 'Failed'];
+    private const ACTIVE_STATUSES = ['Processing', 'Live', 'Failed'];
     private const DRAFT_STATUS = ['Draft'];
     private const ITEMS_PER_PAGE = 10;
 
@@ -71,8 +73,26 @@ class VideoController extends Controller
         if (!$video) {
             return $this->unauthorizedRedirect();
         }
-        $video->update(['status' => 'Deleted']);
-        return redirect()->route('all-videos')->with('success', 'Video deleted successfully.');
+        $video->status = 'Deleted';
+        $video->save();
+        DeleteVideo::dispatch($id);
+        return redirect()->route('videos.index')->with('success', 'Video Deleted Successfully.');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $selectedVideos = $request->input('selected_videos');
+        
+        foreach ($selectedVideos as $videoid){
+            $video = $this->getUserVideo($videoid);
+            if (!$video) {
+                return $this->unauthorizedRedirect();
+            }
+            $video->status = 'Deleted';
+            $video->save();
+            DeleteVideo::dispatch($videoid);
+        }
+        return redirect()->route('videos.index')->with('success', 'Videos Deleted Successfully.');
     }
 
     /**
@@ -109,7 +129,7 @@ class VideoController extends Controller
      */
     private function unauthorizedRedirect() {
         return redirect()
-            ->route('all-videos')
+            ->route('videos.index')
             ->with('error', 'Video not found or unauthorized action.');
     }
 }

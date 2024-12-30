@@ -1,49 +1,46 @@
 import json
 from argparse import ArgumentParser
 import os
+import sys
 import subprocess
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from shutil import rmtree, make_archive
+from concurrent.futures import ThreadPoolExecutor
+from shutil import rmtree
+from logging import basicConfig, info as log_info, INFO
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
+basicConfig(filename=os.path.join(script_dir, 'video_process.logs'), level=INFO)
 
-# Initialize argument parser
 parser = ArgumentParser(description="Video Encoding Script with optional subtitle and logo overlay.")
 
-# Required arguments
-parser.add_argument('--key', required=True, help="Video Key")
-parser.add_argument('--domain', required=True, help="Domain Name")
-parser.add_argument('--video', required=True, help="Input video file")
-
-# Optional arguments
-parser.add_argument('--qualities', help="Qualities as a JSON String (e.g., '[\"360p\", \"480p\", \"720p\"]')")
-parser.add_argument('--subtitle', help="Subtitle file (optional)")
-parser.add_argument('--logo', help="Logo file to overlay (optional)")
-parser.add_argument('--chunk_duration', type=int, default=10, help="Chunk duration in seconds")
-parser.add_argument('--max_workers', type=int, default=4, help="Max number of threads for concurrent execution")
-
-# Parse the arguments
+arguments = [
+    {'name': '--key', 'kwargs': {'required': True, 'help': "Video Key"}},
+    {'name': '--domain', 'kwargs': {'required': True, 'help': "Domain Name"}},
+    {'name': '--serverip', 'kwargs': {'required': True, 'help': "Server IP"}},
+    {'name': '--video', 'kwargs': {'required': True, 'help': "Input video file"}},
+    # Optional arguments
+    {'name': '--subtitle', 'kwargs': {'help': "Subtitle file (optional)"}},
+    {'name': '--logo', 'kwargs': {'help': "Logo file to overlay (optional)"}},
+    {'name': '--chunk_duration', 'kwargs': {'type': int, 'default': 10, 'help': "Chunk duration in seconds"}},
+    {'name': '--max_workers', 'kwargs': {'type': int, 'default': 4, 'help': "Max number of threads for concurrent execution"}},
+]
+for arg in arguments:
+    parser.add_argument(arg['name'], **arg['kwargs'])
 args = parser.parse_args()
-
-# Retrieve values from the parsed arguments
 key = args.key
 domain_name = args.domain
+server_ip = args.serverip
 input_file = args.video
+input_file = os.path.join(script_dir, input_file)
 subtitle_file = args.subtitle
 logo_file = args.logo
-qualities = args.qualities
 chunk_duration = args.chunk_duration
 max_workers = args.max_workers
 
-qualities = json.loads(qualities) if qualities and (isinstance(qualities, str) and not json.JSONDecodeError) else ["360p", "480p", "720p"]
-
-domains = [f"player{i:02d}.{domain_name}" for i in range(1, 11)]
-
 resolutions = {
-    "360p": "640x360", 
-    "480p": "854x480", 
-    "720p": "1280x720", 
-    "1080p": "1920x1080"
+    "360p": [640, 360], 
+    "480p": [854, 480], 
+    "720p": [1280, 720], 
+    "1080p": [1920, 1080]
 }
 bitrates = {
     "360p": "400k", 
@@ -58,160 +55,107 @@ bandwidths = {
     "1080p": "2500000"
 }
 
+def run_command(command):
+    command_string = " ".join(command) if isinstance(command, list) else command
+    log_info(f'Video ID: {key}, Running Command: {command_string}')
+    result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    log_info(f'Video ID: {key}, Completed Command: {command_string}')
 
-video_dir = os.path.join(script_dir, key)
-os.makedirs(video_dir, exist_ok=True)
+def get_resolution_key(input_file):
+    result = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "json", input_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    video_width, video_height = (json.loads(result.stdout).get('streams', [{}])[0].get('width', 0), json.loads(result.stdout).get('streams', [{}])[0].get('height', 0))
+    return next(k for k, (w, h) in resolutions.items() if video_width <= w and video_height <= h)
 
-# Step 1: Split video into chunks based on duration
-chunks_dir = os.path.join(video_dir, 'chunks')
-os.makedirs(chunks_dir, exist_ok=True)
+try:
 
-# Function to run FFmpeg command asynchronously
-def run_ffmpeg_command(command):
-    result = subprocess.run(command, capture_output=True, text=True)
-    if result.returncode != 0:
-        print(f"FFmpeg error: {result.stderr}")
-    return result
+    if logo_file or subtitle_file:
+        log_info('\n------------------------------')
+        log_info(f'\nHardcoding Logo/Subtitle on Video.')
+        log_info('\n------------------------------')
+        hardcoded_input_file = os.path.join(script_dir, f'HardCoded-{key}.mp4')
+        if logo_file and os.path.isfile(logo_file) and subtitle_file and os.path.isfile(subtitle_file):
+            command = f'ffmpeg -threads {max_workers} -i "{input_file}" -i "{logo_file}" -filter_complex "[1:v][0:v]scale2ref=h=ow/mdar:w=iw[logo][video];[video][logo]overlay=format=auto,ass={subtitle_file}" -c:v libx264 -preset fast -c:a aac -b:a 128k -movflags +faststart "{hardcoded_input_file}"'
+        elif logo_file and os.path.isfile(logo_file):
+            command = f'ffmpeg -threads {max_workers} -i "{input_file}" -i "{logo_file}" -filter_complex "[1:v][0:v]scale2ref=h=ow/mdar:w=iw[logo][video];[video][logo]overlay=format=auto" -c:v libx264 -preset fast -c:a aac -b:a 128k -movflags +faststart "{hardcoded_input_file}"'
+        elif subtitle_file and os.path.isfile(subtitle_file):
+            command = f'ffmpeg -threads {max_workers} -i "{input_file}" -filter_complex "ass={subtitle_file}" -c:v libx264 -preset fast -c:a aac -b:a 128k -movflags +faststart "{hardcoded_input_file}"'
+        run_command(command=command)
+        if input_file and os.path.exists(input_file):
+            os.remove(input_file)
+        input_file = hardcoded_input_file
 
-# Step 1: Split the video into chunks based on the desired duration
-chunk_duration = 10  # Duration of each chunk in seconds
-chunks_dir = os.path.join(video_dir, 'chunks')
-os.makedirs(chunks_dir, exist_ok=True)
+    highest_quality = get_resolution_key(input_file=input_file)
+    log_info(
+        '\n------------------------------'
+        f'\nCopying the Input Quality({highest_quality}) to HLS Format.'
+        '\n------------------------------'
+    )
+    video_dir = os.path.join(script_dir, key)
+    os.makedirs(video_dir, exist_ok=True)
+    bitrate = bitrates[highest_quality]
+    quality_dir = os.path.join(video_dir, highest_quality)
+    os.makedirs(quality_dir, exist_ok=True)
 
-# Split video into chunks using FFmpeg
-split_command = [
-    "ffmpeg", "-i", input_file,
-    "-c", "copy", "-f", "segment",
-    "-segment_time", str(chunk_duration),
-    os.path.join(chunks_dir, "%04d.mp4")
-]
-subprocess.run(split_command)
+    command = ["ffmpeg", "-y", "-i", input_file, "-b:v", bitrate, "-c", "copy", "-f", "segment", "-segment_time", str(chunk_duration), os.path.join(quality_dir, "%04d.ts")]
+    run_command(command=command)
 
-# List all the generated chunks
-chunks = sorted([f for f in os.listdir(chunks_dir) if f.endswith(".mp4")])
+    key_path = os.path.join(script_dir, 'streamify360.pem')
+    remote_path=f'/var/www/html/streams/'
 
-with ThreadPoolExecutor(max_workers=max_workers) as executor:
-    future_to_command = {}
+    command = ["scp", "-i", key_path,"-o", "StrictHostKeyChecking=no", "-r", video_dir, f"ubuntu@{server_ip}:{remote_path}"]
+    run_command(command=command)
+    
+    command = ["ssh", "-i", key_path, f"ubuntu@{server_ip}", f'python3 /home/ubuntu/manifest.py --key {key} --domain {domain_name}']
+    run_command(command=command)
 
-    for chunk in chunks:
-        chunk_path = os.path.join(chunks_dir, chunk)
+    remote_video_dir = os.path.join(remote_path, key)
+    command = ["ssh", "-i", key_path, f"ubuntu@{server_ip}", f'sudo chmod -R 755 {remote_video_dir}']
+    
+    run_command(command=command)
+    
+    log_info(
+        '\n------------------------------'
+        f'\nEncoding to all lower Quality than input quality({highest_quality}).'
+        '\n------------------------------'
+    )
 
-        for quality in qualities:
-            video_setting = resolutions[quality]
+    with ThreadPoolExecutor(max_workers=4) as worker:
+        for quality in resolutions:
+            resolution = resolutions[quality]
             bitrate = bitrates[quality]
             quality_dir = os.path.join(video_dir, quality)
             os.makedirs(quality_dir, exist_ok=True)
+            command = ["ffmpeg", '-y', "-i", input_file, "-c:v", "libx264", "-vf", f'scale={resolution[0]}:{resolution[1]}', "-b:v", bitrate, "-f", "segment", "-segment_time", str(chunk_duration), os.path.join(quality_dir, "%04d.ts")]
+            worker.submit(run_command, command)
 
-            chunk_output_path = os.path.join(quality_dir, f"{chunk.split('.')[0]}.ts")
-            playlist_path = os.path.join(quality_dir, f"{chunk.split('.')[0]}.m3u8")
+            if quality == highest_quality:
+                break
+        worker.shutdown(wait=True)
+        
+    for quality in os.listdir(video_dir):
+        if quality == highest_quality:
+            break
+        quality_dir = os.path.join(video_dir, quality)
+        command = ["scp", "-i", key_path, "-r", quality_dir, f"ubuntu@{server_ip}:{remote_video_dir}"]
+        run_command(command=command)
 
-            # Create FFmpeg command for each chunk and quality
-            if logo_file and os.path.isfile(logo_file) and subtitle_file and os.path.isfile(subtitle_file):
-                command = [
-                    "ffmpeg", "-y", "-copyts", "-i", chunk_path,
-                    "-i", logo_file,
-                    "-filter_complex", f"[1:v]scale=w=iw:h=ih[logo];[0:v][logo]overlay=format=auto,ass='{subtitle_file}',scale={video_setting}",
-                    "-map", "0", "-b:v", bitrate, "-c:a", "aac", "-b:a", "128k", "-crf", "27", "-preset", "veryfast",
-                    "-hls_flags", "single_file",
-                    "-hls_time", str(chunk_duration), "-hls_list_size", "0",
-                    "-hls_segment_filename", chunk_output_path,
-                    playlist_path
-                ]
-            elif logo_file and os.path.isfile(logo_file):
-                command = [
-                    "ffmpeg", "-y", "-copyts", "-i", chunk_path,
-                    "-i", logo_file,
-                    "-filter_complex", f"[1:v]scale=w=iw:h=ih[logo];[0:v][logo]overlay=format=auto,scale={video_setting}",
-                    "-map", "0", "-b:v", bitrate, "-c:a", "aac", "-b:a", "128k", "-crf", "27", "-preset", "veryfast",
-                    "-hls_time", str(chunk_duration), "-hls_list_size", "0",
-                    "-hls_flags", "single_file",
-                    "-hls_segment_filename", chunk_output_path,
-                    playlist_path
-                ]
-            elif subtitle_file and os.path.isfile(subtitle_file):
-                command = [
-                    "ffmpeg", "-y", "-copyts", "-i", chunk_path,
-                    "-vf", f"ass='{subtitle_file}',scale={video_setting}",
-                    "-map", "0", "-b:v", bitrate, "-c:a", "aac", "-b:a", "128k", "-crf", "27", "-preset", "veryfast",
-                    "-hls_time", str(chunk_duration), "-hls_list_size", "0",
-                    "-hls_flags", "single_file",
-                    "-hls_segment_filename", chunk_output_path,
-                    playlist_path
-                ]
-            else:
-                command = [
-                    "ffmpeg", "-y", "-copyts", "-i", chunk_path,
-                    "-vf", f"scale={video_setting}",
-                    "-map", "0", "-b:v", bitrate, "-c:a", "aac", "-b:a", "128k", "-crf", "27", "-preset", "veryfast",
-                    "-hls_time", str(chunk_duration), "-hls_list_size", "0",
-                    "-hls_flags", "single_file",
-                    "-hls_segment_filename", chunk_output_path,
-                    playlist_path
-                ]
+    command = ["ssh", "-i", key_path, f"ubuntu@{server_ip}", f'sudo chmod -R 755 {remote_video_dir}']
+    run_command(command=command)
 
-            # Submit the command for parallel execution
-            future = executor.submit(run_ffmpeg_command, command)
-            future_to_command[future] = command
+    if os.path.exists(video_dir):
+        rmtree(video_dir)
+    if os.path.exists(input_file):
+        os.remove(input_file)
+    if subtitle_file and os.path.exists(subtitle_file):
+        os.remove(subtitle_file)
+    if logo_file and os.path.exists(logo_file):
+        os.remove(logo_file)
 
-    # Wait for all futures to complete
-    for future in as_completed(future_to_command):
-        command = future_to_command[future]
-        try:
-            future.result()  # Will raise an exception if FFmpeg fails
-            print(f"Completed: {' '.join(command)}")
-        except Exception as exc:
-            print(f"Command failed: {' '.join(command)}. Error: {exc}")
-
-# Step 3: Concatenate the chunked .m3u8 files into a single .m3u8 file for each quality
-# Step 3: Create playlist (M3U8) for each quality
-for quality in qualities:
-    quality_dir = os.path.join(video_dir, quality)
-    for file in os.listdir(quality_dir):
-        if file.endswith('.ts'):
-            ts_path = os.path.join(quality_dir, file)
-            html_path = ts_path.replace(".ts", ".html")
-            os.rename(ts_path, html_path)
-        elif file.endswith('.m3u8'):
-            os.remove(os.path.join(quality_dir, file))
-
-    # Create a new m3u8 file that lists all chunks for this quality
-    quality_manifest_path = os.path.join(video_dir, f"{quality}.m3u8")
-    with open(quality_manifest_path, "w") as m3u8:
-        m3u8.write("#EXTM3U\n")
-        m3u8.write("#EXT-X-VERSION:3\n")
-        m3u8.write("#EXT-X-PLAYLIST-TYPE:VOD\n")
-        m3u8.write("#EXT-X-TARGETDURATION:10\n")
-
-        html_sequence = 0
-        for html_file in sorted(os.listdir(quality_dir)):
-            if html_file.endswith(".html"):
-                domain = domains[html_sequence % len(domains)]
-                m3u8.write(f"#EXTINF:10.000000,\n")
-                m3u8.write(f"https://{domain}/streams/{key}/{quality}/{html_file}\n")
-                html_sequence += 1
-
-        total_duration = html_sequence * 10
-        m3u8.write("#EXT-X-ENDLIST\n")
-        m3u8.write(f"#EXT-X-TOTALDURATION:{total_duration}\n")
-
-# Step 4: Create master playlist
-master_m3u8 = os.path.join(video_dir, "master.m3u8")
-with open(master_m3u8, "w") as master:
-    master.write("#EXTM3U\n")
-    for quality in qualities:
-        video_setting = resolutions[quality]
-        bandwidth = bandwidths[quality]
-        master.write(f"#EXT-X-STREAM-INF:BANDWIDTH={bandwidth},RESOLUTION={video_setting}\n")
-        master.write(f"https://streambox.{domain_name}/streams/{key}/{quality}.m3u8\n")
-
-if os.path.exists(chunks_dir):
-    rmtree(chunks_dir)
-make_archive(video_dir, 'zip', video_dir)
-if os.path.exists(video_dir):
-    rmtree(video_dir)
-if os.path.exists(input_file):
-    os.remove(input_file)
-if subtitle_file and os.path.exists(subtitle_file):
-    os.remove(subtitle_file)
-if logo_file and os.path.exists(logo_file):
-   os.remove(logo_file)
+except subprocess.CalledProcessError as e:
+    log_info(
+        f"\nVideo Processing Failed:\n"
+        f"-------------------------\n"
+        f"Error Output : {e.stderr}\n"
+        f"Unexpected Error: {e}\n"
+    )
+    sys.exit(1)

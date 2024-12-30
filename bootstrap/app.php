@@ -6,6 +6,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;  // Correct namespace
+use Illuminate\Console\Scheduling\Schedule;
+use App\Http\Controllers\FileUploadController;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(

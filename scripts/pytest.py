@@ -1,7 +1,6 @@
-from pytubefix import YouTube
+from time import sleep
 
-
-yt = YouTube('https://www.youtube.com/watch?v=jlOti1Z2IoM', use_oauth=True)
-ys = yt.streams.get_highest_resolution()
-
-print(ys.download(output_path='/www/wwwroot/dev.streamify360.com/scripts', filename='test3'))
+while True:
+    print("Running cron job...")
+    sleep( 60 * 60 )
+    print("Cron job completed.")

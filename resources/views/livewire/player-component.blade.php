@@ -27,9 +27,7 @@
             abouttext: "Streamify360",
             aboutlink: "https://streamify360.com",
             image: "{{ $video->thumbnail_url }}",
-            @if ($settings->show_playback_speed)
-                playbackRateControls: [0.5, 1, 1.5, 2],        
-            @endif
+            playbackRateControls: {!! $settings->show_playback_speed ? '[0.5, 1, 1.5, 2]' : '[]' !!},
             sources: [{"file":"{{ $video->manifest_url }}","label":"HD","type":"application/x-mpegURL"}],
             tracks: [{"file":"","kind":"thumbnails"}],
             logo: {

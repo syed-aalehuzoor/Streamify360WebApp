@@ -15,16 +15,19 @@ use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\PlayerSettingsController;
 use App\Http\Controllers\SubscriptionPlanController;
 use App\Livewire\PlayerComponent;
+use App\Http\Controllers\FileUploadController;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test3', [AnalyticsController::class, 'updateViewsOverTime']); 
+Route::get('/test3', [AnalyticsController::class, 'refreshAnalyticsData']); 
 Route::get('/test', [HomeController::class, 'test']);     
 Route::get('/test2', function () {
     return view('test2');
 });     
+Route::get('/test4', [FileUploadController::class, 'cleanupUploads']);     
 
 Route::get('/video/{id}', PlayerComponent::class)->name('video.player');
 
@@ -39,20 +42,22 @@ Route::middleware(
         Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
         
         Route::prefix('videos')->name('videos.')->group(function () {
-            Route::get('/', [VideoController::class, 'index'])          ->name('index');
-            Route::get('/drafts', [VideoController::class, 'drafts'])   ->name('drafts');    
-            Route::get('/upload-new',[VideoController::class, 'create'])->name('add-new');
-            Route::get('/{id}/edit',[VideoController::class, 'read'])   ->name('edit');
-            Route::post('/{id}/edit',[VideoController::class, 'update'])->name('post-edit');
-            Route::delete('/{id}',[VideoController::class, 'delete'])   ->name('destroy');
+            Route::get('/', [VideoController::class, 'index'])                      ->name('index');
+            Route::get('/drafts', [VideoController::class, 'drafts'])               ->name('drafts');    
+            Route::get('/upload-new',[VideoController::class, 'create'])            ->name('add-new');
+            Route::get('/{id}/edit',[VideoController::class, 'read'])               ->name('edit');
+            Route::post('/{id}/edit',[VideoController::class, 'update'])            ->name('post-edit');
+            Route::post('/bulk-delete',[VideoController::class, 'bulkDelete'])    ->name('bulk-delete');
+            Route::delete('/{id}',[VideoController::class, 'delete'])               ->name('destroy');
         });
 
-        Route::prefix('analytics')->group(function (){
-            Route::get('/video-performance', [AnalyticsController::class, 'videos'])->name('video-performance');
-            Route::get('/video-performance/{id}', [AnalyticsController::class, 'video'])->name('video-s-performance');
-            Route::get('/audiance', [AnalyticsController::class, 'audiance'])->name('audience-insights');
-            Route::get('/audiance/{id}', [AnalyticsController::class, 'videoAudiance'])->name('video-audience-insights');
+        Route::prefix('analytics')->group(function () {
+            Route::get('/performance-videos', [AnalyticsController::class, 'listPerformanceVideos'])->name('performance-videos-list');
+            Route::get('/performance-videos/{id}', [AnalyticsController::class, 'showVideoPerformance'])->name('video-performance-trend');
+            Route::get('/audience-videos', [AnalyticsController::class, 'listAudienceVideos'])->name('audience-videos-list');
+            Route::get('/audience-videos/{id}', [AnalyticsController::class, 'showVideoAudienceInsights'])->name('video-audience-insights');
         });
+        
 
         Route::prefix('settings')->group(function (){
             Route::get('/player', [PlayerSettingsController::class, 'edit'])->name('player-settings.edit');

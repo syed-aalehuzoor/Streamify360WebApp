@@ -1,23 +1,5 @@
 <x-app-layout>
-    <h1 class="font-semibold text-md text-gray-800 m-2">Video Performance</h1>
-
-    @if (session('success'))
-        <div id="success-message" class="mb-4 p-3 bg-green-50 text-green-700 border border-green-200 rounded-lg shadow-sm">
-            {{ session('success') }}
-        </div>
-        <script>
-            setTimeout(() => document.getElementById('success-message').style.display = 'none', 10000);
-        </script>
-    @endif
-
-    @if ($errors->has('failure'))
-        <div id="failure-message" class="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg shadow-sm">
-            {{ $errors->first('failure') }}
-        </div>
-        <script>
-            setTimeout(() => document.getElementById('failure-message').style.display = 'none', 10000);
-        </script>
-    @endif
+    <h1 class="font-semibold text-md text-gray-800 m-2">Audience Insights</h1>
 
     <div class="bg-white shadow rounded-lg">
         <div class="p-4 border-b border-gray-200 flex justify-end">
@@ -44,7 +26,7 @@
                     @foreach ($videos as $video)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-3">
-                                <a href="{{ route('video-s-performance', $video->id) }}" class="text-blue-500 text-sm hover:underline">
+                                <a href="{{ route('video-audience-insights', $video->id) }}" class="text-blue-500 text-sm hover:underline">
                                     {{ $video->name }}
                                 </a>
                             </td>

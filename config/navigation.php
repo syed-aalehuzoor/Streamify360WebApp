@@ -10,19 +10,19 @@ return [
         'label' => 'Videos',
         'icon' => 'fa-solid fa-photo-film',
         'submenus' => [
-            'add-video' => [
+            'videos.add-new' => [
                 'route' => 'videos.add-new',
                 'label' => 'Upload New',
                 'plans' => ['basic', 'premium', 'enterprise'],
                 'tooltip' => 'Add New Video!'
             ],
-            'all-videos' => [
+            'videos.index' => [
                 'route' => 'videos.index',
                 'label' => 'All Videos',
                 'plans' => ['basic', 'premium', 'enterprise'],
                 'tooltip' => 'All Published Videos!'
             ],
-            'drafts-videos' => [
+            'videos.drafts' => [
                 'route' => 'videos.drafts',
                 'label' => 'Draft Videos',
                 'plans' => ['basic', 'premium', 'enterprise'],
@@ -34,14 +34,14 @@ return [
         'label' => 'Analytics',
         'icon' => 'fa-solid fa-chart-simple',
         'submenus' => [
-            'video-performance' => [
-                'route' => 'video-performance',
+            'performance-videos-list' => [
+                'route' => 'performance-videos-list',
                 'label' => 'Video Performance',
                 'plans' => ['premium', 'enterprise'],
                 'tooltip' => 'Coming Soon!'
             ],
-            'audience-insights' => [
-                'route' => 'audience-insights',
+            'audience-videos-list' => [
+                'route' => 'audience-videos-list',
                 'label' => 'Audience Insights',
                 'plans' => ['premium', 'enterprise'],
                 'tooltip' => 'Coming Soon!'
@@ -52,7 +52,7 @@ return [
         'label' => 'Settings',
         'icon' => 'fa-solid fa-gear',
         'submenus' => [
-            'player-settings' => [
+            'player-settings.edit' => [
                 'route' => 'player-settings.edit',
                 'label' => 'Player Customization',
                 'plans' => ['basic', 'premium', 'enterprise'],

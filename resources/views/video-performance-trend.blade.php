@@ -6,7 +6,7 @@
 
         <h3 class="text-lg font-semibold text-secondary mt-4">Views Over Time</h3>
 
-        <form method="GET" action="{{ route('video-s-performance', ['id' => request('id')]) }}" id="dateRangeForm" class="mt-4">
+        <form method="GET" action="{{ route('video-performance-trend', ['id' => request('id')]) }}" id="dateRangeForm" class="mt-4">
             <div class="flex items-center space-x-4">
                 <input type="text" id="date_range" name="date_range" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Last 28 days" value="{{ request('date_range') }}">
             </div>

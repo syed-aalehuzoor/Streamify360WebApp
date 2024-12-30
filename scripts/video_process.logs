@@ -1,3 +1,226 @@
-INFO:root:Posted task to process Video: eTzyrAFb28m
-INFO:root:Posted task to process Video: Y1uHmbLbEAm
-INFO:root:Posted task to process Video: JufsMzU4yQf
+2024-12-30 03:31:44,115 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:31:44,116 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:31:44,116 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 03:31:44,116 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 03:31:44,116 - INFO - Scheduler started
+2024-12-30 03:31:44,118 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 03:31:44 UTC)" (scheduled at 2024-12-30 03:31:44.115383+00:00)
+2024-12-30 03:31:44,119 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 03:31:44 UTC)" (scheduled at 2024-12-30 03:31:44.115960+00:00)
+2024-12-30 03:31:44,119 - INFO - Running cron job...
+2024-12-30 03:31:44,154 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 04:31:44 UTC)" executed successfully
+2024-12-30 03:31:44,605 - INFO - Cron job completed.
+2024-12-30 03:31:44,711 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 04:31:44 UTC)" executed successfully
+2024-12-30 03:32:47,456 - INFO - Running cron job...
+2024-12-30 03:32:48,086 - INFO - Cron job completed.
+2024-12-30 03:33:19,607 - INFO - Running cron job...
+2024-12-30 03:33:20,099 - INFO - Cron job completed.
+2024-12-30 03:33:36,509 - INFO - Running cron job...
+2024-12-30 03:33:37,031 - INFO - Cron job completed.
+2024-12-30 03:35:13,168 - INFO - Running cron job...
+2024-12-30 03:35:13,801 - INFO - Cron job completed.
+2024-12-30 03:37:04,657 - INFO - Running cron job...
+2024-12-30 03:37:05,157 - INFO - Cron job completed.
+2024-12-30 03:37:33,339 - INFO - Running cron job...
+2024-12-30 03:37:33,867 - INFO - Cron job completed.
+2024-12-30 03:37:47,721 - INFO - Running cron job...
+2024-12-30 03:37:48,226 - INFO - Cron job completed.
+2024-12-30 03:39:16,039 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:39:16,039 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:39:16,039 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 03:39:16,039 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 03:39:16,040 - INFO - Scheduler started
+2024-12-30 03:39:16,041 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 03:39:16 UTC)" (scheduled at 2024-12-30 03:39:16.038750+00:00)
+2024-12-30 03:39:16,042 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 03:39:16 UTC)" (scheduled at 2024-12-30 03:39:16.039301+00:00)
+2024-12-30 03:39:16,042 - INFO - Running cron job...
+2024-12-30 03:39:16,061 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 04:39:16 UTC)" executed successfully
+2024-12-30 03:39:16,526 - INFO - Cron job completed.
+2024-12-30 03:39:16,538 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 04:39:16 UTC)" executed successfully
+2024-12-30 03:39:36,030 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:39:36,030 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:39:36,031 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 03:39:36,031 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 03:39:36,031 - INFO - Scheduler started
+2024-12-30 03:39:36,032 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 03:39:36 UTC)" (scheduled at 2024-12-30 03:39:36.030135+00:00)
+2024-12-30 03:39:36,034 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 03:39:36 UTC)" (scheduled at 2024-12-30 03:39:36.030661+00:00)
+2024-12-30 03:39:36,034 - INFO - Running cron job...
+2024-12-30 03:39:36,051 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 04:39:36 UTC)" executed successfully
+2024-12-30 03:39:36,535 - INFO - Cron job completed.
+2024-12-30 03:39:36,547 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 04:39:36 UTC)" executed successfully
+2024-12-30 03:40:28,900 - INFO - Running cron job...
+2024-12-30 03:40:29,402 - INFO - Cron job completed.
+2024-12-30 03:40:29,416 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:40:29,416 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:40:29,417 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 03:40:29,417 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 03:40:29,417 - INFO - Scheduler started
+2024-12-30 03:40:29,433 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-12-30 03:40:29,433 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-30 03:40:29,433 - INFO -  * Restarting with stat
+2024-12-30 03:40:30,440 - INFO - Running cron job...
+2024-12-30 03:40:30,922 - INFO - Cron job completed.
+2024-12-30 03:40:30,935 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:40:30,935 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:40:30,935 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 03:40:30,935 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 03:40:30,935 - INFO - Scheduler started
+2024-12-30 03:40:30,949 - WARNING -  * Debugger is active!
+2024-12-30 03:40:30,949 - INFO -  * Debugger PIN: 686-817-747
+2024-12-30 03:40:40,038 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:40:40,038 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:40:40,038 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 03:40:40,038 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 03:40:40,039 - INFO - Scheduler started
+2024-12-30 03:40:40,040 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 03:40:40 UTC)" (scheduled at 2024-12-30 03:40:40.037708+00:00)
+2024-12-30 03:40:40,041 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 03:40:40 UTC)" (scheduled at 2024-12-30 03:40:40.038265+00:00)
+2024-12-30 03:40:40,041 - INFO - Running cron job...
+2024-12-30 03:40:40,085 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 04:40:40 UTC)" executed successfully
+2024-12-30 03:40:40,562 - INFO - Cron job completed.
+2024-12-30 03:40:40,574 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 04:40:40 UTC)" executed successfully
+2024-12-30 03:41:08,859 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:41:08,859 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 03:41:08,860 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 03:41:08,860 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 03:41:08,860 - INFO - Scheduler started
+2024-12-30 03:41:08,861 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 03:41:08 UTC)" (scheduled at 2024-12-30 03:41:08.859328+00:00)
+2024-12-30 03:41:08,861 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 04:41:08 UTC)" (scheduled at 2024-12-30 03:41:08.859879+00:00)
+2024-12-30 03:41:08,862 - INFO - Running cron job...
+2024-12-30 03:41:08,906 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 04:41:08 UTC)" executed successfully
+2024-12-30 03:41:09,355 - INFO - Cron job completed.
+2024-12-30 03:41:09,368 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 04:41:08 UTC)" executed successfully
+2024-12-30 04:18:35,996 - INFO - Running cron job...
+2024-12-30 04:18:36,311 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2024-12-30 05:12:43,773 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:12:43,774 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:12:43,774 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 05:12:43,774 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 05:12:43,774 - INFO - Scheduler started
+2024-12-30 05:12:43,775 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 05:12:43 UTC)" (scheduled at 2024-12-30 05:12:43.773493+00:00)
+2024-12-30 05:12:43,776 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 05:12:43 UTC)" (scheduled at 2024-12-30 05:12:43.774035+00:00)
+2024-12-30 05:12:43,776 - INFO - Running cron job...
+2024-12-30 05:12:43,817 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 06:12:43 UTC)" executed successfully
+2024-12-30 05:12:44,340 - INFO - Cron job completed.
+2024-12-30 05:12:44,441 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 06:12:43 UTC)" executed successfully
+2024-12-30 05:13:29,188 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:13:29,189 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:13:29,189 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 05:13:29,189 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 05:13:29,189 - INFO - Scheduler started
+2024-12-30 05:13:29,190 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 05:13:29 UTC)" (scheduled at 2024-12-30 05:13:29.188269+00:00)
+2024-12-30 05:13:29,191 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 05:13:29 UTC)" (scheduled at 2024-12-30 05:13:29.188909+00:00)
+2024-12-30 05:13:29,191 - INFO - Running cron job...
+2024-12-30 05:13:29,245 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 06:13:29 UTC)" executed successfully
+2024-12-30 05:13:29,657 - INFO - Request URL: 'https://hlsencoder.blob.core.windows.net/laravel/videos/ZtGA34Os3CD.mp4'
+Request method: 'HEAD'
+Request headers:
+    'x-ms-version': 'REDACTED'
+    'Accept': 'application/xml'
+    'User-Agent': 'azsdk-python-storage-blob/12.23.1 Python/3.12.5 (Linux-6.5.0-1025-azure-x86_64-with-glibc2.35)'
+    'x-ms-date': 'REDACTED'
+    'x-ms-client-request-id': 'ce976cb8-c66c-11ef-8d9e-d310b787d53e'
+    'Authorization': 'REDACTED'
+No body was attached to the request
+2024-12-30 05:13:29,697 - INFO - Cron job completed.
+2024-12-30 05:13:29,710 - INFO - Response status: 200
+Response headers:
+    'Content-Length': '146156'
+    'Content-Type': 'video/mp4'
+    'Content-MD5': 'REDACTED'
+    'Last-Modified': 'Mon, 30 Dec 2024 05:13:19 GMT'
+    'Accept-Ranges': 'REDACTED'
+    'ETag': '"0x8DD2890AC9498D8"'
+    'Vary': 'REDACTED'
+    'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+    'x-ms-request-id': '0216b334-401e-00ad-6779-5a86c8000000'
+    'x-ms-client-request-id': 'ce976cb8-c66c-11ef-8d9e-d310b787d53e'
+    'x-ms-version': 'REDACTED'
+    'x-ms-creation-time': 'REDACTED'
+    'x-ms-lease-status': 'REDACTED'
+    'x-ms-lease-state': 'REDACTED'
+    'x-ms-blob-type': 'REDACTED'
+    'x-ms-server-encrypted': 'REDACTED'
+    'Date': 'Mon, 30 Dec 2024 05:13:28 GMT'
+2024-12-30 05:13:29,712 - INFO - Request URL: 'https://hlsencoder.blob.core.windows.net/laravel/videos/ZtGA34Os3CD.mp4'
+Request method: 'HEAD'
+Request headers:
+    'x-ms-version': 'REDACTED'
+    'Accept': 'application/xml'
+    'User-Agent': 'azsdk-python-storage-blob/12.23.1 Python/3.12.5 (Linux-6.5.0-1025-azure-x86_64-with-glibc2.35)'
+    'x-ms-date': 'REDACTED'
+    'x-ms-client-request-id': 'ce976cb9-c66c-11ef-8d9e-d310b787d53e'
+    'Authorization': 'REDACTED'
+No body was attached to the request
+2024-12-30 05:13:29,733 - INFO - Response status: 200
+Response headers:
+    'Content-Length': '146156'
+    'Content-Type': 'video/mp4'
+    'Content-MD5': 'REDACTED'
+    'Last-Modified': 'Mon, 30 Dec 2024 05:13:19 GMT'
+    'Accept-Ranges': 'REDACTED'
+    'ETag': '"0x8DD2890AC9498D8"'
+    'Vary': 'REDACTED'
+    'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+    'x-ms-request-id': '62312235-601e-00c8-5779-5a288c000000'
+    'x-ms-client-request-id': 'ce976cb9-c66c-11ef-8d9e-d310b787d53e'
+    'x-ms-version': 'REDACTED'
+    'x-ms-creation-time': 'REDACTED'
+    'x-ms-lease-status': 'REDACTED'
+    'x-ms-lease-state': 'REDACTED'
+    'x-ms-blob-type': 'REDACTED'
+    'x-ms-server-encrypted': 'REDACTED'
+    'Date': 'Mon, 30 Dec 2024 05:13:29 GMT'
+2024-12-30 05:13:29,799 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 06:13:29 UTC)" executed successfully
+2024-12-30 05:13:34,835 - INFO - Posted task to process Video: ZtGA34Os3CD
+2024-12-30 05:14:37,965 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:14:37,965 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:14:37,966 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 05:14:37,966 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 05:14:37,966 - INFO - Scheduler started
+2024-12-30 05:14:37,967 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 05:14:37 UTC)" (scheduled at 2024-12-30 05:14:37.965188+00:00)
+2024-12-30 05:14:37,968 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 05:14:37 UTC)" (scheduled at 2024-12-30 05:14:37.965722+00:00)
+2024-12-30 05:14:37,968 - INFO - Running cron job...
+2024-12-30 05:14:38,011 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 06:14:37 UTC)" executed successfully
+2024-12-30 05:14:38,591 - INFO - Cron job completed.
+2024-12-30 05:14:38,796 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2024-12-30 05:14:38,836 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 06:14:37 UTC)" executed successfully
+2024-12-30 05:14:38,858 - INFO - Authentication (publickey) successful!
+2024-12-30 05:14:39,378 - INFO - Deleted Video: xA5ku8GwwWz
+2024-12-30 05:18:36,312 - INFO - Running cron job...
+2024-12-30 05:18:36,555 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2024-12-30 05:18:48,000 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2024-12-30 05:18:48,104 - INFO - Authentication (publickey) successful!
+2024-12-30 05:18:48,611 - INFO - Deleted Video: cr1gRc7xT8Y
+2024-12-30 05:19:22,637 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:19:22,638 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:19:22,638 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 05:19:22,638 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 05:19:22,638 - INFO - Scheduler started
+2024-12-30 05:19:22,639 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 05:19:22 UTC)" (scheduled at 2024-12-30 05:19:22.637588+00:00)
+2024-12-30 05:19:22,640 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 05:19:22 UTC)" (scheduled at 2024-12-30 05:19:22.638130+00:00)
+2024-12-30 05:19:22,640 - INFO - Running cron job...
+2024-12-30 05:19:22,683 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 06:19:22 UTC)" executed successfully
+2024-12-30 05:19:23,221 - INFO - Cron job completed.
+2024-12-30 05:19:23,492 - ERROR - Error occurred in cron job: 'NoneType' object is not subscriptable
+2024-12-30 05:19:23,494 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 06:19:22 UTC)" executed successfully
+2024-12-30 05:19:23,503 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2024-12-30 05:19:23,565 - INFO - Authentication (publickey) successful!
+2024-12-30 05:19:23,786 - INFO - Deleted Video: 6cWt9RB0nIi
+2024-12-30 05:24:11,837 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2024-12-30 05:24:11,964 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2024-12-30 05:24:11,977 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2024-12-30 05:24:12,019 - INFO - Authentication (publickey) successful!
+2024-12-30 05:24:12,039 - INFO - Authentication (publickey) successful!
+2024-12-30 05:24:12,066 - INFO - Authentication (publickey) successful!
+2024-12-30 05:24:12,547 - INFO - Deleted Video: XoWgPzVWZW9
+2024-12-30 05:24:12,547 - INFO - Deleted Video: X4kB6MNpfhY
+2024-12-30 05:24:12,549 - INFO - Deleted Video: uYbpYZod0cj
+2024-12-30 05:28:13,711 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:28:13,711 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-12-30 05:28:13,712 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2024-12-30 05:28:13,712 - INFO - Added job "cron_job" to job store "default"
+2024-12-30 05:28:13,712 - INFO - Scheduler started
+2024-12-30 05:28:13,713 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 05:28:13 UTC)" (scheduled at 2024-12-30 05:28:13.711130+00:00)
+2024-12-30 05:28:13,714 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 05:28:13 UTC)" (scheduled at 2024-12-30 05:28:13.711695+00:00)
+2024-12-30 05:28:13,714 - INFO - Running cron job...
+2024-12-30 05:28:13,755 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2024-12-30 06:28:13 UTC)" executed successfully
+2024-12-30 05:28:14,274 - INFO - Cron job completed.
+2024-12-30 05:28:14,383 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2024-12-30 06:28:13 UTC)" executed successfully
