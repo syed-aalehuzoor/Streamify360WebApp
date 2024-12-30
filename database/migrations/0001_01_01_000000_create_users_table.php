@@ -19,7 +19,6 @@ return new class extends Migration
                 $table->string('email')->unique();
                 $table->string('google_id')->nullable()->unique();
                 $table->string('usertype')->default('user');
-                $table->string('user_status')->default('active');
                 $table->string('userplan')->default('basic');
                 $table->timestamp('email_verified_at')->nullable();
                 $table->timestamp('subscription_expiry')->nullable();
