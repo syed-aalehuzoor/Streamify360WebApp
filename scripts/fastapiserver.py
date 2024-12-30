@@ -1,12 +1,9 @@
-from time import sleep
 import uvicorn
-from fastapi import FastAPI, APIRouter, HTTPException
-
+from fastapi import FastAPI, APIRouter, BackgroundTasks
 from core import post_task, delete_video_by_id, delete_expired_videos, APP_URL, log_info, log_error
 from requests import post as post_request
-import threading
 from apscheduler.schedulers.background import BackgroundScheduler
-from datetime import timedelta, datetime
+from datetime import datetime
 from Laravel import LaravelQueueManager
 
 router = APIRouter()
@@ -32,28 +29,31 @@ def cron_job():
         log_error(f"Error occurred in cron job: {e}")
 
 @router.post('/api/process_video/{id}')
-def process_video(id: str):
-    thread = threading.Thread(target=post_task, args=(id,))
-    thread.start()
+def process_video(id: str, backgroundtasks: BackgroundTasks):
+    backgroundtasks.add_task(post_task, id)
     return {"message": f"Video is being processed with id: {id}"}
 
 @router.post('/api/delete_video/{id}')
-def delete_video(id: str):
-    thread = threading.Thread(target=delete_video_by_id, args=(id,))
-    thread.start()
+def delete_video(id: str, backgroundtasks: BackgroundTasks):
+    backgroundtasks.add_task(delete_video_by_id, id)
     return {"message": f"Video is being processed with id: {id}"}
 
-manager = LaravelQueueManager()
-def lifespan(_):
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(manager.start_queue_worker, 'interval', seconds= 60 * 60, next_run_time=datetime.now())
-    scheduler.add_job(cron_job, 'interval', seconds= 60 * 60, next_run_time=datetime.now())
-    scheduler.start()
-    print("startup")
-    yield
-    manager.stop_queue_worker()
-    print("shutdown")
+def add_periodic_job(scheduler, job_function, interval_seconds):
+    scheduler.add_job(job_function, 'interval', seconds=interval_seconds, next_run_time=datetime.now())
 
+def setup_scheduler():
+    manager = LaravelQueueManager()
+    scheduler = BackgroundScheduler()
+    add_periodic_job(scheduler, manager.start_queue_worker, 3600)  # 1 hour
+    add_periodic_job(scheduler, cron_job, 3600)  # 1 hour
+    scheduler.start()
+    return scheduler, manager
+
+def lifespan(_):
+    scheduler, manager = setup_scheduler()
+    yield
+    scheduler.shutdown()
+    manager.stop_queue_worker()
 
 app = FastAPI(lifespan=lifespan)
 
