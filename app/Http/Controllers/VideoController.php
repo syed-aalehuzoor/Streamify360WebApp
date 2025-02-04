@@ -29,11 +29,12 @@ class VideoController extends Controller
      */
     public function index(Request $request) {
         $videos = $this->getFilteredVideos($request, self::ACTIVE_STATUSES);
-        return view('videos', [
+        return view('videos.index', [
             'videos' => $videos,
             'query' => $request->input('query', ''),
         ]);
     }
+
 
     /**
      * Display a listing of draft videos
@@ -43,7 +44,7 @@ class VideoController extends Controller
      */
     public function drafts(Request $request) {
         $videos = $this->getFilteredVideos($request, self::DRAFT_STATUS);
-        return view('drafts', [
+        return view('videos.drafts', [
             'videos' => $videos,
             'query' => $request->input('query', ''),
         ]);
@@ -56,12 +57,12 @@ class VideoController extends Controller
      */
     public function create()
     {
-        return view('add-video');
+        return view('videos.add-new');
     }
 
     public function read($id) {
         $video = $this->getUserVideo($id);        
-        return !$video ? $this->unauthorizedRedirect() : view('edit-video', compact('video'));
+        return !$video ? $this->unauthorizedRedirect() : view('videos.edit', compact('video'));
     }
 
     public function update($id) {

@@ -51,7 +51,6 @@ class DeleteVideo implements ShouldQueue
      */
     public function retryUntil()
     {
-        // Retry for 3 minutes (or your preferred timeout)
         return now()->addMinutes(3);
     }
 

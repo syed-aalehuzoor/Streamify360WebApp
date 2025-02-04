@@ -10,8 +10,6 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <!-- Styles -->
         @livewireStyles
-        
-    
     </head>
     
     <body class="bg-accent flex flex-col items-center h-full" x-data="{openSidebar: false}">  
@@ -23,9 +21,14 @@
             
                 <!-- Page Content -->
                 <main class="flex flex-col w-full h-full overflow-y-auto">
-                    
-                    {{ $slot }}    
-
+                    <h1 class="font-semibold text-lg text-gray-800 mb-6">
+                        @yield('pageHeading')
+                    </h1>
+                    @stack('notifications')
+                    <x-notification/>
+                    <div class="bg-white shadow-xl rounded-lg text-sm overflow-hidden">
+                        @yield('content')
+                    </div>
                 </main>
 
                 @stack('modals')

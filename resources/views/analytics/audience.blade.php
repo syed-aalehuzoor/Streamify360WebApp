@@ -1,25 +1,26 @@
-<x-app-layout>
-    <h1 class="font-semibold text-md text-gray-800 mb-4">Video Audience Insights</h1>
+@extends('layouts.app')
+
+@section('pageHeading')
+    Video Audience Insights
+@endsection
+
+@section('content')
     <div class="shadow-lg flex flex-wrap gap-4 justify-center">
-        <!-- Top Countries -->
         <div id="countriesBarChart" class="bg-white rounded-lg p-4 flex flex-col items-start w-full sm:w-[calc(50%-1rem)]">
             <h1 class="text-lg font-semibold text-secondary mb-2">Top Countries</h1>
             <canvas id="chart-0"></canvas>
         </div>
     
-        <!-- Top Devices -->
         <div id="devicesBarChart" class="bg-white rounded-lg p-4 flex flex-col items-start w-full sm:w-[calc(50%-1rem)]">
             <h1 class="text-lg font-semibold text-secondary mb-2">Top Devices</h1>
             <canvas id="chart-3"></canvas>
         </div>
     
-        <!-- Top Cities -->
         <div id="citiesBarChart" class="bg-white rounded-lg p-4 flex flex-col items-start w-full">
             <h1 class="text-lg font-semibold text-secondary mb-2">Top Cities</h1>
             <canvas id="chart-1"></canvas>
         </div>
     
-        <!-- Top Regions -->
         <div id="regionsBarChart" class="bg-white rounded-lg p-4 flex flex-col items-start w-full">
             <h1 class="text-lg font-semibold text-secondary mb-2">Top Regions</h1>
             <canvas id="chart-2"></canvas>
@@ -90,4 +91,4 @@
         });
 
     </script>
-</x-app-layout>
+@endsection

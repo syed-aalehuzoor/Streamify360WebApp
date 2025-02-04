@@ -1,12 +1,12 @@
-from time import sleep
-from flask import Flask, request, jsonify
+import uvicorn
+from fastapi import FastAPI, APIRouter, BackgroundTasks
 from core import post_task, delete_video_by_id, delete_expired_videos, APP_URL, log_info, log_error
 from requests import post as post_request
-import threading
 from apscheduler.schedulers.background import BackgroundScheduler
-app = Flask(__name__)
-from datetime import timedelta, datetime
-from LaravelQueue import LaravelQueueManager
+from datetime import datetime
+from Laravel import LaravelQueueManager
+
+router = APIRouter()
 
 def cron_job():
     """This is the cron job function."""
@@ -28,34 +28,37 @@ def cron_job():
     except Exception as e:
         log_error(f"Error occurred in cron job: {e}")
 
-@app.route('/api/process_video/<id>', methods=['POST'])
-def process_video(id):
-    thread = threading.Thread(target=post_task, args=(id,))
-    thread.start()
-    result = {"message": f"Video is being processed with id: {id}"}
-    return jsonify(result)
+@router.post('/api/process_video/{id}')
+def process_video(id: str, backgroundtasks: BackgroundTasks):
+    backgroundtasks.add_task(post_task, id)
+    return {"message": f"Video is being processed with id: {id}"}
 
-@app.route('/api/delete_video/<id>', methods=['POST'])
-def delete_video(id):
-    thread = threading.Thread(target=delete_video_by_id, args=(id,))
-    thread.start()
-    result = {"message": f"Video is being processed with id: {id}"}
-    return jsonify(result)
+@router.post('/api/delete_video/{id}')
+def delete_video(id: str, backgroundtasks: BackgroundTasks):
+    backgroundtasks.add_task(delete_video_by_id, id)
+    return {"message": f"Video is being processed with id: {id}"}
 
-manager = LaravelQueueManager()
+def add_periodic_job(scheduler, job_function, interval_seconds):
+    scheduler.add_job(job_function, 'interval', seconds=interval_seconds, next_run_time=datetime.now())
 
+def setup_scheduler():
+    manager = LaravelQueueManager()
+    scheduler = BackgroundScheduler()
+    add_periodic_job(scheduler, manager.start_queue_worker, 3600)  # 1 hour
+    add_periodic_job(scheduler, cron_job, 3600)  # 1 hour
+    scheduler.start()
+    return scheduler, manager
+
+def lifespan(_):
+    scheduler, manager = setup_scheduler()
+    yield
+    scheduler.shutdown()
+    manager.stop_queue_worker()
+
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(router=router)
 
 
 if __name__ == "__main__":
-    scheduler = BackgroundScheduler()
-    try:
-        cron_job()
-        scheduler.add_job(manager.start_queue_worker, 'interval', seconds= 60 * 60, next_run_time=datetime.now() + timedelta(seconds=5))
-        scheduler.add_job(cron_job, 'interval', seconds= 60 * 60)
-        scheduler.start()
-        app.run(host='127.0.0.1', port=5000, debug=True)
-    except KeyboardInterrupt:
-        print("Stopping...")
-        manager.stop_queue_worker()
-        scheduler.shutdown()
-        print("Service stopped.")
+    uvicorn.run(app=app, host='127.0.0.1', port=5000)

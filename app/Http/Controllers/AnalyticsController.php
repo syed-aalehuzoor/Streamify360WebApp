@@ -20,6 +20,7 @@ class AnalyticsController extends Controller
     private const DRAFT_STATUS = ['Draft'];
     private const ITEMS_PER_PAGE = 10;
 
+
     public function synchronizeViewsOverTime()
     {
         $dailyViewGroups = View::selectRaw('videoid, DATE(created_at) as date, COUNT(*) as total_views')
@@ -118,7 +119,7 @@ class AnalyticsController extends Controller
 
         $totalViews = $viewsTrend->sum('views');
 
-        return view('video-performance-trend', [
+        return view('analytics.performance-trend', [
             'views_trend' => $viewsTrend,
             'first_date' => $firstAvailableDate,
             'total_views' => $totalViews,
@@ -147,7 +148,7 @@ class AnalyticsController extends Controller
                 ->get();
         }
 
-        return view('video-audience-insights', [
+        return view('analytics.audience', [
             'countries' => $insights['country'],
             'regions' => $insights['region'],
             'cities' => $insights['city'],
@@ -158,7 +159,7 @@ class AnalyticsController extends Controller
     public function listPerformanceVideos(Request $request)
     {
         $videos = $this->filterVideos($request, self::ACTIVE_STATUSES);
-        return view('performance-videos-list', [
+        return view('analytics.performance-index', [
             'videos' => $videos,
             'query' => $request->input('query', ''),
         ]);
@@ -167,7 +168,7 @@ class AnalyticsController extends Controller
     public function listAudienceVideos(Request $request)
     {
         $videos = $this->filterVideos($request, self::ACTIVE_STATUSES);
-        return view('audience-videos-list', [
+        return view('analytics.audience-index', [
             'videos' => $videos,
             'query' => $request->input('query', ''),
         ]);

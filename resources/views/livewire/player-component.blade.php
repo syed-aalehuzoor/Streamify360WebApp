@@ -47,23 +47,23 @@
             },
             skin: {
                 controlbar: {
-                    background: "{{ $settings->controlbar_background_color ?? 'rgba(0, 0, 0, 0.7)'}}", // Control bar background color
-                    icons: "{{ $settings->controlbar_icons_color ?? 'rgba(255, 255, 255, 0.8)'}}", // Icon color when inactive
-                    iconsActive: "{{ $settings->controlbar_icons_active_color ?? '#FFFFFF'}}", // Icon color when active
-                    text: "{{ $settings->controlbar_text_color ?? '#FFFFFF'}}" // Control bar text color
+                    background: "{{ $settings->controlbar_background_color ?? '#000000b3'}}",
+                    icons: "{{ $settings->controlbar_icons_color ?? '#000000b3'}}",
+                    iconsActive: "{{ $settings->controlbar_icons_active_color ?? '#FFFFFF'}}",
+                    text: "{{ $settings->controlbar_text_color ?? '#FFFFFF'}}"
                 },
                 menus: {
-                    background: "{{ $settings->menu_background_color ?? '#333333'}}", // Menu background color
-                    text: "{{ $settings->menu_text_color ?? 'rgba(255, 255, 255, 0.8)'}}", // Inactive text color in menus
-                    textActive: "{{ $settings->menu_text_active_color ?? '#FFFFFF'}}" // Active text color in menus
+                    background: "{{ $settings->menu_background_color ?? '#333333'}}",
+                    text: "{{ $settings->menu_text_color ?? '#000000b3'}}",
+                    textActive: "{{ $settings->menu_text_active_color ?? '#FFFFFF'}}"
                 },
                 timeslider: {
-                    progress: "{{ $settings->timeslider_progress_color ?? '#F2F2F2'}}", // Progress bar color
-                    rail: "{{ $settings->timeslider_rail_color ?? 'rgba(255, 255, 255, 0.3)'}}" // Rail color of the time slider
+                    progress: "{{ $settings->timeslider_progress_color ?? '#F2F2F2'}}",
+                    rail: "{{ $settings->timeslider_rail_color ?? '#ffffff4d'}}"
                 },
                 tooltips: {
-                    background: "{{ $settings->tooltip_background_color ?? '#000000'}}", // Tooltip background color
-                    text: "{{ $settings->tooltip_text_color ?? '#FFFFFF'}}" // Tooltip text color
+                    background: "{{ $settings->tooltip_background_color ?? '#000000'}}",
+                    text: "{{ $settings->tooltip_text_color ?? '#FFFFFF'}}"
                 }
             }
         };

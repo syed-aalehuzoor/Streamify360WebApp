@@ -70,9 +70,10 @@ class ProcessVideo implements ShouldQueue
      * @param \Exception $exception
      * @return void
      */
-    public function failed(Exception $exception)
+    // app/Jobs/ProcessVideo.php
+    public function failed(\Throwable $exception)
     {
-        // Log failure or send a notification if needed
-        \Log::error("Failed to delete video with ID {$this->videoId}: " . $exception->getMessage());
+        // Handle the failure here, using $exception
+        \Log::error('Job failed: ' . $exception->getMessage());
     }
 }

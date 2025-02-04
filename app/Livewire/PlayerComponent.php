@@ -31,11 +31,48 @@ class PlayerComponent extends Component
     {
         if($this->video->status == 'live')
         {
+            $settings = $this->settings;
+            $video = $this->video;
+            $playerConfig = [
+                'responsive' => $settings['responsive'],
+                'playerWidth' => $settings['player_width'] ?? '100%',
+                'playerHeight' => $settings['player_height'] ?? '100%',
+                'autoplay' => $settings['autoplay'],
+                'showControls' => $settings['show_controls'],
+                'playbackRateOptions' => $settings['show_playback_speed'] ? [0.5, 1, 1.5, 2] : [],
+                'defaultPlaybackSpeed' => str_replace('x', '', $settings['playback_speed']),
+                'thumbnailUrl' => $video->thumbnail_url,
+                'manifestUrl' => $video->manifest_url,
+                'volume' => $settings['volume_level'],
+                'vastLink' => $settings['vast_link'] ?? '',
+                'colors' => [
+                    'controlbar' => [
+                        'background' => $settings['controlbar_background_color'] ?? '#000000b3',
+                        'icons' => $settings['controlbar_icons_color'] ?? '#FFFFFF',
+                        'iconsActive' => $settings['controlbar_icons_active_color'] ?? '#FF0000',
+                        'text' => $settings['controlbar_text_color'] ?? '#FFFFFF',
+                    ],
+                    'menus' => [
+                        'background' => $settings['menu_background_color'] ?? '#333333',
+                        'text' => $settings['menu_text_color'] ?? '#FFFFFF',
+                        'textActive' => $settings['menu_text_active_color'] ?? '#FF0000',
+                    ],
+                    'timeslider' => [
+                        'progress' => $settings['timeslider_progress_color'] ?? '#FF0000',
+                        'rail' => $settings['timeslider_rail_color'] ?? '#FFFFFF',
+                    ],
+                    'tooltips' => [
+                        'background' => $settings['tooltip_background_color'] ?? '#000000',
+                        'text' => $settings['tooltip_text_color'] ?? '#FFFFFF',
+                    ],
+                ],
+            ];
             return view(
                 'livewire.player-component',
                 [
                     'video' => $this->video,
                     'settings' => $this->settings,
+                    'playerConfig' => $playerConfig,
                 ]
             );
         }

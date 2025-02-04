@@ -40,5 +40,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'cloudflare' => [
+        'email' => env('CLOUDFLARE_EMAIL'),
+        'api_key' => env('CLOUDFLARE_API_KEY'),
+        'account_id' => env('CLOUDFLARE_ACCOUNT_ID'),
+    ],
 
 ];

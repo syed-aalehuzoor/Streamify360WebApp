@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {    
+
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
@@ -51,6 +52,20 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+    public function userSetting()
+    {
+        return $this->hasOne(UserSetting::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+    
+        static::created(function ($user) {
+            $user->userSetting()->create(); // Automatically creates a user setting instance
+        });
+    }
+    
     /**
      * Get the attributes that should be cast.
      *
@@ -66,7 +81,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hasPlan($plan)
     {
-        return $this->userplan === $plan;
-    }  
+        $plans = array_keys(config('plans'));
+        $planIndex = array_search($plan, $plans);
+        $userPlanIndex = array_search($this->userplan, $plans);
     
+        return $planIndex !== false && $userPlanIndex !== false && $userPlanIndex >= $planIndex;
+    }
+    
+    public function hasGoogleAccount()
+    {
+        return $this->google_id !== null;
+    }    
 }

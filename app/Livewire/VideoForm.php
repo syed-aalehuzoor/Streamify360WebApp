@@ -123,7 +123,6 @@ class VideoForm extends Component
             $video->update(['thumbnail_url' => $thumbnailPath]);
         }
         ProcessVideo::dispatch($this->video_id);
-        #Http::post('http://127.0.0.1:5000/api/process_video/'.$this->video_id);
         
         return redirect()->route('videos.index')->with('success', 'Video uploaded is being processed!');
     }

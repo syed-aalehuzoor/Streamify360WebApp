@@ -1,1 +1,192 @@
-class FileUploader{constructor(e,t,i="*",r=10485760,a=null){if(!e||!t)throw new Error("fileName and containerId are required");this.fileInputId="filename-"+e,this.containerId=t,this.maxChunkSize=r,this.currentChunkSize=r,this.acceptedTypes=i,this.onFinalizeCallback=a,this.isUploading=!1,this.createUIElements(),this.initializeEventListeners()}createUIElements(){var e=document.getElementById(this.containerId);if(!e)throw new Error(`Container with id "${this.containerId}" not found`);this.fileInput=document.createElement("input"),this.fileInput.type="file",this.fileInput.id=this.fileInputId,this.fileInput.accept=this.acceptedTypes,e.appendChild(this.fileInput),this.errorBox=document.createElement("div"),this.errorBox.id=this.fileInputId+"-errorbox",this.errorBox.className="text-red-600 text-sm",e.appendChild(this.errorBox),this.progressContainer=this.createProgressContainer(),e.appendChild(this.progressContainer)}createProgressContainer(){var e=document.createElement("div"),t=(e.id=this.fileInputId+"-progress-container",e.className="mt-6 p-4 border border-gray-300 rounded-lg bg-white shadow-lg",e.style.display="none",document.createElement("div")),t=(t.className="relative h-2 w-full bg-gray-200 rounded-full overflow-hidden",this.progressBar=document.createElement("div"),this.progressBar.id=this.fileInputId+"-progress-bar",this.progressBar.className="absolute top-0 left-0 h-full bg-blue-500 transition-all duration-300",this.progressBar.style.width="0%",t.appendChild(this.progressBar),e.appendChild(t),document.createElement("div")),i=(t.className="flex justify-between items-center mt-3",document.createElement("div"));return i.className="text-sm text-gray-700 font-semibold animate-pulse",i.innerText="Uploading...",t.appendChild(i),this.percentageText=document.createElement("div"),this.percentageText.id=this.fileInputId+"-percentage-text",this.percentageText.className="text-sm text-gray-700 font-semibold animate-pulse",t.appendChild(this.percentageText),e.appendChild(t),e}initializeEventListeners(){this.fileInput.addEventListener("change",async e=>{e=e.target.files[0];e&&(this.isUploading?this.showError("An upload is already in progress"):await this.handleFileUpload(e))})}async callAPI(e,t="POST",i=null,r="application/json",a={}){try{a["X-CSRF-TOKEN"]=document.querySelector('meta[name="csrf-token"]')?.content,r&&(a["Content-Type"]=r);var s=await fetch(e,{method:t,headers:a,body:i});if(s.ok)return await s.json();throw new Error("HTTP error! status: "+s.status)}catch(e){throw new Error("API request failed: "+e.message)}}updateProgress(e){e=Math.min(Math.max(e,0),100);this.progressBar.style.width=e+"%",this.percentageText.innerText=e+"%"}showError(e){this.errorBox.innerText="Error: "+e,this.progressContainer.style.display="none"}async uploadChunk(e){e=(await this.callAPI("/api/upload-chunk","POST",e,null)).success;return e}async handleFileUpload(a){this.isUploading=!0,this.errorBox.innerText="";try{this.currentChunkSize=Math.min(Math.ceil(a.size/100),this.maxChunkSize);var{success:e,upload_id:s}=await this.callAPI("/api/initiate","POST");if(!e)throw new Error("Upload initiation failed");this.progressContainer.style.display="block";let t=Math.ceil(a.size/this.currentChunkSize),i=[],r=0;for(let e=0;e<t;e++){var n=a.slice(e*this.currentChunkSize,(e+1)*this.currentChunkSize),l=new FormData;l.append("file",n),l.append("upload_id",s),l.append("chunkIndex",e),i.push(this.uploadChunk(l).then(()=>{r++,this.updateProgress(Math.round(r/t*100))})),(e+1)%5!=0&&e!==t-1||(await Promise.all(i),i=[])}var o=JSON.stringify({upload_id:s,totalChunks:t,fileExtension:a.name.split(".").pop()}),h=(await this.callAPI("/api/finalize","POST",o)).success;if(!h)throw new Error("Upload finalization failed");this.errorBox.innerText="Upload completed successfully!",this.onFinalizeCallback&&this.onFinalizeCallback(s)}catch(e){this.showError(e.message)}finally{this.isUploading=!1}}}export default FileUploader;
+class FileUploader {
+    constructor(fileName, containerId, acceptedTypes = '*', maxChunkSize = 1024 * 1024 * 10, onFinalizeCallback = null) {
+        if (!fileName || !containerId) {
+            throw new Error('fileName and containerId are required');
+        }
+
+        this.fileInputId = `filename-${fileName}`;
+        this.containerId = containerId;
+        this.maxChunkSize = maxChunkSize;
+        this.currentChunkSize = maxChunkSize;
+        this.acceptedTypes = acceptedTypes;
+        this.onFinalizeCallback = onFinalizeCallback;
+        this.isUploading = false;
+
+        this.createUIElements();
+        this.initializeEventListeners();
+    }
+
+    createUIElements() {
+        const wrapper = document.getElementById(this.containerId);
+        if (!wrapper) {
+            throw new Error(`Container with id "${this.containerId}" not found`);
+        }
+        wrapper.classList.add('w-full', 'flex' ,'flex-col', 'items-center', 'border', 'border-gray-300', 'rounded-xl');
+        // Create file input
+        this.fileInput = document.createElement('input');
+        this.fileInput.type = 'file';
+        this.fileInput.id = this.fileInputId;
+        this.fileInput.accept = this.acceptedTypes;
+        this.fileInput.classList.add('w-full', 'px-6', 'p-8');
+        wrapper.appendChild(this.fileInput);
+
+        // Create error display
+        this.errorBox = document.createElement('div');
+        this.errorBox.id = `${this.fileInputId}-errorbox`;
+        this.errorBox.className = 'text-red-600 text-sm';
+        wrapper.appendChild(this.errorBox);
+
+        // Create progress container
+        this.progressContainer = this.createProgressContainer();
+        wrapper.appendChild(this.progressContainer);
+    }
+
+    createProgressContainer() {
+        const container = document.createElement('div');
+        container.id = `${this.fileInputId}-progress-container`;
+        container.className = 'p-6 my-6 mx-8 w-full border border-gray-300 rounded-lg bg-white shadow-lg';
+        container.style.display = 'none';
+
+        const progressBarWrapper = document.createElement('div');
+        progressBarWrapper.className = 'relative h-2 w-full bg-gray-200 rounded-full overflow-hidden';
+
+        this.progressBar = document.createElement('div');
+        this.progressBar.id = `${this.fileInputId}-progress-bar`;
+        this.progressBar.className = 'absolute top-0 left-0 h-full bg-blue-500 transition-all duration-300';
+        this.progressBar.style.width = '0%';
+        progressBarWrapper.appendChild(this.progressBar);
+
+        container.appendChild(progressBarWrapper);
+
+        const progressTextContainer = document.createElement('div');
+        progressTextContainer.className = 'flex justify-between items-center mt-3';
+
+        const uploadingText = document.createElement('div');
+        uploadingText.className = 'text-sm text-gray-700 font-semibold animate-pulse';
+        uploadingText.innerText = 'Uploading...';
+        progressTextContainer.appendChild(uploadingText);
+
+        this.percentageText = document.createElement('div');
+        this.percentageText.id = `${this.fileInputId}-percentage-text`;
+        this.percentageText.className = 'text-sm text-gray-700 font-semibold animate-pulse';
+        progressTextContainer.appendChild(this.percentageText);
+
+        container.appendChild(progressTextContainer);
+        return container;
+    }
+
+    initializeEventListeners() {
+        this.fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (this.isUploading) {
+                this.showError('An upload is already in progress');
+                return;
+            }
+            await this.handleFileUpload(file);
+        });
+    }
+
+    async callAPI(apiEndpoint, method = 'POST', body = null, contentType = 'application/json', headers = {}) {
+        try {
+            headers['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.content;
+            if (contentType) headers['Content-Type'] = contentType;
+
+            const response = await fetch(apiEndpoint, {
+                method,
+                headers,
+                body
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            throw new Error(`API request failed: ${error.message}`);
+        }
+    }
+
+    updateProgress(progress) {
+        const clampedProgress = Math.min(Math.max(progress, 0), 100);
+        this.progressBar.style.width = `${clampedProgress}%`;
+        this.percentageText.innerText = `${clampedProgress}%`;
+    }
+
+    showError(message) {
+        this.errorBox.innerText = `Error: ${message}`;
+        this.progressContainer.style.display = 'none';
+    }
+
+    async uploadChunk(formData) {
+        const { success } = await this.callAPI(
+            '/api/upload-chunk',
+            'POST',
+            formData,
+            null
+        );
+        return success;
+    }
+
+    async handleFileUpload(file) {
+        this.isUploading = true;
+        this.errorBox.innerText = '';
+        
+        try {
+            // Calculate optimal chunk size based on file size
+            this.currentChunkSize = Math.min(Math.ceil(file.size / 100), this.maxChunkSize);
+            
+            // Initialize upload
+            const { success, upload_id } = await this.callAPI('/api/initiate', 'POST');
+            if (!success) throw new Error('Upload initiation failed');
+
+            // Setup progress tracking
+            this.progressContainer.style.display = 'block';
+            const totalChunks = Math.ceil(file.size / this.currentChunkSize);
+            let uploadPromises = [];
+            let completedChunks = 0;
+            
+            // Upload chunks
+            for (let i = 0; i < totalChunks; i++) {
+                const chunk = file.slice(i * this.currentChunkSize, (i + 1) * this.currentChunkSize);
+                const formData = new FormData();
+                formData.append('file', chunk);
+                formData.append('upload_id', upload_id);
+                formData.append('chunkIndex', i);
+                
+                uploadPromises.push(
+                    this.uploadChunk(formData).then(() => {
+                        completedChunks++;
+                        this.updateProgress(Math.round((completedChunks / totalChunks) * 100));
+                    })
+                );
+
+                // Process chunks in batches of 5
+                if ((i + 1) % 5 === 0 || i === totalChunks - 1) {
+                    await Promise.all(uploadPromises);
+                    uploadPromises = [];
+                }
+            }
+
+            // Finalize upload
+            const uploadDetails = JSON.stringify({
+                upload_id,
+                totalChunks,
+                fileExtension: file.name.split('.').pop()
+            });
+            const { success: finalizeSuccess } = await this.callAPI('/api/finalize', 'POST', uploadDetails);
+            if (!finalizeSuccess) throw new Error('Upload finalization failed');
+
+            this.errorBox.innerText = 'Upload completed successfully!';
+            if (this.onFinalizeCallback) {
+                this.onFinalizeCallback(upload_id);
+            }
+
+        } catch (error) {
+            this.showError(error.message);
+        } finally {
+            this.isUploading = false;
+        }
+    }
+}
+export default FileUploader;

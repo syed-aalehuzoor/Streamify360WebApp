@@ -67,7 +67,7 @@ class HomeController extends Controller
         return ["type" => $deviceType, "os" => $os];
     }
 
-    public function test()
+    public function testgeoip()
     {
         $user_ip = $this->get_client_ip();
         $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$user_ip"));

@@ -1,6 +1,7 @@
 import psutil
 from psutil import NoSuchProcess
 from subprocess import run as run_cmd, Popen, PIPE, CalledProcessError, TimeoutExpired
+import os
 
 class LaravelQueueManager:
     def __init__(self):
@@ -35,7 +36,15 @@ class LaravelQueueManager:
             self.attach_to_worker(existing_pid)
         else:
             try:
-                self.queue_worker_process = Popen(['php', 'artisan', 'queue:work'])
+                script_dir = os.path.dirname(os.path.abspath(__file__))
+                artisan = os.path.join(script_dir, '../artisan')
+                self.queue_worker_process = Popen(
+                    ['php', artisan, 'queue:work'],
+                    stdout=None,  # Or sys.stdout, which means inherit the parent’s stdout
+                    stderr=None,  # Or sys.stderr
+                    bufsize=1,    # Line buffering for text mode
+                    universal_newlines=True  # To handle text correctly
+                )
                 print("Laravel queue worker started successfully.")
             except Exception as e:
                 print(f"Failed to start Laravel queue worker: {e}")

@@ -1,6 +1,12 @@
-<x-app-layout>
-    <h1 class="font-semibold text-lg text-gray-800 mb-1">Subscription</h1>
-    <div class="bg-gray-50 shadow-md rounded-lg p-8 max-w-md mx-auto">
+@extends('layouts.app')
+
+@section('pageHeading')
+    Subscription
+@endsection
+
+@section('content')    
+
+    <div class="p-6">
         <h1 class="text-2xl font-extrabold text-gray-800 mb-4">Welcome, {{ $user->name }}!</h1>
         <p class="text-lg text-gray-600">Your Subscription Plan:</p>
         <p class="text-4xl font-bold text-blue-500 capitalize mt-2">{{ ucfirst($user->userplan) }}</p>
@@ -15,5 +21,5 @@
             </p>
         </div>
     </div>
-    
-</x-app-layout>
+
+@endsection

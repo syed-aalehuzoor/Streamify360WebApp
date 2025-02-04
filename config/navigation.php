@@ -64,6 +64,12 @@ return [
                 'plans' => ['premium', 'enterprise'],
                 'tooltip' => 'Only available for Premium and Enterprise plans'
             ],
+            'custom-domain' => [
+                'route' => 'custom-domain',
+                'label' => 'Custom Domain',
+                'plans' => ['premium', 'enterprise'],
+                'tooltip' => 'Only available for Premium and Enterprise plans'
+            ],
         ],
     ],
     'subscription' => [

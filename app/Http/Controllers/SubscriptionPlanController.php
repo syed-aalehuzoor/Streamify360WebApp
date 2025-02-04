@@ -13,6 +13,6 @@ class SubscriptionPlanController extends Controller
         $user = Auth::user();
 
         // Pass the user, total views, and total videos to the view
-        return view('subscription-index', compact('user'));
+        return view('subscription.index', compact('user'));
     }
 }

@@ -1,25 +1,11 @@
-<x-app-layout>        
+@extends('layouts.app')
 
-        <h1 class="font-semibold text-md text-gray-800 m-2">Edit Video</h1>
+@section('pageHeading')
+    Edit Video
+@endsection
 
-        <!-- Display any success or error messages -->
-        @if(session('success'))
-            <div class="mb-6 p-4 bg-green-50 text-green-700 border border-green-200 rounded-lg shadow">
-                {{ session('success') }}
-            </div>
-        @endif
+@section('content')
     
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-    
-        <!-- Edit Video Form -->
         <form action="{{ route('videos.post-edit', $video->id) }}" method="POST" enctype="multipart/form-data" class="bg-white shadow rounded-lg flex flex-col gap-4 p-4">
             @csrf
 
@@ -37,4 +23,4 @@
             </div>
         </form>
 
-</x-app-layout>
+@endsection

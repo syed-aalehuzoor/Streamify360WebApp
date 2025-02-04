@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\PlayerController;
-use App\Http\Controllers\SystemSettingsController;
 use App\Http\Controllers\AnalyticsController;
 use App\Helpers\EncoderApiAuth;
 use App\Http\Controllers\Admin\AdminSettingsController;
@@ -16,22 +15,19 @@ use App\Http\Controllers\PlayerSettingsController;
 use App\Http\Controllers\SubscriptionPlanController;
 use App\Livewire\PlayerComponent;
 use App\Http\Controllers\FileUploadController;
-
+use App\Http\Controllers\CustomDomainController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test3', [AnalyticsController::class, 'refreshAnalyticsData']); 
-Route::get('/test', [HomeController::class, 'test']);     
-Route::get('/test2', function () {
-    return view('test2');
-});     
-Route::get('/test4', [FileUploadController::class, 'cleanupUploads']);     
+Route::get('/test', function () {
+    return view('test');
+});
 
-Route::get('/video/{id}', PlayerComponent::class)->name('video.player');
+Route::get('/video/{id}', [PlayerController::class, 'show'])->name('video.player');
 
-Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [AuthController::class, 'google_callback']);
 
 Route::middleware(
@@ -63,6 +59,7 @@ Route::middleware(
             Route::get('/player', [PlayerSettingsController::class, 'edit'])->name('player-settings.edit');
             Route::post('/player', [PlayerSettingsController::class, 'update'])->name('player-settings.update');
         });
+
         Route::prefix('plan')->group(function (){
             Route::get('/subscription', [SubscriptionPlanController::class, 'index'])->name('subscription');
         });
@@ -72,8 +69,11 @@ Route::middleware(
             )->group(function () 
             {
                 //Users Subscription Routes
-                Route::get('/settings/ads', [SettingsController::class, 'ads_settings'])->name('ad-settings');
-                Route::post('/settings/ads', [SettingsController::class, 'update'])->name('ad-settings.update');
+                Route::get('/settings/ads', [PlayerSettingsController::class, 'edit_ads'])->name('ad-settings');
+                Route::post('/settings/ads', [PlayerSettingsController::class, 'update_edit_ads'])->name('ad-settings.update');
+
+                Route::get('/settings/custom-domain', [CustomDomainController::class, 'edit'])->name('custom-domain');
+
                 Route::get('/tools/sub', [SettingsController::class, 'general'])->name('subtitle-translator');
                 Route::get('/tools', [SettingsController::class, 'general'])->name('tools');
         });

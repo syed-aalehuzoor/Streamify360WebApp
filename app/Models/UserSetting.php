@@ -8,39 +8,38 @@ use Illuminate\Database\Eloquent\Model;
 class UserSetting extends Model
 {
     use HasFactory;
+    protected $attributes = [
+        'playback_speeds' => '[0.5,1,1.5,2]',
+    ];
     
-    // Define the fillable fields for mass assignment
     protected $fillable = [
+        'user_id',
+        'logo_url',
+        'website_url',
+        'player_domain',
+        'player_domain_varified',
+        'pop_ads_code',
+        'vast_link',
         'allowed_domains',
-        'user_id', 
-        'logo_url', 
-        'player_width', 
-        'player_height',
-        'is_responsive', 
-        'show_controls', 
-        'show_playback_speed', 
-        'primary_color', 
-        'control_bar_color',
-        'play_button_color', 
-        'autoplay', 
-        'volume_level', 
-        'start_time', 
-        'playback_speed', 
-        'social_sharing_enabled', 
-        'keyboard_navigation_enabled',
-        'controlbar_background_color',
-        'controlbar_icons_color',
-        'controlbar_icons_active_color',
-        'controlbar_text_color',
-        'menu_background_color',
-        'menu_text_color',
-        'menu_text_active_color',
-        'timeslider_progress_color',
-        'timeslider_rail_color',
-        'tooltip_background_color',
-        'tooltip_text_color',
-        'pop_ads_code',          // Added new column
-        'vast_link',             // Added new column
+        'player_background',
+        'seek_bar_background',
+        'seek_bar_loaded_progress',
+        'seek_bar_current_progress',
+        'control_buttons',
+        'thumbnail_background',
+        'volume_seek',
+        'volume_seek_background',
+        'menu_background',
+        'menu_active',
+        'menu_text',
+        'menu_active_text',
+        'default_volume',
+        'playback_speeds',
+        'show_playback_speed',
+        'default_playback_speed',
+        'default_muted',
+        'loop',
+        'controls',
     ];
 
     // Define the relationship with the User model

@@ -244,7 +244,7 @@ def post_task(video_id):
                 id=id,
                 command_line=command,  # Single string with command line
                 resource_files=resource_files,
-                constraints=models.TaskConstraints(retention_time=datetime.timedelta(minutes=5))
+                constraints=models.TaskConstraints(retention_time=datetime.timedelta(minutes=60))
             )
         )
 
