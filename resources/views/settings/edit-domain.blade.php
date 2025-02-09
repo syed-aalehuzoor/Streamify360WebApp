@@ -6,7 +6,8 @@
 
 @section('content')
 
-    <div class="p-6 flex flex-col gap-4">
+    <form action="{{ route('custom-domain.update')}}" method="POST" class="p-6 flex flex-col gap-4">
+        @csrf
         <div class="flex flex-col">
             <label for="domain">Domain:</label>
             <x-input name="domain" id="domain" type="text" value="{{ $customDomain }}"></x-input>
@@ -14,7 +15,7 @@
         <div class="flex justify-end">
             <x-button>Save</x-button>
         </div>
-    </div>
+    </form>
 
     @if (!$domainVarified)
         @push('notifications')
@@ -26,14 +27,15 @@
                     Domain Verification in Progress
                 </div>
                 <p class="text-sm">
-                    We're verifying <span class="font-medium">{{ $customDomain }}</span>. This process may take a few moments.
+                    We're verifying <span class="font-medium">{{ $customDomain }}</span>. This process may take upto 48 hours.
                 </p>
                 <div class="text-sm bg-blue-100 p-3 rounded-md">
                     <p class="font-medium mb-1">To complete setup:</p>
                     <ol class="list-decimal list-inside space-y-1">
                         Update your DNS settings with:
-                        <li class="font-mono text-blue-700 ml-4">dns1.abc.cloudflare.com</li>
-                        <li class="font-mono text-blue-700 ml-4">dns2.abc.cloudflare.com</li>
+                        @foreach (config('system.customDomainDNS') as $dns)
+                            <li class="font-mono text-blue-700 ml-4">{{$dns}}</li>                            
+                        @endforeach
                     </ol>
                 </div>
             </div>

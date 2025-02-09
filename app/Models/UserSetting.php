@@ -15,6 +15,7 @@ class UserSetting extends Model
     protected $fillable = [
         'user_id',
         'logo_url',
+        'website_name',
         'website_url',
         'player_domain',
         'player_domain_varified',
@@ -41,8 +42,7 @@ class UserSetting extends Model
         'loop',
         'controls',
     ];
-
-    // Define the relationship with the User model
+    
     public function user()
     {
         return $this->belongsTo(User::class);

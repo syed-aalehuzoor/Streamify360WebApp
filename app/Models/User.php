@@ -29,6 +29,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'google_id',
+        'user_status',
+        'usertype',
+        'userplan'
     ];
 
     /**
@@ -62,7 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
         parent::boot();
     
         static::created(function ($user) {
-            $user->userSetting()->create(); // Automatically creates a user setting instance
+            $user->userSetting()->create();
         });
     }
     

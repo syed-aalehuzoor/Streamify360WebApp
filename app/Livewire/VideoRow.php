@@ -9,7 +9,7 @@ use Livewire\Component;
 class VideoRow extends Component
 {
     public $video;
-
+    public $domain;
     public function updatevideo()
     {
         $this->video = $this->getUserVideo($this->video->id);

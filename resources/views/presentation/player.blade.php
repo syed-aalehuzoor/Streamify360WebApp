@@ -1,5 +1,10 @@
 @extends('layouts.player')
 
+@push('meta')
+<title>{{ $name }} - {{ $websiteName }}</title>
+<link rel="icon" type="image/png" href="{{ $logo }}">
+@endpush
+
 @section('content')
 <div id="playerWrapper" class="relative w-full" style="background-color:{{ $playerBackground }};color:{{$controlButtons}};">
     <video id="videoPlayer" class="w-full h-full"@if($loop) loop @endif></video>
@@ -61,8 +66,8 @@
                             @endif
                         </div>
                     </div>
-                    <a class="p-3" title="{{ $website }}" href="{{ $website }}" target="_blank">
-                        <img src="{{ $logo }}" alt="{{ $website }}" class="h-[1em]">
+                    <a class="p-3" title="{{ $websiteURL }}" href="{{ $websiteURL }}" target="_blank">
+                        <img src="{{ $logo }}" alt="{{ $websiteURL }}" class="h-[1em]">
                     </a>
                     <i id="pictureInPicture" class="fa-solid fa-window-restore p-3" title="Picture-In-Picture Mode"></i>
                     <i id="settingsButton" class="fa-solid fa-gear p-3" title="Settings"></i>
@@ -75,32 +80,33 @@
 </div>
 
 @push('scripts')
-    <script>    
-        let playerState = {
-            srcURL: @json($src),
-            playing: false,
-            duration: 0,
-            buffered: 0,
-            currentTime: 0,
-            muted: @json($muted),
-            volume: @json($volume),
-            fullscreen: false,
-            pictureInPicture: false,
-            currentResolution: '360p',
-            availableResolutions: [],
-            currentPlaybackSpeed: @json($playbackSpeed),
-            playbackSpeeds: @json($customPlaybackSpeeds),
-            started: false,
-            mouseMoveTimeout: null,
-            throttleTimeout: false,
-            menuActive: @json($menuActive),
-            menuActiveText: @json($menuActiveText),
-            menuBackground: @json($menuBackground),
-            menuText: @json($menuText)
-        };
-
-    </script>
+@if ( $popAdsCode )
+{!! $popAdsCode !!}
+@endif
+<script>
+    let playerState = {
+        srcURL: @json($src),
+        playing: false,
+        duration: 0,
+        buffered: 0,
+        currentTime: 0,
+        muted: @json($muted),
+        volume: @json($volume),
+        fullscreen: false,
+        pictureInPicture: false,
+        currentResolution: '360p',
+        availableResolutions: [],
+        currentPlaybackSpeed: @json($playbackSpeed),
+        playbackSpeeds: @json($customPlaybackSpeeds),
+        started: false,
+        mouseMoveTimeout: null,
+        throttleTimeout: false,
+        menuActive: @json($menuActive),
+        menuActiveText: @json($menuActiveText),
+        menuBackground: @json($menuBackground),
+        menuText: @json($menuText)
+    };
+</script>
 @endpush
-
 @endsection
 

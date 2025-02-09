@@ -22,9 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleCors::class,
             VerifyCsrfToken::class,
         ]);
+
         $middleware->alias([
             'admin' => App\Http\Middleware\Admin::class,
             'userplan' => App\Http\Middleware\UserPlan::class,
+            'enforceMainDomain' => App\Http\Middleware\EnforceMainDomain::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

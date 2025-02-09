@@ -7,50 +7,50 @@ use Illuminate\Http\Request;
 use App\Models\User;
 class UserController extends Controller
 {
-    public function index()
-    {        
-        $users = User::paginate(10);
-
-        return view('admin.user-table', [
+    public function index(Request $request)
+    {
+        $query = $request->input('query');
+    
+        if ($query) {
+            $users = User::where('name', 'like', '%' . $query . '%')
+                         ->orWhere('email', 'like', '%' . $query . '%')
+                         ->paginate(10);
+        } else {
+            $users = User::paginate(10);
+        }    
+        return view('admin.user-index', [
             'users' => $users,
         ]);
     }
 
     public function edit($id)
     {
-        // Fetch the video from the database
         $user = User::findOrFail($id);
-        
-        // Return the view with the video data
         return view('admin.edit-user', compact('user'));
     }
 
-    // Suspend the user account
-    public function suspend($id)
+    public function show($id)
     {
-        $user = User::findOrFail($id);
-        $user->user_status = 'suspended'; // Update status to suspended
-        $user->save();
+        return $this->edit($id);
+    }    
 
-        return redirect()->back()->with('success', 'User has been suspended successfully.');
+    public function create()
+    {
+        abort(404);    
     }
 
-    // Reactivate the user account
-    public function activate($id)
+    public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $user->user_status = 'active'; // Update status to active
-        $user->save();
-
-        return redirect()->back()->with('success', 'User has been reactivated successfully.');
+        $data = $request->except(['_token', '_method']);
+        $user->update($data);
+        return redirect()->back()->with('success', "User updated successfully.");
     }
 
-    // Delete the user account
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->delete(); // Delete the user
-
+        $user->delete();
         return redirect()->back()->with('success', 'User has been deleted successfully.');
     }
 }

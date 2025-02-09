@@ -38,5 +38,8 @@ class Video extends Model
         });
     }
 
-    // Define any relationships or additional methods here
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userid');
+    }
 }

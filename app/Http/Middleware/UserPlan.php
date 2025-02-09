@@ -17,10 +17,8 @@ class UserPlan
     public function handle(Request $request, Closure $next, string $plan): Response
     {
             
-        // Check if the user is authenticated
         if (Auth::check()) {
             $userPlan = Auth::user()->userplan;
-            // Now check if the authenticated user is an admin
             if ($userPlan === $plan || ($plan === 'premium' && $userPlan === 'enterprise')) {
                 return $next($request);
             }

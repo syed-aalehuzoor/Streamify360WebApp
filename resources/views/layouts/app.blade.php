@@ -6,9 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <!-- Styles -->
         @livewireStyles
     </head>
     
@@ -19,7 +17,6 @@
     
                 <x-navigation />
             
-                <!-- Page Content -->
                 <main class="flex flex-col w-full h-full overflow-y-auto">
                     <h1 class="font-semibold text-lg text-gray-800 mb-6">
                         @yield('pageHeading')

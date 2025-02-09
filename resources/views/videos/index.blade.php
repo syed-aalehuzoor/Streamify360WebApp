@@ -39,7 +39,7 @@
                 </thead>
                 <tbody>
                     @foreach ($videos as $video)
-                        @livewire('video-row', ['video' => $video])
+                        @livewire('video-row', ['video' => $video, 'domain'=> $domain])
                     @endforeach
                 </tbody>
             </table>
@@ -95,7 +95,6 @@
         });
 
         function copyToClipboard(textareaId) {
-            console.log(textareaId);
             var textarea = document.getElementById(textareaId + 'code');
             textarea.select();
             textarea.setSelectionRange(0, 99999);

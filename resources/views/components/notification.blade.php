@@ -3,6 +3,12 @@
         {{ session('success') }}
     </div>
     <script>
-        setTimeout(() => document.getElementById('success-message').style.display = 'none', 3000);
+        setTimeout(() => document.getElementById('success-message').style.display = 'none', 5000);
     </script>
+@endif
+
+@if (session('error'))
+    <div class="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg shadow-sm">
+        {{ session('error') }}
+    </div>
 @endif

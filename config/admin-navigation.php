@@ -11,7 +11,7 @@ return [
         'icon' => 'fa-solid fa-photo-film',
         'submenus' => [
             'all-videos' => [
-                'route' => 'admin-all-videos',
+                'route' => 'videos.index',
                 'label' => 'All Videos',
             ],
             'processes' => [
@@ -43,7 +43,7 @@ return [
         'icon' => 'fa-solid fa-user',
         'submenus' => [
             'all-users' => [
-                'route' => 'admin-users',
+                'route' => 'users.index',
                 'label' => 'All Users',
             ],
         ],

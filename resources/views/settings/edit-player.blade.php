@@ -29,10 +29,17 @@
                     </div>
 
                     <div class="flex flex-col gap-2">
+                        <label class="text-sm font-medium text-gray-600">Website Name:</label>
+                        <input type="text" name="websiteName" value="{{ $websiteName }}"
+                            class="px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring focus:ring-indigo-200">
+                    </div>
+
+                    <div class="flex flex-col gap-2">
                         <label class="text-sm font-medium text-gray-600">Website URL:</label>
                         <input type="text" name="websiteURL" value="{{ $websiteURL }}" 
                             class="px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring focus:ring-indigo-200">
                     </div>
+
                     <div class="flex flex-col gap-2">
                         <label class="text-sm font-medium text-gray-600">Allowed Domains URL:</label>
                         <textarea name="allowed_domains" cols="30" rows="5" class="rounded-xl border-gray-300">@if ($allowedDomains)@foreach ($allowedDomains as $allowedDomain){{$allowedDomain}}&#13;&#10;@endforeach @endif</textarea>

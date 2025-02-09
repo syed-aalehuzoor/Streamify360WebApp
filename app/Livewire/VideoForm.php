@@ -123,7 +123,7 @@ class VideoForm extends Component
             $video->update(['thumbnail_url' => $thumbnailPath]);
         }
         ProcessVideo::dispatch($this->video_id);
-        
+        $video->update(['status' => 'Initiated']);
         return redirect()->route('videos.index')->with('success', 'Video uploaded is being processed!');
     }
 

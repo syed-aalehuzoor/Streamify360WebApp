@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\DeleteVideo;
+use App\Models\UserSetting;
 
 class VideoController extends Controller
 {
     /**
      * Valid video statuses
      */
-    private const ACTIVE_STATUSES = ['Processing', 'Live', 'Failed'];
+    private const ACTIVE_STATUSES = ['Initiated', 'Processing', 'Live', 'Failed'];
     private const DRAFT_STATUS = ['Draft'];
     private const ITEMS_PER_PAGE = 10;
 
@@ -29,8 +30,10 @@ class VideoController extends Controller
      */
     public function index(Request $request) {
         $videos = $this->getFilteredVideos($request, self::ACTIVE_STATUSES);
+        $domain = Auth::user()->userSetting->player_domain;
         return view('videos.index', [
             'videos' => $videos,
+            'domain' => $domain,
             'query' => $request->input('query', ''),
         ]);
     }

@@ -1,19 +1,13 @@
-<x-admin-panel>
-            <h1 class="font-semibold text-lg text-gray-800 mb-1">All Users</h1>
+@extends('layouts.admin-panel')
 
-            @if (session('success'))
-                <div class="mb-6 p-4 bg-green-100 text-green-800 rounded-lg shadow-md">
-                    {{ session('success') }}
-                </div>
-            @endif
-            @error('ip')
-                <div class="mb-6 p-4 bg-red-100 text-red-800 rounded-lg shadow-md">
-                    {{ $message }}
-                </div>
-            @enderror
+@section('pageHeading')
+    All Users
+@endsection
+
+@section('content')
             <div class="bg-white shadow rounded-lg">
                 <div class="p-4 border-b border-gray-200 flex justify-end">
-                    <form method="GET" action="{{ route('all-videos') }}">
+                    <form method="GET" action="{{ route('users.index') }}">
                         <div class="flex items-center border border-secondary rounded-md">
                             <input type="text" name="query" value="{{ request('query') }}" placeholder="Search users..."
                                 class="p-2 rounded-l-md border-none h-8 w-full">
@@ -53,11 +47,17 @@
                                     </td>
                                     <td class="p-6 gap-2 whitespace-nowrap text-sm font-medium flex items-center space-x-2">
                                         <a href="{{ route('users.edit', $user->id) }}" class="text-blue-500 fa-solid fa-pen-to-square"></a>
-                                        @if ($user->user_status == 'active')
-                                            <a href="{{ route('users.suspend', $user->id) }}" class="text-blue-500 fa-solid fa-ban"></a>
-                                        @elseif($user->user_status == 'suspended')
-                                            <a href="{{ route('users.activate', $user->id) }}" class="text-blue-500 fa-solid fa-user-check"></a>
-                                        @endif
+                                        <form action="{{ route('users.update', $user->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PUT')
+                                            @php
+                                                $newStatus = $user->user_status === 'active' ? 'suspended' : 'active';
+                                                $icon = $user->user_status === 'active' ? 'fa-ban' : 'fa-user-check';
+                                            @endphp
+                                            <input type="hidden" name="user_status" value="{{ $newStatus }}">
+                                            <button type="submit" class="text-blue-500 fa-solid {{ $icon }} bg-transparent border-none cursor-pointer"></button>
+                                        </form>
+
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -74,4 +74,4 @@
                     </div>
                 </div>
             </div>
-</x-admin-panel>
+@endsection

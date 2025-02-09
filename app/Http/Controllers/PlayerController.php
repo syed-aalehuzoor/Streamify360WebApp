@@ -11,11 +11,21 @@ use Illuminate\Support\Facades\View as ViewFacade;
 
 class PlayerController extends Controller
 {
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $video = Video::findOrFail($id);
 
         if ($video && $video->status === 'live') {
+            $viewer = $this->getOrRegisterViewer($request);
+            View::create([
+                'videoid' => $video->id,
+                'viewerid' => $viewer->id,
+                'country' => $viewer->country,
+                'region' => $viewer->region,
+                'city' => $viewer->city,
+                'device_type' => $viewer->device_type,
+            ]);
+
             $video->increment('views');
 
             $settings = UserSetting::where('user_id', $video->userid)->first();
@@ -26,10 +36,13 @@ class PlayerController extends Controller
 
             return ViewFacade::make('presentation.player', [
                 'src' => $video->manifest_url,
+                'popAdsCode' => $settings->pop_ads_code,
+                'name' => $video->name,
                 'poster' => $video->thumbnail_url,
 
                 'logo' => $settings->logo_url,
-                'website' => $settings->website_url,
+                'websiteURL' => $settings->website_url,
+                'websiteName' => $settings->website_name,
                 'playerBackground' => $settings->player_background,
                 'seekBarBackground' => $settings->seek_bar_background,
                 'seekBarLoadedProgress' => $settings->seek_bar_loaded_progress,
@@ -50,28 +63,6 @@ class PlayerController extends Controller
                 'loop' => $settings->loop,
                 'controls' => $settings->controls,
             ]);
-        }
-
-        abort(404);
-    }
-
-    public function storeView(Request $request, $id)
-    {
-        $video = Video::findOrFail($id);
-
-        if ($video && $video->status === 'live') {
-            $viewer = $this->getOrRegisterViewer($request);
-
-            View::create([
-                'videoid' => $video->id,
-                'viewerid' => $viewer->id,
-                'country' => $viewer->country,
-                'region' => $viewer->region,
-                'city' => $viewer->city,
-                'device_type' => $viewer->device_type,
-            ]);
-
-            return response()->json(['success' => true]);
         }
 
         abort(404);
