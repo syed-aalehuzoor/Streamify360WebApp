@@ -36,6 +36,7 @@ class PlayerController extends Controller
 
             return ViewFacade::make('presentation.player', [
                 'src' => $video->manifest_url,
+                'vastlink' => $settings->vast_link,
                 'popAdsCode' => $settings->pop_ads_code,
                 'name' => $video->name,
                 'poster' => $video->thumbnail_url,
@@ -55,7 +56,7 @@ class PlayerController extends Controller
                 'menuActive' => $settings->menu_active,
                 'menuText' => $settings->menu_text,
                 'menuActiveText' => $settings->menu_active_text,
-                'customPlaybackSpeeds' => json_decode($settings->playback_speeds),
+                'customPlaybackSpeeds' => $settings->playback_speeds,
                 'playbackSpeed' => $settings->default_playback_speed,
                 'volume' => $settings->default_volume,
                 'showPlaybackSpeed' => $settings->show_playback_speed,

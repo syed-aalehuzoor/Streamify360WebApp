@@ -17,6 +17,7 @@ use App\Http\Controllers\SubscriptionPlanController;
 use App\Livewire\PlayerComponent;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\Settings\CustomDomainController;
+use App\Http\Controllers\Settings\UserSettingsController;
 use App\Http\Controllers\CloudflareTestController;
 use App\Http\Middleware\EnforceMainDomain;
 use App\Http\Middleware\EnforcePlaybackDomain;
@@ -64,12 +65,14 @@ Route::middleware(
             Route::get('/audience-videos/{id}', [AnalyticsController::class, 'showVideoAudienceInsights'])->name('video-audience-insights');
         });
         
+        Route::resource('settings', UserSettingsController::class);
 
+        /*
         Route::prefix('settings')->group(function (){
             Route::get('/player', [PlayerSettingsController::class, 'edit'])->name('player-settings.edit');
             Route::post('/player', [PlayerSettingsController::class, 'update'])->name('player-settings.update');
-        });
-
+        }); 
+        */
         Route::prefix('plan')->group(function (){
             Route::get('/subscription', [SubscriptionPlanController::class, 'index'])->name('subscription');
         });
@@ -95,15 +98,13 @@ Route::middleware(
         ], function ()
         {
 
-            Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-            Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+            //Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
         
             // Dashboard Routes
             Route::get('', [AdminDashboardController::class, 'dashboard'])->name('admin');
 
-            Route::resource('videos', VideoAdminController::class);
+            Route::resource('admin-videos', VideoAdminController::class);
 
-            Route::get('/processes', [AdminDashboardController::class, 'processes'])->name('Processes');
             Route::get('/abuse-reports', [AdminDashboardController::class, 'abuseReports'])->name('abuse-reports');
         
             // Server Manager Routes

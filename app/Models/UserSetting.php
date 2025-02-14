@@ -42,6 +42,11 @@ class UserSetting extends Model
         'loop',
         'controls',
     ];
+
+    protected $casts = [
+        'allowed_domains'   => 'array',
+        'playback_speeds'    => 'array',
+    ];
     
     public function user()
     {

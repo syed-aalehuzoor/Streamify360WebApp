@@ -40,8 +40,6 @@ class PlayerSettingsController extends Controller
         return view('settings.edit-player', [
             'user' => $user,
             'logoURL' => $settings->logo_url,
-            'playerDomain' => $settings->player_domain,
-            'domainVarified' => $settings->player_domain_varified,
             'websiteName' => $settings->website_name,
             'websiteURL' => $settings->website_url,
             'allowedDomains' => json_decode($settings->allowed_domains, true),

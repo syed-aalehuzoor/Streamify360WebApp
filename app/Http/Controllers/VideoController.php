@@ -31,6 +31,7 @@ class VideoController extends Controller
     public function index(Request $request) {
         $videos = $this->getFilteredVideos($request, self::ACTIVE_STATUSES);
         $domain = Auth::user()->userSetting->player_domain;
+        if (!$domain) $domain = config('system.playerDefaultDomain');
         return view('videos.index', [
             'videos' => $videos,
             'domain' => $domain,

@@ -15,8 +15,16 @@
         
         <div class="flex justify-center gap-12 min-h-full w-full sm:w-3/4 sm:m-10 flex-row">
     
-                <x-navigation />
-            
+                <aside class="bg-primary w-96 z-20 hidden shadow-xl sm:block min-h-full rounded-lg" id="sidebar-multi-level-sidebar">
+                    <x-nav-menu nav="navigation"/>
+                </aside>
+
+                <!-- Mobile Navigation -->
+                <aside x-show="openSidebar" x-cloak class="bg-primary z-40 left-0 fixed h-full w-60 text-gray-500 sm:hidden">   
+                    <x-nav-menu nav="navigation"/>
+                </aside>
+
+
                 <main class="flex flex-col w-full h-full overflow-y-auto">
                     <h1 class="font-semibold text-lg text-gray-800 mb-6">
                         @yield('pageHeading')

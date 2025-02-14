@@ -10,13 +10,9 @@ return [
         'label' => 'Videos',
         'icon' => 'fa-solid fa-photo-film',
         'submenus' => [
-            'all-videos' => [
-                'route' => 'videos.index',
+            'admin-videos.index' => [
+                'route' => 'admin-videos.index',
                 'label' => 'All Videos',
-            ],
-            'processes' => [
-                'route' => 'Processes',
-                'label' => 'Processes',
             ],
             'abuse-reports' => [
                 'route' => 'abuse-reports',

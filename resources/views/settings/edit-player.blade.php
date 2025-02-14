@@ -44,8 +44,24 @@
                         <label class="text-sm font-medium text-gray-600">Allowed Domains URL:</label>
                         <textarea name="allowed_domains" cols="30" rows="5" class="rounded-xl border-gray-300">@if ($allowedDomains)@foreach ($allowedDomains as $allowedDomain){{$allowedDomain}}&#13;&#10;@endforeach @endif</textarea>
                     </div>
-                </div>
-                
+                    <div id="domains-container">
+                        @if (old('allowed_domains', $allowedDomains))
+                            @foreach (old('allowed_domains', $allowedDomains) as $domain)
+                                <div class="domain-input">
+                                    <input type="text" name="allowed_domains[]" value="{{ $domain }}" placeholder="Enter domain">
+                                    <button type="button" class="remove-domain">Remove</button>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="domain-input">
+                                <input type="text" name="allowed_domains[]" placeholder="Enter domain">
+                                <button type="button" class="remove-domain">Remove</button>
+                            </div>
+                        @endif
+                    </div>
+                    <button type="button" id="add-domain">Add Domain</button>
+
+                </div>                
                 <div x-show="activeTab === 2" class="space-y-4">
                     @foreach ($colorCustomization as $key => $value)
                         <div class="flex flex-col gap-2">
@@ -87,6 +103,30 @@
                 </x-button>
             </div>
         </form>
-        
     </div>
+    <script>
+        document.getElementById('add-domain').addEventListener('click', function () {
+            var newDiv = document.createElement('div');
+            newDiv.className = 'domain-input';                
+            var newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'allowed_domains[]';
+            newInput.placeholder = 'Enter domain';
+            var removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.textContent = 'Remove';
+            removeButton.className = 'remove-domain';
+            removeButton.addEventListener('click', function () {
+                this.parentNode.remove();
+            });
+            newDiv.appendChild(newInput);
+            newDiv.appendChild(removeButton);
+            document.getElementById('domains-container').appendChild(newDiv);
+        });
+        document.querySelectorAll('.remove-domain').forEach(function(button) {
+            button.addEventListener('click', function() {
+                this.parentNode.remove();
+            });
+        });
+    </script>
 @endsection

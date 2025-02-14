@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         @stack('meta')
         @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/player.js'])
+
         @livewireStyles
         @stack('scripts')
     </head>

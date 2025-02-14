@@ -115,7 +115,7 @@ class VideoForm extends Component
             'manifest_url' => 'https://streambox.streamify360.net/streams/'.$this->video_id.'/master.m3u8'
         ]);
         if ($user->userplan == 'enterprise'){
-            handleEnterpriseUploads($video);
+            $this->handleEnterpriseUploads($video);
         }
         if ($this->thumbnail) {
             $this->validate(['thumbnail' => 'image|max:1024']);

@@ -52,26 +52,30 @@ return [
         'label' => 'Settings',
         'icon' => 'fa-solid fa-gear',
         'submenus' => [
-            'player-settings.edit' => [
-                'route' => 'player-settings.edit',
+            'settings.player' => [
+                'route' => 'settings.show',
+                'Division' => 'player',
                 'label' => 'Player Customization',
                 'plans' => ['basic', 'premium', 'enterprise'],
                 'tooltip' => 'Available on all plans'
             ],
-            'ad-settings' => [
-                'route' => 'ad-settings',
+            'settings.ads' => [
+                'route' => 'settings.show',
+                'Division' => 'ads',
                 'label' => 'Ad Settings',
                 'plans' => ['premium', 'enterprise'],
                 'tooltip' => 'Only available for Premium and Enterprise plans'
             ],
-            'custom-domain' => [
-                'route' => 'custom-domain',
+            'settings.custom-domain' => [
+                'route' => 'settings.show',
+                'Division' => 'custom-domain',
                 'label' => 'Custom Domain',
                 'plans' => ['premium', 'enterprise'],
                 'tooltip' => 'Only available for Premium and Enterprise plans'
             ],
         ],
     ],
+
     'subscription' => [
         'label' => 'Subscription',
         'icon' => 'fa-solid fa-receipt',

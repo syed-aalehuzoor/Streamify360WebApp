@@ -5,6 +5,7 @@ namespace App\Jobs;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
+use App\Models\Video;
 
 class ProcessVideo implements ShouldQueue
 {
@@ -73,7 +74,8 @@ class ProcessVideo implements ShouldQueue
     // app/Jobs/ProcessVideo.php
     public function failed(\Throwable $exception)
     {
-        // Handle the failure here, using $exception
+        $video = Video::where('id', $this->video_id)->first();
+        $video->update(['status' => 'Failed']);
         \Log::error('Job failed: ' . $exception->getMessage());
     }
 }

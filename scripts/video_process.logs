@@ -3531,3 +3531,485 @@ OSError: [Errno 5] Input/output error
 2025-02-09 05:23:13,363 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
 2025-02-09 06:23:13,363 - INFO - Running cron job...
 2025-02-09 06:23:13,679 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 07:23:13,679 - INFO - Running cron job...
+2025-02-09 07:23:13,991 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 08:23:13,991 - INFO - Running cron job...
+2025-02-09 08:23:14,308 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 09:23:14,308 - INFO - Running cron job...
+2025-02-09 09:23:14,613 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 10:23:14,613 - INFO - Running cron job...
+2025-02-09 10:23:14,892 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 11:23:14,892 - INFO - Running cron job...
+2025-02-09 11:23:15,211 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 12:12:42,152 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-09 12:12:42,152 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-09 12:12:42,153 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2025-02-09 12:12:42,153 - INFO - Added job "cron_job" to job store "default"
+2025-02-09 12:12:42,153 - INFO - Scheduler started
+2025-02-09 12:12:42,153 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-09 12:12:42 UTC)" (scheduled at 2025-02-09 12:12:42.151685+00:00)
+2025-02-09 12:12:42,155 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-09 12:12:42 UTC)" (scheduled at 2025-02-09 12:12:42.152252+00:00)
+2025-02-09 12:12:42,155 - INFO - Running cron job...
+2025-02-09 12:12:42,198 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-09 13:12:42 UTC)" executed successfully
+2025-02-09 12:12:42,564 - ERROR - Failed to post Task for Video: DjtE5J3HKR5
+Error: Server with ID: 1 not found
+2025-02-09 12:12:42,741 - INFO - Cron job completed.
+2025-02-09 12:12:42,751 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-09 13:12:42 UTC)" executed successfully
+2025-02-09 12:23:15,211 - INFO - Running cron job...
+2025-02-09 12:23:15,530 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 12:48:13,349 - INFO - Scheduler has been shut down
+2025-02-09 13:23:15,531 - INFO - Running cron job...
+2025-02-09 13:23:15,859 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 14:23:15,859 - INFO - Running cron job...
+2025-02-09 14:23:16,118 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 15:23:16,118 - INFO - Running cron job...
+2025-02-09 15:23:16,426 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 16:23:16,426 - INFO - Running cron job...
+2025-02-09 16:23:16,687 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 17:23:16,687 - INFO - Running cron job...
+2025-02-09 17:23:16,949 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 18:23:16,949 - INFO - Running cron job...
+2025-02-09 18:23:17,261 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 19:23:17,261 - INFO - Running cron job...
+2025-02-09 19:23:17,568 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 20:23:17,568 - INFO - Running cron job...
+2025-02-09 20:23:17,876 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 21:23:17,876 - INFO - Running cron job...
+2025-02-09 21:23:18,189 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 22:23:18,189 - INFO - Running cron job...
+2025-02-09 22:23:18,503 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-09 23:23:18,504 - INFO - Running cron job...
+2025-02-09 23:23:18,817 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 00:23:18,818 - INFO - Running cron job...
+2025-02-10 00:23:19,131 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 01:23:19,131 - INFO - Running cron job...
+2025-02-10 01:23:19,442 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 02:23:19,442 - INFO - Running cron job...
+2025-02-10 02:23:19,685 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 03:23:19,685 - INFO - Running cron job...
+2025-02-10 03:23:19,998 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 03:33:35,546 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-10 03:33:35,546 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-10 03:33:35,546 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2025-02-10 03:33:35,546 - INFO - Added job "cron_job" to job store "default"
+2025-02-10 03:33:35,547 - INFO - Scheduler started
+2025-02-10 03:33:35,548 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-10 03:33:35 UTC)" (scheduled at 2025-02-10 03:33:35.545716+00:00)
+2025-02-10 03:33:35,548 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-10 03:33:35 UTC)" (scheduled at 2025-02-10 03:33:35.546273+00:00)
+2025-02-10 03:33:35,549 - INFO - Running cron job...
+2025-02-10 03:33:35,611 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-10 04:33:35 UTC)" executed successfully
+2025-02-10 03:33:36,011 - INFO - Request URL: 'https://hlsencoder.blob.core.windows.net/laravel/videos/ZB7CHgpdLMt.mp4'
+Request method: 'HEAD'
+Request headers:
+    'x-ms-version': 'REDACTED'
+    'Accept': 'application/xml'
+    'User-Agent': 'azsdk-python-storage-blob/12.23.1 Python/3.12.5 (Linux-6.5.0-1025-azure-x86_64-with-glibc2.35)'
+    'x-ms-date': 'REDACTED'
+    'x-ms-client-request-id': 'cf732884-e75f-11ef-8d9e-d310b787d53e'
+    'Authorization': 'REDACTED'
+No body was attached to the request
+2025-02-10 03:33:36,041 - INFO - Response status: 200
+Response headers:
+    'Content-Length': '9074357'
+    'Content-Type': 'video/mp4'
+    'Content-MD5': 'REDACTED'
+    'Last-Modified': 'Mon, 10 Feb 2025 03:32:21 GMT'
+    'Accept-Ranges': 'REDACTED'
+    'ETag': '"0x8DD4983872CEF3E"'
+    'Vary': 'REDACTED'
+    'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+    'x-ms-request-id': 'b437ade0-401e-010b-576c-7bcfdb000000'
+    'x-ms-client-request-id': 'cf732884-e75f-11ef-8d9e-d310b787d53e'
+    'x-ms-version': 'REDACTED'
+    'x-ms-creation-time': 'REDACTED'
+    'x-ms-lease-status': 'REDACTED'
+    'x-ms-lease-state': 'REDACTED'
+    'x-ms-blob-type': 'REDACTED'
+    'x-ms-server-encrypted': 'REDACTED'
+    'Date': 'Mon, 10 Feb 2025 03:33:35 GMT'
+2025-02-10 03:33:36,043 - INFO - Request URL: 'https://hlsencoder.blob.core.windows.net/laravel/videos/ZB7CHgpdLMt.mp4'
+Request method: 'HEAD'
+Request headers:
+    'x-ms-version': 'REDACTED'
+    'Accept': 'application/xml'
+    'User-Agent': 'azsdk-python-storage-blob/12.23.1 Python/3.12.5 (Linux-6.5.0-1025-azure-x86_64-with-glibc2.35)'
+    'x-ms-date': 'REDACTED'
+    'x-ms-client-request-id': 'cf732885-e75f-11ef-8d9e-d310b787d53e'
+    'Authorization': 'REDACTED'
+No body was attached to the request
+2025-02-10 03:33:36,066 - INFO - Response status: 200
+Response headers:
+    'Content-Length': '9074357'
+    'Content-Type': 'video/mp4'
+    'Content-MD5': 'REDACTED'
+    'Last-Modified': 'Mon, 10 Feb 2025 03:32:21 GMT'
+    'Accept-Ranges': 'REDACTED'
+    'ETag': '"0x8DD4983872CEF3E"'
+    'Vary': 'REDACTED'
+    'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+    'x-ms-request-id': '35235583-301e-00d5-276c-7b2530000000'
+    'x-ms-client-request-id': 'cf732885-e75f-11ef-8d9e-d310b787d53e'
+    'x-ms-version': 'REDACTED'
+    'x-ms-creation-time': 'REDACTED'
+    'x-ms-lease-status': 'REDACTED'
+    'x-ms-lease-state': 'REDACTED'
+    'x-ms-blob-type': 'REDACTED'
+    'x-ms-server-encrypted': 'REDACTED'
+    'Date': 'Mon, 10 Feb 2025 03:33:35 GMT'
+2025-02-10 03:33:36,098 - INFO - Cron job completed.
+2025-02-10 03:33:36,108 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-10 04:33:35 UTC)" executed successfully
+2025-02-10 03:33:41,210 - INFO - Posted task to process Video: ZB7CHgpdLMt
+2025-02-10 03:42:19,615 - INFO - Scheduler has been shut down
+2025-02-10 04:23:19,998 - INFO - Running cron job...
+2025-02-10 04:23:20,316 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 05:23:20,317 - INFO - Running cron job...
+2025-02-10 05:23:20,656 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 06:23:20,656 - INFO - Running cron job...
+2025-02-10 06:23:20,916 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 07:23:20,917 - INFO - Running cron job...
+2025-02-10 07:23:21,226 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 08:23:21,226 - INFO - Running cron job...
+2025-02-10 08:23:21,530 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 09:23:21,530 - INFO - Running cron job...
+2025-02-10 09:23:21,841 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 10:23:21,842 - INFO - Running cron job...
+2025-02-10 10:23:22,149 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 11:23:22,149 - INFO - Running cron job...
+2025-02-10 11:23:22,415 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 12:23:22,416 - INFO - Running cron job...
+2025-02-10 12:23:22,727 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 13:23:22,728 - INFO - Running cron job...
+2025-02-10 13:23:23,045 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 14:23:23,046 - INFO - Running cron job...
+2025-02-10 14:23:23,359 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 15:23:23,360 - INFO - Running cron job...
+2025-02-10 15:23:23,671 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 16:23:23,671 - INFO - Running cron job...
+2025-02-10 16:23:23,932 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 17:23:23,932 - INFO - Running cron job...
+2025-02-10 17:23:24,175 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 18:23:24,176 - INFO - Running cron job...
+2025-02-10 18:23:24,482 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 19:23:24,483 - INFO - Running cron job...
+2025-02-10 19:23:24,743 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 20:23:24,743 - INFO - Running cron job...
+2025-02-10 20:23:25,053 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 21:23:25,054 - INFO - Running cron job...
+2025-02-10 21:23:25,317 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 22:23:25,317 - INFO - Running cron job...
+2025-02-10 22:23:25,629 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-10 23:23:25,629 - INFO - Running cron job...
+2025-02-10 23:23:25,980 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 00:23:25,980 - INFO - Running cron job...
+2025-02-11 00:23:26,287 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 01:23:26,288 - INFO - Running cron job...
+2025-02-11 01:23:26,547 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 02:23:26,547 - INFO - Running cron job...
+2025-02-11 02:23:26,864 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 03:23:26,864 - INFO - Running cron job...
+2025-02-11 03:23:27,175 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 04:23:27,176 - INFO - Running cron job...
+2025-02-11 04:23:27,413 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 05:11:10,141 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-11 05:11:10,141 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-11 05:11:10,142 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2025-02-11 05:11:10,142 - INFO - Added job "cron_job" to job store "default"
+2025-02-11 05:11:10,142 - INFO - Scheduler started
+2025-02-11 05:11:10,143 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-11 05:11:10 UTC)" (scheduled at 2025-02-11 05:11:10.141296+00:00)
+2025-02-11 05:11:10,144 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-11 05:11:10 UTC)" (scheduled at 2025-02-11 05:11:10.141827+00:00)
+2025-02-11 05:11:10,145 - INFO - Running cron job...
+2025-02-11 05:11:10,188 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-11 06:11:10 UTC)" executed successfully
+2025-02-11 05:11:10,772 - INFO - Cron job completed.
+2025-02-11 05:11:10,785 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-11 06:11:10 UTC)" executed successfully
+2025-02-11 05:12:17,505 - INFO - Scheduler has been shut down
+2025-02-11 05:12:29,467 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-11 05:12:29,467 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-11 05:12:29,468 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2025-02-11 05:12:29,468 - INFO - Added job "cron_job" to job store "default"
+2025-02-11 05:12:29,468 - INFO - Scheduler started
+2025-02-11 05:12:29,469 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-11 05:12:29 UTC)" (scheduled at 2025-02-11 05:12:29.467194+00:00)
+2025-02-11 05:12:29,470 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-11 05:12:29 UTC)" (scheduled at 2025-02-11 05:12:29.467769+00:00)
+2025-02-11 05:12:29,470 - INFO - Running cron job...
+2025-02-11 05:12:29,512 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-11 06:12:29 UTC)" executed successfully
+2025-02-11 05:12:30,048 - INFO - Cron job completed.
+2025-02-11 05:12:30,060 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-11 06:12:29 UTC)" executed successfully
+2025-02-11 05:13:06,104 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2025-02-11 05:13:06,166 - INFO - Authentication (publickey) successful!
+2025-02-11 05:13:06,811 - INFO - Deleted Video: Df3YuWVguf4
+2025-02-11 05:13:09,120 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2025-02-11 05:13:09,181 - INFO - Authentication (publickey) successful!
+2025-02-11 05:13:09,278 - INFO - Deleted Video: 1QEElnp7taC
+2025-02-11 05:13:45,030 - INFO - Request URL: 'https://hlsencoder.blob.core.windows.net/laravel/videos/yE35GZdhczM.mp4'
+Request method: 'HEAD'
+Request headers:
+    'x-ms-version': 'REDACTED'
+    'Accept': 'application/xml'
+    'User-Agent': 'azsdk-python-storage-blob/12.23.1 Python/3.12.5 (Linux-6.5.0-1025-azure-x86_64-with-glibc2.35)'
+    'x-ms-date': 'REDACTED'
+    'x-ms-client-request-id': 'f7845fe6-e836-11ef-8d9e-d310b787d53e'
+    'Authorization': 'REDACTED'
+No body was attached to the request
+2025-02-11 05:13:45,055 - INFO - Response status: 200
+Response headers:
+    'Content-Length': '9074357'
+    'Content-Type': 'video/mp4'
+    'Content-MD5': 'REDACTED'
+    'Last-Modified': 'Tue, 11 Feb 2025 05:13:38 GMT'
+    'Accept-Ranges': 'REDACTED'
+    'ETag': '"0x8DD4A5AD7F4E7FB"'
+    'Vary': 'REDACTED'
+    'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+    'x-ms-request-id': '98523d8b-601e-00d8-7243-7cede4000000'
+    'x-ms-client-request-id': 'f7845fe6-e836-11ef-8d9e-d310b787d53e'
+    'x-ms-version': 'REDACTED'
+    'x-ms-creation-time': 'REDACTED'
+    'x-ms-lease-status': 'REDACTED'
+    'x-ms-lease-state': 'REDACTED'
+    'x-ms-blob-type': 'REDACTED'
+    'x-ms-server-encrypted': 'REDACTED'
+    'Date': 'Tue, 11 Feb 2025 05:13:45 GMT'
+2025-02-11 05:13:45,056 - INFO - Request URL: 'https://hlsencoder.blob.core.windows.net/laravel/videos/yE35GZdhczM.mp4'
+Request method: 'HEAD'
+Request headers:
+    'x-ms-version': 'REDACTED'
+    'Accept': 'application/xml'
+    'User-Agent': 'azsdk-python-storage-blob/12.23.1 Python/3.12.5 (Linux-6.5.0-1025-azure-x86_64-with-glibc2.35)'
+    'x-ms-date': 'REDACTED'
+    'x-ms-client-request-id': 'f7845fe7-e836-11ef-8d9e-d310b787d53e'
+    'Authorization': 'REDACTED'
+No body was attached to the request
+2025-02-11 05:13:45,082 - INFO - Response status: 200
+Response headers:
+    'Content-Length': '9074357'
+    'Content-Type': 'video/mp4'
+    'Content-MD5': 'REDACTED'
+    'Last-Modified': 'Tue, 11 Feb 2025 05:13:38 GMT'
+    'Accept-Ranges': 'REDACTED'
+    'ETag': '"0x8DD4A5AD7F4E7FB"'
+    'Vary': 'REDACTED'
+    'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+    'x-ms-request-id': 'ffa9c1b9-d01e-0109-3c43-7c7163000000'
+    'x-ms-client-request-id': 'f7845fe7-e836-11ef-8d9e-d310b787d53e'
+    'x-ms-version': 'REDACTED'
+    'x-ms-creation-time': 'REDACTED'
+    'x-ms-lease-status': 'REDACTED'
+    'x-ms-lease-state': 'REDACTED'
+    'x-ms-blob-type': 'REDACTED'
+    'x-ms-server-encrypted': 'REDACTED'
+    'Date': 'Tue, 11 Feb 2025 05:13:44 GMT'
+2025-02-11 05:13:50,168 - INFO - Posted task to process Video: yE35GZdhczM
+2025-02-11 05:14:09,746 - INFO - Scheduler has been shut down
+2025-02-11 05:14:46,291 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-11 05:14:46,291 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-11 05:14:46,292 - INFO - Added job "LaravelQueueManager.start_queue_worker" to job store "default"
+2025-02-11 05:14:46,292 - INFO - Added job "cron_job" to job store "default"
+2025-02-11 05:14:46,292 - INFO - Scheduler started
+2025-02-11 05:14:46,293 - INFO - Running job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-11 05:14:46 UTC)" (scheduled at 2025-02-11 05:14:46.291194+00:00)
+2025-02-11 05:14:46,294 - INFO - Running job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-11 05:14:46 UTC)" (scheduled at 2025-02-11 05:14:46.291734+00:00)
+2025-02-11 05:14:46,294 - INFO - Running cron job...
+2025-02-11 05:14:46,352 - INFO - Job "LaravelQueueManager.start_queue_worker (trigger: interval[1:00:00], next run at: 2025-02-11 06:14:46 UTC)" executed successfully
+2025-02-11 05:14:46,741 - INFO - Request URL: 'https://hlsencoder.blob.core.windows.net/laravel/videos/a7yNSUkKHXn.mp4'
+Request method: 'HEAD'
+Request headers:
+    'x-ms-version': 'REDACTED'
+    'Accept': 'application/xml'
+    'User-Agent': 'azsdk-python-storage-blob/12.23.1 Python/3.12.5 (Linux-6.5.0-1025-azure-x86_64-with-glibc2.35)'
+    'x-ms-date': 'REDACTED'
+    'x-ms-client-request-id': '1c4ccf0c-e837-11ef-8d9e-d310b787d53e'
+    'Authorization': 'REDACTED'
+No body was attached to the request
+2025-02-11 05:14:46,768 - INFO - Response status: 200
+Response headers:
+    'Content-Length': '146156'
+    'Content-Type': 'video/mp4'
+    'Content-MD5': 'REDACTED'
+    'Last-Modified': 'Tue, 11 Feb 2025 05:14:32 GMT'
+    'Accept-Ranges': 'REDACTED'
+    'ETag': '"0x8DD4A5AF837AA7E"'
+    'Vary': 'REDACTED'
+    'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+    'x-ms-request-id': '3f859925-c01e-0047-7d43-7ca1e6000000'
+    'x-ms-client-request-id': '1c4ccf0c-e837-11ef-8d9e-d310b787d53e'
+    'x-ms-version': 'REDACTED'
+    'x-ms-creation-time': 'REDACTED'
+    'x-ms-lease-status': 'REDACTED'
+    'x-ms-lease-state': 'REDACTED'
+    'x-ms-blob-type': 'REDACTED'
+    'x-ms-server-encrypted': 'REDACTED'
+    'Date': 'Tue, 11 Feb 2025 05:14:45 GMT'
+2025-02-11 05:14:46,770 - INFO - Request URL: 'https://hlsencoder.blob.core.windows.net/laravel/videos/a7yNSUkKHXn.mp4'
+Request method: 'HEAD'
+Request headers:
+    'x-ms-version': 'REDACTED'
+    'Accept': 'application/xml'
+    'User-Agent': 'azsdk-python-storage-blob/12.23.1 Python/3.12.5 (Linux-6.5.0-1025-azure-x86_64-with-glibc2.35)'
+    'x-ms-date': 'REDACTED'
+    'x-ms-client-request-id': '1c4ccf0d-e837-11ef-8d9e-d310b787d53e'
+    'Authorization': 'REDACTED'
+No body was attached to the request
+2025-02-11 05:14:46,792 - INFO - Response status: 200
+Response headers:
+    'Content-Length': '146156'
+    'Content-Type': 'video/mp4'
+    'Content-MD5': 'REDACTED'
+    'Last-Modified': 'Tue, 11 Feb 2025 05:14:32 GMT'
+    'Accept-Ranges': 'REDACTED'
+    'ETag': '"0x8DD4A5AF837AA7E"'
+    'Vary': 'REDACTED'
+    'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+    'x-ms-request-id': '708a4701-e01e-008b-3a43-7cced0000000'
+    'x-ms-client-request-id': '1c4ccf0d-e837-11ef-8d9e-d310b787d53e'
+    'x-ms-version': 'REDACTED'
+    'x-ms-creation-time': 'REDACTED'
+    'x-ms-lease-status': 'REDACTED'
+    'x-ms-lease-state': 'REDACTED'
+    'x-ms-blob-type': 'REDACTED'
+    'x-ms-server-encrypted': 'REDACTED'
+    'Date': 'Tue, 11 Feb 2025 05:14:46 GMT'
+2025-02-11 05:14:46,880 - INFO - Cron job completed.
+2025-02-11 05:14:46,890 - INFO - Job "cron_job (trigger: interval[1:00:00], next run at: 2025-02-11 06:14:46 UTC)" executed successfully
+2025-02-11 05:14:51,864 - INFO - Posted task to process Video: a7yNSUkKHXn
+2025-02-11 05:15:13,928 - INFO - Connected (version 2.0, client OpenSSH_8.9p1)
+2025-02-11 05:15:13,990 - INFO - Authentication (publickey) successful!
+2025-02-11 05:15:14,215 - INFO - Deleted Video: DjtE5J3HKR5
+2025-02-11 05:23:22,707 - INFO - Scheduler has been shut down
+2025-02-11 05:23:27,413 - INFO - Running cron job...
+2025-02-11 05:23:27,742 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 06:23:27,742 - INFO - Running cron job...
+2025-02-11 06:23:28,095 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 07:23:28,095 - INFO - Running cron job...
+2025-02-11 07:23:28,415 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 08:23:28,416 - INFO - Running cron job...
+2025-02-11 08:23:28,731 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 09:23:28,731 - INFO - Running cron job...
+2025-02-11 09:23:29,048 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 10:23:29,048 - INFO - Running cron job...
+2025-02-11 10:23:29,368 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 11:23:29,368 - INFO - Running cron job...
+2025-02-11 11:23:29,703 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 12:23:29,703 - INFO - Running cron job...
+2025-02-11 12:23:30,022 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 13:23:30,022 - INFO - Running cron job...
+2025-02-11 13:23:30,335 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 14:23:30,336 - INFO - Running cron job...
+2025-02-11 14:23:30,644 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 15:23:30,644 - INFO - Running cron job...
+2025-02-11 15:23:30,956 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 16:23:30,956 - INFO - Running cron job...
+2025-02-11 16:23:31,200 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 17:23:31,200 - INFO - Running cron job...
+2025-02-11 17:23:31,467 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 18:23:31,468 - INFO - Running cron job...
+2025-02-11 18:23:31,781 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 19:23:31,781 - INFO - Running cron job...
+2025-02-11 19:23:32,041 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 20:23:32,042 - INFO - Running cron job...
+2025-02-11 20:23:32,352 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 21:23:32,352 - INFO - Running cron job...
+2025-02-11 21:23:32,624 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 22:23:32,625 - INFO - Running cron job...
+2025-02-11 22:23:32,930 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-11 23:23:32,931 - INFO - Running cron job...
+2025-02-11 23:23:33,249 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 00:23:33,249 - INFO - Running cron job...
+2025-02-12 00:23:33,506 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 01:23:33,507 - INFO - Running cron job...
+2025-02-12 01:23:33,773 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 02:23:33,773 - INFO - Running cron job...
+2025-02-12 02:23:34,076 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 03:23:34,076 - INFO - Running cron job...
+2025-02-12 03:23:34,319 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 04:23:34,319 - INFO - Running cron job...
+2025-02-12 04:23:34,629 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 05:23:34,630 - INFO - Running cron job...
+2025-02-12 05:23:34,943 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 06:23:34,944 - INFO - Running cron job...
+2025-02-12 06:23:35,196 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 07:23:35,196 - INFO - Running cron job...
+2025-02-12 07:23:35,485 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 08:23:35,485 - INFO - Running cron job...
+2025-02-12 08:23:35,804 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 09:23:35,805 - INFO - Running cron job...
+2025-02-12 09:23:36,112 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 10:23:36,112 - INFO - Running cron job...
+2025-02-12 10:23:36,374 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 11:23:36,374 - INFO - Running cron job...
+2025-02-12 11:23:36,660 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 12:23:36,660 - INFO - Running cron job...
+2025-02-12 12:23:36,984 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 13:23:36,984 - INFO - Running cron job...
+2025-02-12 13:23:37,301 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 14:23:37,302 - INFO - Running cron job...
+2025-02-12 14:23:37,622 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 15:23:37,622 - INFO - Running cron job...
+2025-02-12 15:23:37,969 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 16:23:37,969 - INFO - Running cron job...
+2025-02-12 16:23:38,281 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 17:23:38,281 - INFO - Running cron job...
+2025-02-12 17:23:38,594 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 18:23:38,595 - INFO - Running cron job...
+2025-02-12 18:23:38,859 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 19:23:38,860 - INFO - Running cron job...
+2025-02-12 19:23:39,177 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 20:23:39,178 - INFO - Running cron job...
+2025-02-12 20:23:39,491 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 21:23:39,492 - INFO - Running cron job...
+2025-02-12 21:23:39,801 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 22:23:39,801 - INFO - Running cron job...
+2025-02-12 22:23:40,114 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-12 23:23:40,115 - INFO - Running cron job...
+2025-02-12 23:23:40,360 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 00:23:40,361 - INFO - Running cron job...
+2025-02-13 00:23:40,677 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 01:23:40,678 - INFO - Running cron job...
+2025-02-13 01:23:40,936 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 02:23:40,937 - INFO - Running cron job...
+2025-02-13 02:23:41,251 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 03:23:41,251 - INFO - Running cron job...
+2025-02-13 03:23:41,560 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 04:23:41,561 - INFO - Running cron job...
+2025-02-13 04:23:41,865 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 05:23:41,865 - INFO - Running cron job...
+2025-02-13 05:23:42,173 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 06:23:42,173 - INFO - Running cron job...
+2025-02-13 06:23:42,427 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 07:23:42,427 - INFO - Running cron job...
+2025-02-13 07:23:42,737 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 08:23:42,737 - INFO - Running cron job...
+2025-02-13 08:23:43,051 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 09:23:43,052 - INFO - Running cron job...
+2025-02-13 09:23:43,365 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 10:23:43,365 - INFO - Running cron job...
+2025-02-13 10:23:43,631 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 11:23:43,632 - INFO - Running cron job...
+2025-02-13 11:23:43,959 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 12:23:43,959 - INFO - Running cron job...
+2025-02-13 12:23:44,213 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 13:23:44,214 - INFO - Running cron job...
+2025-02-13 13:23:44,527 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 14:23:44,527 - INFO - Running cron job...
+2025-02-13 14:23:44,838 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 15:23:44,839 - INFO - Running cron job...
+2025-02-13 15:23:45,154 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 16:23:45,154 - INFO - Running cron job...
+2025-02-13 16:23:45,432 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 17:23:45,432 - INFO - Running cron job...
+2025-02-13 17:23:45,750 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 18:23:45,750 - INFO - Running cron job...
+2025-02-13 18:23:46,065 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 19:23:46,065 - INFO - Running cron job...
+2025-02-13 19:23:46,311 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 20:23:46,312 - INFO - Running cron job...
+2025-02-13 20:23:46,575 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 21:23:46,576 - INFO - Running cron job...
+2025-02-13 21:23:46,908 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 22:23:46,908 - INFO - Running cron job...
+2025-02-13 22:23:47,186 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-13 23:23:47,186 - INFO - Running cron job...
+2025-02-13 23:23:47,437 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-14 00:23:47,437 - INFO - Running cron job...
+2025-02-14 00:23:47,675 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-14 01:23:47,675 - INFO - Running cron job...
+2025-02-14 01:23:47,983 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-14 02:23:47,983 - INFO - Running cron job...
+2025-02-14 02:23:48,300 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
+2025-02-14 03:23:48,301 - INFO - Running cron job...
+2025-02-14 03:23:48,610 - ERROR - Error occurred in cron job: [Errno 5] Input/output error
