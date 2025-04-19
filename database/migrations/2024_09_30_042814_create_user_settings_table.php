@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('logo_url')->default(env('APP_URL') . '/storage/brands/streamify360.png');
             $table->string('website_name')->default('Streamify360');
+            $table->string('player')->default('JWPlayer');
             $table->string('website_url')->default('https://streamify360.com');
             $table->string('player_domain')->nullable()->default(null);
             $table->boolean('player_domain_varified')->default(true);

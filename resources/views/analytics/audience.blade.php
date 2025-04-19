@@ -67,7 +67,6 @@
                         borderWidth: 1,
                         barThickness: 12,
                         maxBarThickness: 15,
-
                     }
                     ]
                 },

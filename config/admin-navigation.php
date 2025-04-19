@@ -15,22 +15,8 @@ return [
                 'label' => 'All Videos',
             ],
             'abuse-reports' => [
-                'route' => 'abuse-reports',
+                'route' => 'abuse-reports.index',
                 'label' => 'Abuse Reports',
-            ],
-        ],
-    ],
-    'servers' => [
-        'label' => 'Servers',
-        'icon' => 'fa-solid fa-server',
-        'submenus' => [
-            'all-servers' => [
-                'route' => 'admin-servers',
-                'label' => 'All Servers',
-            ],
-            'add-server' => [
-                'route' => 'admin-add-server',
-                'label' => 'Add Server',
             ],
         ],
     ],
@@ -44,17 +30,23 @@ return [
             ],
         ],
     ],
+    'servers' => [
+        'label' => 'Servers',
+        'icon' => 'fa-solid fa-server',
+        'submenus' => [
+            'all-servers' => [
+                'route' => 'servers.index',
+                'label' => 'All Servers',
+            ],
+        ],
+    ],
     'settings' => [
         'label' => 'Settings',
-        'icon' => 'fa-solid fa-wrench',
+        'icon' => 'fa-solid fa-gear',
         'submenus' => [
-            'video-settings' => [
-                'route' => 'video-settings',
-                'label' => 'Video Settings',
-            ],
-            'config-setting' => [
-                'route' => 'config-setting',
-                'label' => 'System Configuration',
+            'all-settings' => [
+                'route' => 'system-settings.index',
+                'label' => 'System Settings',
             ],
         ],
     ],

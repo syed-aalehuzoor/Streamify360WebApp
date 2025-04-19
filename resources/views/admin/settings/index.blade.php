@@ -1,35 +1,41 @@
-<x-admin-panel>
-    <h1 class="font-semibold text-lg text-gray-800 mb-6">Settings</h1>
+@extends('layouts.admin-panel')
 
-    @if(session('success'))
-        <div class="bg-green-100 text-green-700 border border-green-300 rounded-lg p-4 mb-6">
-            {{ session('success') }}
-        </div>
-    @endif
+@section('pageHeading')
+    Edit User
+@endsection
 
-    <div class="bg-white shadow-xl rounded-lg p-8 space-y-6">
-        <form action="{{ route('config-setting.update') }}" class="flex flex-col gap-6" method="POST">
+@section('content')    
+        <form action="{{ route('system-settings.store') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow rounded-lg flex flex-col gap-4 p-6">
             @csrf
             @method('POST')
-
-            <!-- Loop through the settings dynamically -->
-            @foreach($settings as $setting)
-                <div class="form-group">
-                    <label for="{{ $setting->key }}" class="font-medium text-gray-700">
-                        {{ ucwords(str_replace('_', ' ', $setting->key)) }}:
-                    </label>
-
-                    <x-input type="text" name="{{ $setting->key }}" value="{{ old($setting->key, $setting->value) }}" placeholder="Enter {{ $setting->key }} here..." class="form-control border rounded-md mt-1 p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
-
-                    @error($setting->key)
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+            <div x-data="{opened:1}">
+                <div class="flex border-b border-gray-300">
+                    <div x-on:click="opened = 1" class="py-1 px-3 cursor-pointer">General</div>
+                    <div x-on:click="opened = 2" class="py-1 px-3 cursor-pointer">Mail</div>
+                    <div x-on:click="opened = 3" class="py-1 px-3 cursor-pointer">Ads</div>
                 </div>
-            @endforeach
-
-            <div class="flex justify-end">
-                <x-button type="submit" class="w-fit">Save Settings</x-button>
+                <div class="py-4">
+                    <div x-show="opened == 2" class="flex flex-col gap-4">
+                        @foreach ($mailSettings as $setting)
+                            <div class="flex flex-col gap-1">
+                                <label for="{{ $setting->key }}" class="text-sm font-semibold text-gray-700">{{ $setting->key }}:</label>
+                                <input type="text" name="{{ $setting->key }}" value="{{ $setting->value }}" class="border border-gray-300 rounded-lg p-2">
+                            </div>
+                        @endforeach
+                    </div>
+                    <div x-show="opened == 3" class="flex flex-col gap-4">
+                        @foreach ($adsSettings as $setting)
+                            <div class="flex flex-col gap-1">
+                                <label for="{{ $setting->key }}" class="text-sm font-semibold text-gray-700">{{ $setting->key }}:</label>
+                                <input type="text" name="{{ $setting->key }}" value="{{ $setting->value }}" class="border border-gray-300 rounded-lg p-2">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>                
+            </div>
+            <div class="flex items-center gap-4 justify-end">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Save</button>
+                <a href="{{ route('settings.index') }}" class="text-gray-500 hover:text-gray-700">Cancel</a>
             </div>
         </form>
-    </div>
-</x-admin-panel>
+@endsection

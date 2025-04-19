@@ -29,6 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'google_id',
+        'userplan_expiry',
         'user_status',
         'usertype',
         'userplan'
@@ -80,6 +81,26 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function settings()
+    {
+        return $this->hasOne(UserSetting::class, 'user_id');        
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'userid');
+    }
+
+    public function abuseReports()
+    {
+        return $this->hasManyThrough(
+            AbuseReport::class,
+            Video::class,
+            'userid',
+            'video_id'
+        );
     }
 
     public function hasPlan($plan)

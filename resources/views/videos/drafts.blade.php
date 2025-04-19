@@ -28,7 +28,7 @@
             @foreach ($videos as $video)
                 <tr class="border-b hover:bg-gray-50">
                     <td class="p-3">
-                        <a href="{{ route('videos.add-new', ['currentStep' => 2, 'video_id'=> $video->id]) }}" target="_blank" class="text-blue-500 text-sm hover:underline">
+                        <a href="{{ route('videos.add-new', ['video_id'=> $video->id]) }}" target="_blank" class="text-blue-500 text-sm hover:underline">
                             {{ $video->name }}
                         </a>
                     </td>

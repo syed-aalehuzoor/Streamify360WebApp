@@ -3,79 +3,75 @@
 namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
+use App\Services\AzureBatchService;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use App\Models\Video;
+use DateTime;
+use Exception;
 
 class ProcessVideo implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, Queueable;
+
     protected $videoId;
 
-    /**
-     * Create a new job instance.
-     *
-     * @param  int  $videoId
-     * @return void
-     */
     public function __construct($videoId)
     {
         $this->videoId = $videoId;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function retryUntil(): DateTime
     {
-        try {
-            $response = Http::post('http://127.0.0.1:5000/api/process_video/'.$this->videoId);
+        return now()->addMinutes(30);
+    }
 
-            // Optionally check if the request was successful
-            if ($response->failed()) {
-                throw new Exception('Failed to delete video');
-            }
-        } catch (Exception $e) {
-            // The job will automatically retry if it fails (we'll set retry logic next).
-            throw $e;
+    public function handle(AzureBatchService $azureBatchService)
+    {
+        $video = Video::find($this->videoId);
+        if(!$video->is_blob_file){
+            return $this->release(20);
         }
+        $server = $video->server;
+        $base_url = 'https://' . config('services.azure.storage_name') . '.blob.core.windows.net/' . config('services.azure.storage_container') . '/';
+        $video_ext = pathinfo($video->video_url, PATHINFO_EXTENSION) ?: 'mp4';
+        $command = "python3 run.py --key {$this->videoId} --domain {$server->domain} --serverip {$server->ip} --max_workers 16 --video video.mp4";
+
+        $resourceFiles = [
+            [
+                'filePath' => "video.{$video_ext}",
+                'httpUrl'  => "{$base_url}{$video->video_url}",
+            ],
+            [
+                'filePath' => "run.py",
+                'httpUrl'  => "https://hlsencoder.blob.core.windows.net/scripts/run.py?sp=r&st=2024-11-12T13:51:25Z&se=2025-11-10T21:51:25Z&spr=https&sv=2022-11-02&sr=b&sig=nLtpVN%2FitaWF6hreT3nFI4NW%2FJ0ttlEpvf5P4CbOPTU%3D",
+            ],
+            [
+                'filePath' => "streamify360.pem",
+                'httpUrl'  => "https://hlsencoder.blob.core.windows.net/scripts/streamify360.pem?sp=r&st=2024-11-12T13:54:24Z&se=2025-11-10T21:54:24Z&spr=https&sv=2022-11-02&sr=b&sig=3T7YjhC7wHRyOLCDweFhQAtd4EMT7zUpbaQMn2Yspxs%3D",
+                'fileMode' => '0400'
+            ],
+        ];
+
+        if ($video->thumbnail_url) {
+            $thumb_ext = pathinfo($video->thumbnail_url, PATHINFO_EXTENSION) ?: 'mp4';
+            $resourceFiles[] = [
+                'filePath' => "thumbnail.{$thumb_ext}",
+                'httpUrl'  => "{$base_url}{$video->thumbnail_url}",
+            ];
+            $command .= " --thumbnail " . "thumbnail.{$thumb_ext}";
+        }
+        $jobId = 'Job1';
+        $azureBatchService->addTask($jobId, $this->videoId, $command, $resourceFiles);
+        VideoProcessCheck::dispatch($this->videoId);
     }
 
-    /**
-     * Determine the number of seconds before the job should be retried.
-     *
-     * @param  \Exception  $exception
-     * @return int
-     */
-    public function retryUntil()
-    {
-        // Retry for 3 minutes (or your preferred timeout)
-        return now()->addMinutes(3);
-    }
-
-    /**
-     * Get the number of retries for this job.
-     *
-     * @return int
-     */
-    public function tries()
-    {
-        return 3;  // Retry up to 3 times
-    }
-
-    /**
-     * Handle job failure.
-     *
-     * @param \Exception $exception
-     * @return void
-     */
-    // app/Jobs/ProcessVideo.php
     public function failed(\Throwable $exception)
     {
-        $video = Video::where('id', $this->video_id)->first();
+        $video = Video::where('id', $this->videoId)->first();
         $video->update(['status' => 'Failed']);
-        \Log::error('Job failed: ' . $exception->getMessage());
+        Log::error('Job failed: ' . $exception->getMessage());
     }
 }

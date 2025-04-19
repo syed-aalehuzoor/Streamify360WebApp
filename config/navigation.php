@@ -37,14 +37,14 @@ return [
             'performance-videos-list' => [
                 'route' => 'performance-videos-list',
                 'label' => 'Video Performance',
-                'plans' => ['premium', 'enterprise'],
-                'tooltip' => 'Coming Soon!'
+                'plans' => ['basic', 'premium', 'enterprise'],
+                'tooltip' => ''
             ],
             'audience-videos-list' => [
                 'route' => 'audience-videos-list',
                 'label' => 'Audience Insights',
-                'plans' => ['premium', 'enterprise'],
-                'tooltip' => 'Coming Soon!'
+                'plans' => ['basic', 'premium', 'enterprise'],
+                'tooltip' => ''
             ],
         ],
     ],
@@ -85,24 +85,6 @@ return [
                 'label' => 'Subscription',
                 'plans' => ['basic', 'premium', 'enterprise'],
                 'tooltip' => 'Manage your subscription'
-            ],
-        ],
-    ],
-    'tools' => [
-        'label' => 'Tools',
-        'icon' => 'fa-solid fa-wrench',
-        'submenus' => [
-            'subtitle-translator' => [
-                'route' => 'subtitle-translator',
-                'label' => 'Subtitle Translator',
-                'plans' => [],
-                'tooltip' => 'Coming Soon!'
-            ],
-            'tools' => [
-                'route' => 'tools',
-                'label' => 'SRT to ASS',
-                'plans' => [],
-                'tooltip' => 'Coming Soon!'
             ],
         ],
     ],

@@ -68,52 +68,7 @@
                 <input type="text" wire:model="videoname" id="videoname" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @error('videoname') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
-
-            <!-- Logo Upload with Progress -->
-            <div x-data="{ isUploadingLogo: false, progressLogo: 0 }">
-
-                <label for="logo" class="block text-sm font-medium text-gray-700">Logo (optional):</label>
-                <input type="file" wire:model="logo" id="logo" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if (!in_array($user->userplan, config('features.logo_hardcoding'))) disabled title="Upgrade plan to get this Feature." @endif
-                    x-on:livewire-upload-start="isUploadingLogo = true"
-                    x-on:livewire-upload-finish="isUploadingLogo = false"
-                    x-on:livewire-upload-error="isUploadingLogo = false"
-                    x-on:livewire-upload-progress="progressLogo = $event.detail.progress">
-                @error('logo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-
-                <!-- Progress Bar for Logo -->
-                <div x-show="isUploadingLogo" class="mt-2">
-                    <div class="relative h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                        <div class="absolute top-0 left-0 h-full bg-blue-500 transition-all duration-300" :style="{ width: progressLogo + '%' }"></div>
-                    </div>
-                    <div class="flex justify-between items-center mt-1 text-xs text-gray-600">
-                        <div class="font-semibold">Uploading logo...</div>
-                        <div class="font-medium"><span x-text="progressLogo"></span>%</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Subtitle Upload with Progress -->
-            <div x-data="{ isUploadingSubtitle: false, progressSubtitle: 0 }">
-                <label for="subtitle" class="block text-sm font-medium text-gray-700">Subtitle (optional):</label>
-                <input type="file" accept=".ass" wire:model="subtitle" id="subtitle" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if (!in_array($user->userplan, config('features.subtitle_hardcoding'))) disabled title="Upgrade plan to get this Feature." @endif
-                    x-on:livewire-upload-start="isUploadingSubtitle = true"
-                    x-on:livewire-upload-finish="isUploadingSubtitle = false"
-                    x-on:livewire-upload-error="isUploadingSubtitle = false"
-                    x-on:livewire-upload-progress="progressSubtitle = $event.detail.progress">
-                @error('subtitle') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-
-                <!-- Progress Bar for Subtitle -->
-                <div x-show="isUploadingSubtitle" class="mt-2">
-                    <div class="relative h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                        <div class="absolute top-0 left-0 h-full bg-blue-500 transition-all duration-300" :style="{ width: progressSubtitle + '%' }"></div>
-                    </div>
-                    <div class="flex justify-between items-center mt-1 text-xs text-gray-600">
-                        <div class="font-semibold">Uploading subtitle...</div>
-                        <div class="font-medium"><span x-text="progressSubtitle"></span>%</div>
-                    </div>
-                </div>
-            </div>
-
+              
             <!-- Thumbnail Upload with Progress -->
             <div x-data="{ isUploadingThumbnail: false, progressThumbnail: 0 }">
                 <label for="thumbnail" class="block text-sm font-medium text-gray-700">Thumbnail (optional):</label>

@@ -7,13 +7,12 @@ import mysql.connector
 from dotenv import load_dotenv
 from azure.storage.blob import ContainerSasPermissions, BlobSasPermissions, generate_blob_sas, generate_container_sas, BlobServiceClient
 import datetime
-from pytubefix import YouTube
 from paramiko import SSHClient, AutoAddPolicy, RSAKey
 from urllib.parse import urlparse
 import gdown
 from logging import basicConfig, info as log_info, error as log_error, INFO, getLogger, WARNING
-import itertools
 from pytubefix import YouTube
+import subprocess
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(script_dir, '../.env'))
@@ -51,6 +50,12 @@ credentials = ServicePrincipalCredentials(
 )
 
 batch_client = BatchServiceClient(credentials, batch_url=BATCH_ACCOUNT_URL)
+
+def run_command(command, key = '<VideoID>'):
+    command_string = " ".join(command) if isinstance(command, list) else command
+    log_info(f'Video ID: {key}, Running Command: {command_string}')
+    result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    log_info(f'Video ID: {key}, Completed Command: {command_string}')
 
 def is_youtube_url(url):
     parsed_url = urlparse(url)
@@ -153,26 +158,54 @@ def get_file_extension(file_url):
     """
     return os.path.splitext(file_url)[1]  # Get the file extension from the URL
 
-def post_task(video_id):
+def download_video(video_key):
+    connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_database)
+    cursor = connection.cursor(dictionary=True)    
+    cursor.execute("SELECT * FROM videos WHERE id = %s", (video_key,))
+    video = cursor.fetchone()
+    if not video:
+        raise Exception(f"Video with ID {video_key} not found")
+    
+    url = video['video_url']
+    if is_youtube_url(url):
+        blob_name = download_from_youtube(video_key, url)
+    elif is_google_drive_url(url):
+        blob_name = download_from_drive(video_key, url)
+    elif is_direct_mp4_url(url):
+        blob_name = download_Direct_mp4(video_key, url)
+    elif is_blob_exists(url):
+        blob_name = url
+    else:
+        raise Exception("Invalid Video URL")
+    
+    if is_blob_exists(blob_name=blob_name):
+        update_query = """
+            UPDATE videos 
+            SET is_blob_file = 1, video_url = %s 
+            WHERE id = %s
+        """
+        cursor.execute(update_query, (blob_name, video_key))
+        connection.commit()
+
+def post_task(video_key):
     try:
         expected_processing_time = 60
         post_task_connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_database)
         post_task_cursor = post_task_connection.cursor(dictionary=True)
-        post_task_cursor.execute("SELECT * FROM videos WHERE id = %s", (video_id,))
+        post_task_cursor.execute("SELECT * FROM videos WHERE id = %s", (video_key,))
         video = post_task_cursor.fetchone()
         if not video:
-            raise Exception(f'Video with ID: {video_id} not found')
+            raise Exception(f'Video with ID: {video_key} not found')
 
-        id = video['id']
         post_task_cursor.execute("SELECT * FROM servers WHERE id = %s", [video['serverid']])
         server = post_task_cursor.fetchone()
         if not server:
             raise Exception(f'Server with ID: {video["serverid"]} not found')
         
         update_query = "UPDATE videos SET status = 'Processing' WHERE id = %s"
-        post_task_cursor.execute(update_query, (id,))
+        post_task_cursor.execute(update_query, (video_key,))
         post_task_connection.commit()
-        print(f'Posting the task for Video: {id}')
+        print(f'Posting the task for Video: {video_key}')
 
         # Extract data from the video record
         userplan_query = "SELECT userplan FROM users WHERE id = %s"
@@ -192,21 +225,20 @@ def post_task(video_id):
                     file_path=f'streamify360.pem', file_mode= '0400'
             )
         ]
-    
         if is_youtube_url(video['video_url']):
-            blob_name = download_from_youtube(video_key=id, url=video['video_url'])
+            blob_name = download_from_youtube(video_key=video_key, url=video['video_url'])
         elif is_google_drive_url(video['video_url']):
-            blob_name = download_from_drive(video_key=id, url=video['video_url'])
+            blob_name = download_from_drive(video_key=video_key, url=video['video_url'])
         elif is_direct_mp4_url(video['video_url']):
-            blob_name = download_Direct_mp4(video_key=id, url=video['video_url'])
+            blob_name = download_Direct_mp4(video_key=video_key, url=video['video_url'])
         elif is_blob_exists(video['video_url']):
             blob_name = video['video_url']
         else:
             raise Exception('Invalid Video URL')
         
-        expected_processing_time = blob_size(blob_name) / ( 1024 * 1024 * 256 )
+        expected_processing_time = blob_size(blob_name) / ( 1024 * 1024 * 50 )
         extension = get_file_extension(blob_name)
-        video_filename = f"video-{id}{extension}"
+        video_filename = f"video-{video_key}{extension}"
 
         resource_files.append(
             models.ResourceFile(
@@ -215,12 +247,25 @@ def post_task(video_id):
             )
         )
 
-        command = f'python3 run.py --key {id} --domain {server['domain']} --serverip {server['ip']} --max_workers {threads} --video {video_filename}'
+        command = f"python3 run.py --key {video_key} --domain {server['domain']} --serverip {server['ip']} --max_workers {threads} --video {video_filename}"
+
+        thumbnail_url = video['thumbnail_url']
+        if thumbnail_url:
+            thumbnail_ext = get_file_extension(thumbnail_url)
+            thumbnail_filename = f"thumbnail-{video_key}{thumbnail_ext}"
+            resource_files.append(models.ResourceFile(
+                http_url=create_sas_url(blob_name=video['thumbnail_url']),
+                file_path=thumbnail_filename
+            ))
+            command += f' --thumbnail {thumbnail_filename}'
+            new_manifest_url = f"https://streambox.streamify360.net/streams/{video_key}/{thumbnail_filename}"
+            update_query = "UPDATE videos SET thumbnail_url = %s WHERE id = %s"
+            post_task_cursor.execute(update_query, (new_manifest_url, video_key))
 
         logo_url = video['logo_url']
         if logo_url:
             logo_ext = get_file_extension(logo_url)
-            logo_filename = f"logo-{id}{logo_ext}"
+            logo_filename = f"logo-{video_key}{logo_ext}"
             resource_files.append(models.ResourceFile(
                 http_url=create_sas_url(blob_name=video['logo_url']),
                 file_path=logo_filename
@@ -230,36 +275,41 @@ def post_task(video_id):
         subtitle_url = video['subtitle_url']
         if subtitle_url:
             subtitle_ext = get_file_extension(subtitle_url)
-            subtitle_filename = f"subtitle-{id}{subtitle_ext}"    
+            subtitle_filename = f"subtitle-{video_key}{subtitle_ext}"    
             resource_files.append(models.ResourceFile(
                 http_url=create_sas_url(blob_name=video['subtitle_url']),
                 file_path=subtitle_filename
             ))
             command += f' --subtitle {subtitle_filename}'
 
+        if logo_url or subtitle_url:
+            expected_processing_time = expected_processing_time * 10
+
         # Create the task with dynamically generated file names
         batch_client.task.add(
             job_id='job1',
             task=models.TaskAddParameter(
-                id=id,
+                id=video_key,
                 command_line=command,  # Single string with command line
                 resource_files=resource_files,
                 constraints=models.TaskConstraints(retention_time=datetime.timedelta(minutes=60))
             )
         )
 
-        # Update video status in the database to 'Processing' after posting job
         expected_processing_time = max(expected_processing_time, 5)
+
         sleep(expected_processing_time)
+        update_query = f"UPDATE videos SET manifest_url = 'https://streambox.streamify360.net/streams/{video_key}/master.m3u8' WHERE id = %s"
+        post_task_cursor.execute(update_query, (video_key,))
         update_query = "UPDATE videos SET status = 'live' WHERE id = %s"
-        post_task_cursor.execute(update_query, (id,))
+        post_task_cursor.execute(update_query, (video_key,))
         post_task_connection.commit()
-        log_info(f'Posted task to process Video: {id}')
+        log_info(f'Posted task to process Video: {video_key}')
 
     except Exception as e:
-        log_error(f'Failed to post Task for Video: {id}\nError: {e}')
+        log_error(f'Failed to post Task for Video: {video_key}\nError: {e}')
         update_query = "UPDATE videos SET status = 'Failed' WHERE id = %s"
-        post_task_cursor.execute(update_query, (id,))
+        post_task_cursor.execute(update_query, (video_key,))
         post_task_connection.commit()
 
 
@@ -295,7 +345,7 @@ def delete_draft_videos(videos):
 
     delete_expired_draft_videos_cursor = delete_expired_draft_videos_connection.cursor(dictionary=True)
     for video in videos:
-        log_info(f'Deleting Expired Draft Video {video['id']}')
+        log_info(f"Deleting Expired Draft Video {video['id']}")
         delete_video_query = "DELETE FROM videos WHERE id = %s"
         delete_expired_draft_videos_cursor.execute(delete_video_query, (video['id'],))
         delete_expired_draft_videos_connection.commit()  # Commit the transaction

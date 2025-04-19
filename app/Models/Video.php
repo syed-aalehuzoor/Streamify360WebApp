@@ -19,7 +19,9 @@ class Video extends Model
         'userid',
         'serverid',
         'status',
+        'publication_status',
         'manifest_url',
+        'is_blob_file',
         'video_url',
         'thumbnail_url',
         'subtitle_url',
@@ -38,8 +40,18 @@ class Video extends Model
         });
     }
 
+    public function abuseReports()
+    {
+        return $this->hasMany(AbuseReport::class, 'video_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'userid');
+    }
+
+    public function server()
+    {
+        return $this->belongsTo(Server::class, 'serverid');
     }
 }

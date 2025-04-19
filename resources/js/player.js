@@ -25,12 +25,29 @@ class VideoPlayer {
 
     initElements() {
         this.playerWrapper = document.getElementById('playerWrapper');
+        this.contextMenu = document.getElementById('contextMenu');
+        
+        this.playerWrapper.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            this.contextMenu.style.top = `${event.clientY}px`;
+            this.contextMenu.style.left = `${event.clientX}px`;
+            this.contextMenu.style.display = 'block';
+            document.addEventListener('click', () => {
+                this.contextMenu.style.display = 'none';
+            }, { once: true });
+        });
+        
         this.videoThumbnailOverlay = document.getElementById('videoThumbnailOverlay');
         this.loader = document.getElementById('loader');
         this.initPlay = document.getElementById('initPlay');
         this.videoElement = document.getElementById('videoPlayer');
         this.adVideo = document.getElementById('advertisment');
-        this.playerWrapper.style.setProperty('height', `${window.innerHeight}px`);
+        this.adContainer = document.getElementById('adContainer');
+        const updatePlayerHeight = () => {
+            this.playerWrapper.style.height = `${window.innerHeight}px`;
+        };
+        updatePlayerHeight();
+        window.addEventListener('resize', updatePlayerHeight);
         if(document.getElementById('videoControlsOverlay')){
             this.videoControlsOverlay = document.getElementById('videoControlsOverlay');
             this.seekBarCurrent = document.getElementById('seekBarCurrentProgress');
@@ -78,7 +95,7 @@ class VideoPlayer {
     }
     
     playVideo() {
-        this.adVideo.remove();
+        this.adContainer.remove();
         this.attachControls();
         this.videoElement.style.display = 'block';
         this.togglePlay(true);
@@ -86,10 +103,21 @@ class VideoPlayer {
 
     showAd(mediaFile) {
         this.videoElement.style.display = 'none';
-        this.adVideo.style.display = 'block';
+        this.adContainer.style.display = 'block';
         this.videoElement.pause();
+        const timerDisplay = document.getElementById("timer");
+        this.adVideo.addEventListener("loadedmetadata", () => {
+            let duration = Math.floor(this.adVideo.duration);
+            timerDisplay.textContent = duration;
+            this.adVideo.addEventListener('timeupdate', ()=>{
+                timerDisplay.textContent = duration - (Math.floor(this.adVideo.currentTime));
+            });
+        });
         this.adVideo.src = mediaFile;
         this.adVideo.play();
+        this.adContainer.addEventListener('click', () => {
+            this.adVideo.paused ? this.adVideo.play() : this.adVideo.pause();
+        });
         this.adVideo.addEventListener('ended', () => this.playVideo(), { once: true });
     }
 
@@ -105,7 +133,6 @@ class VideoPlayer {
         };
         this.playerState.availableResolutions.forEach((level, index) => createQualityButton(`${level.height}p`));
         createQualityButton('Auto');
-        //this.setQuality(this.playerState.currentResolution);
 
         this.videoElement.addEventListener('timeupdate', ()=>{
             this.playerState.currentTime = Math.round(this.videoElement.currentTime);            
@@ -129,20 +156,20 @@ class VideoPlayer {
             this.playerState.playbackSpeeds.forEach(speed => this.createSpeedButton(speed));
         }
         this.setPlaybackSpeed(this.playerState.currentPlaybackSpeed);
-        this.updateVolume(this.playerState.volume);
-        
+        this.updateVolume(this.playerState.volume);        
+
         this.volumeSeek.addEventListener("mousedown", (e) =>
-            this.handleSeek(e, "mousemove", "mouseup", this.volumeSeek, (r) => this.updateVolume(r))
+            this.handlePointerSeek(e, this.volumeSeek, (r) => this.updateVolume(r))
         );
         this.volumeSeek.addEventListener("touchstart", (e) =>
-            this.handleSeek(e, "touchmove", "touchend", this.volumeSeek, (r) => this.updateVolume(r))
+            this.handlePointerSeek(e, this.volumeSeek, (r) => this.updateVolume(r))
         );
 
         this.videoSeek.addEventListener("mousedown", (e) =>
-            this.handleSeek(e, "mousemove", "mouseup", this.videoSeek, (r) => this.updateVideoTime(r))
+            this.handlePointerSeek(e, this.videoSeek, (r) => this.updateVideoTime(r))
         );
         this.videoSeek.addEventListener("touchstart", (e) =>
-            this.handleSeek(e, "touchmove", "touchend", this.videoSeek, (r) => this.updateVideoTime(r))
+            this.handlePointerSeek(e, this.videoSeek, (r) => this.updateVideoTime(r))
         );
     }
 
@@ -154,18 +181,24 @@ class VideoPlayer {
         callback(ratio);
     };
 
-    handleSeek = (startEvent, moveEvent, endEvent, seekElement, updateCallback) => {
-        const moveHandler = (e) =>
-            this.updateSeek(e.clientX || e.touches[0].clientX, seekElement, updateCallback);
-        const endHandler = () => {
-            document.removeEventListener(moveEvent, moveHandler);
-            document.removeEventListener(endEvent, endHandler);
+    handlePointerSeek(startEvent, seekElement, updateCallback) {
+        const update = (clientX) => {
+            const rect = seekElement.getBoundingClientRect();
+            const ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+            updateCallback(ratio);
         };
-        this.updateSeek(startEvent.clientX || startEvent.touches[0].clientX, seekElement, updateCallback);
-        document.addEventListener(moveEvent, moveHandler);
-        document.addEventListener(endEvent, endHandler);
-    };
-
+    
+        const pointerMoveHandler = (e) => update(e.clientX || e.touches[0].clientX);
+        const pointerEndHandler = () => {
+            document.removeEventListener('pointermove', pointerMoveHandler);
+            document.removeEventListener('pointerup', pointerEndHandler);
+        };
+    
+        update(startEvent.clientX || startEvent.touches[0].clientX);
+        document.addEventListener('pointermove', pointerMoveHandler);
+        document.addEventListener('pointerup', pointerEndHandler);
+    }
+    
     updateVolume (ratio) {
         const volume = ratio;
         this.playerState.volume = volume;
@@ -283,10 +316,10 @@ class VideoPlayer {
     toggleFullScreen() {
         this.playerState.fullscreen = !this.playerState.fullscreen;
         const enterFullscreen = () => {
-            if (playerWrapper.requestFullscreen) playerWrapper.requestFullscreen();
-            else if (playerWrapper.mozRequestFullScreen) playerWrapper.mozRequestFullScreen(); // Firefox
-            else if (playerWrapper.webkitRequestFullscreen) playerWrapper.webkitRequestFullscreen(); // Chrome, Safari, Opera
-            else if (playerWrapper.msRequestFullscreen) playerWrapper.msRequestFullscreen(); // IE/Edge
+            if (this.playerWrapper.requestFullscreen) this.playerWrapper.requestFullscreen();
+            else if (this.playerWrapper.mozRequestFullScreen) this.playerWrapper.mozRequestFullScreen(); // Firefox
+            else if (this.playerWrapper.webkitRequestFullscreen) this.playerWrapper.webkitRequestFullscreen(); // Chrome, Safari, Opera
+            else if (this.playerWrapper.msRequestFullscreen) this.playerWrapper.msRequestFullscreen(); // IE/Edge
         };
 
         const exitFullscreen = () => {
@@ -296,10 +329,10 @@ class VideoPlayer {
             else if (document.msExitFullscreen) document.msExitFullscreen(); // IE/Edge
         };
 
-        if (this.playerState.fullscreen && document.fullscreenElement !== playerWrapper) {
+        if (this.playerState.fullscreen && document.fullscreenElement !== this.playerWrapper) {
             enterFullscreen();
             this.fullscreenButton.classList.replace('fa-expand', 'fa-compress');
-        } else if (!this.playerState.fullscreen && document.fullscreenElement === playerWrapper) {
+        } else if (!this.playerState.fullscreen && document.fullscreenElement === this.playerWrapper) {
             exitFullscreen();
             this.fullscreenButton.classList.replace('fa-compress', 'fa-expand');
         }

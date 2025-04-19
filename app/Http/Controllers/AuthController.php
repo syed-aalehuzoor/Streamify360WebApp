@@ -24,7 +24,6 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return redirect('/login')->with('error', 'Failed to authenticate with Google.');
         }
-        
         $user = User::updateOrCreate([
             'email' => $googleUser->getEmail(),
         ], [
@@ -32,6 +31,9 @@ class AuthController extends Controller
             'google_id' => $googleUser->getId(),
             'password' => bcrypt(Str::random(24)),
         ]);
+        $user->forceFill([
+            'email_verified_at' => now(),
+        ])->save();
         if ($googleUser->getAvatar()) {
             $this->storeProfilePhoto($user, $googleUser->getAvatar());
         }

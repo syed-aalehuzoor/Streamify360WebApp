@@ -1,5 +1,9 @@
-<x-guest-layout>
-    <x-authentication-card>
+@extends('layouts.guest')
+
+@section('content')
+<x-authentication-card>
+
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <x-slot name="logo">
             <x-authentication-card-logo />
         </x-slot>
@@ -45,6 +49,7 @@
                     </x-label>
                 </div>
             @endif
+            <div class="g-recaptcha" data-sitekey="6Ld6BQsrAAAAADZQF82inGc9GHF9eSNT88_UGQMB"></div>
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
@@ -69,4 +74,4 @@
             </a>
         </div>
     </x-authentication-card>
-</x-guest-layout>
+@endsection

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\ProcessVideo;
+use App\Jobs\DownloadVideo;
+use App\Services\AzureBatchService;
 
 class VideoForm extends Component
 {
@@ -37,9 +39,9 @@ class VideoForm extends Component
         $extension = pathinfo(Storage::path($finalFile), PATHINFO_EXTENSION);
         $video = $this->createVideo("Untitled", 'pending');
         $azurePath = "videos/{$video->id}.{$extension}";
-        
-        Storage::disk('azure')->put($azurePath, Storage::get($finalFile));
         $video->update(['video_url' => $azurePath]);
+        Storage::disk('azure')->put($azurePath, Storage::get($finalFile));
+        $video->update(['is_blob_file' => true]);
     }
 
     public function render(){
@@ -58,6 +60,8 @@ class VideoForm extends Component
         ]);
         $this->video_id = $video->id;
         $this->currentStep = 2;
+        DownloadVideo::dispatch($this->video_id);
+        ProcessVideo::dispatch($this->video_id)->delay(now()->addSeconds(5));
         return $video;
     }
     
@@ -106,24 +110,28 @@ class VideoForm extends Component
         }
     }
 
-    public function submitVideoMetaAndOthers() {
+    public function submitVideoMetaAndOthers(AzureBatchService $azureBatchService) {
         $this->validate(['videoname' => 'required|string|max:255']);
         $user = Auth::user();
         $video = Video::where('id', $this->video_id)->where('userid', $user->id)->first();
-        $video->update([
-            'name' => $this->videoname,
-            'manifest_url' => 'https://streambox.streamify360.net/streams/'.$this->video_id.'/master.m3u8'
-        ]);
         if ($user->userplan == 'enterprise'){
             $this->handleEnterpriseUploads($video);
         }
         if ($this->thumbnail) {
             $this->validate(['thumbnail' => 'image|max:1024']);
-            $thumbnailPath = $this->thumbnail->storeAs('thumbnails', $this->video_id . '.' . $this->thumbnail->getClientOriginalExtension(), 'public');
-            $video->update(['thumbnail_url' => $thumbnailPath]);
+            $path = $this->thumbnail->store('thumbnails', 'public');
+            $video->update(['thumbnail_url' => $path]);
         }
-        ProcessVideo::dispatch($this->video_id);
-        $video->update(['status' => 'Initiated']);
+        
+        $server = $video->server;
+        $extension = pathinfo($video->videoUrl, PATHINFO_EXTENSION) ?: 'mp4';
+        $video->update([
+            'name' => $this->videoname,
+        ]);
+        Video::where('id', $video->id)
+            ->where('status', '!=', 'live')
+            ->update(['status' => 'Processing']);
+   
         return redirect()->route('videos.index')->with('success', 'Video uploaded is being processed!');
     }
 

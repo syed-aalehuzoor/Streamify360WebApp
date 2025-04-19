@@ -22,3 +22,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/finalize', [FileUploadController::class, 'finalizeUpload']);
 });
 
+/*
+Route::prefix('/api/v1')->group(function () {
+    Route::post('/initiate', [FileUploadController::class, 'initiateUpload']);
+    Route::post('/upload-chunk', [FileUploadController::class, 'uploadChunk']);
+    Route::post('/finalize', [FileUploadController::class, 'finalizeUpload']);
+});*/

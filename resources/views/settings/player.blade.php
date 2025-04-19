@@ -39,7 +39,7 @@
     <!-- Tabs Navigation -->
     <div class="flex flex-wrap mb-4">
         <x-tab tabId="1" tabName="Assets" icon="fa-solid fa-anchor" />
-        <x-tab tabId="2" tabName="Theme" icon="fa-solid fa-paint-roller" />
+        <x-tab tabId="2" tabName="Player" icon="fa-solid fa-paint-roller" />
         <x-tab tabId="3" tabName="Options" icon="fa-solid fa-gears" />
     </div>
 
@@ -103,10 +103,16 @@
                 <button type="button" id="add-domain" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Add Domain</button>
             </div>
 
-            {{-- TAB 2: Theme --}}
+            {{-- TAB 2: Player --}}
             <div x-show="activeTab === 2" class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <label for="player">Player:</label>
+                    <select name="player" class="w-1/2 rounded-lg">
+                        <option value="JWPlayer" @selected($settings->player === 'JWPlayer')>JW Player</option>
+                    </select>
+                </div>
                 @foreach ($colorCustomization as $key => $value)
-                    <div class="flex flex-col gap-2">
+                    <div class="flex justify-between items-center">
                         <label class="text-sm font-medium text-gray-600">
                             {{ ucfirst(str_replace('_', ' ', $key)) }}:
                         </label>

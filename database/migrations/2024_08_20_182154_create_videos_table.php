@@ -20,6 +20,7 @@ class CreateVideosTable extends Migration
             $table->unsignedBigInteger('userid');
             $table->unsignedBigInteger('serverid');
             $table->string('status')->nullable()->default(null);
+            $table->string('publication_status')->nullable()->default('live');
             $table->string('manifest_url')->nullable()->default(null);
             $table->string('video_url');
             $table->string('thumbnail_url')->nullable();

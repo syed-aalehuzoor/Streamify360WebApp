@@ -53,7 +53,7 @@ class DomainActivationCheck implements ShouldQueue
                 \Log::info("Domain {$this->domain} is still pending. Retrying in 1 hour.");
                 $this->release($this->tries_gap);
                 return;
-            } 
+            }
             
             if ($zone['status'] === 'active') {
                 $this->cloudflareService->deleteAllDnsRecords($this->domain);

@@ -31,7 +31,9 @@ class VideoController extends Controller
     public function index(Request $request) {
         $videos = $this->getFilteredVideos($request, self::ACTIVE_STATUSES);
         $domain = Auth::user()->userSetting->player_domain;
+        $domain_varified = Auth::user()->userSetting->player_domain_varified;
         if (!$domain) $domain = config('system.playerDefaultDomain');
+        if (!$domain_varified) $domain = config('system.playerDefaultDomain');
         return view('videos.index', [
             'videos' => $videos,
             'domain' => $domain,
@@ -69,8 +71,14 @@ class VideoController extends Controller
         return !$video ? $this->unauthorizedRedirect() : view('videos.edit', compact('video'));
     }
 
-    public function update($id) {
+    public function update($id, Request $request) {
         $video = $this->getUserVideo($id);
+        if (!$video) {
+            return $this->unauthorizedRedirect();
+        }
+        $name = $request->input('videoname');
+        $video->update(['name'=>$name]);
+        return redirect()->back()->with('success', 'Video updated successfully.');
     }
 
     public function delete($id) {
@@ -108,7 +116,7 @@ class VideoController extends Controller
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     private function getFilteredVideos(Request $request, array $statuses) {
-        return Video::where('userid', Auth::id())
+        return Auth::user()->videos()
             ->where('name', 'like', '%' . $request->input('query', '') . '%')
             ->whereIn('status', $statuses)
             ->orderBy('created_at', 'desc')

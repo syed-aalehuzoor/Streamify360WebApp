@@ -22,4 +22,10 @@ class Server extends Model
         'limit',
         'total_videos',
     ];
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'serverid');
+    }
+    
 }

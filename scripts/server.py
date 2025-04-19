@@ -3,7 +3,7 @@ from fastapi import FastAPI, APIRouter, BackgroundTasks
 from core import post_task, delete_video_by_id, delete_expired_videos, APP_URL, log_info, log_error
 from requests import post as post_request
 from apscheduler.schedulers.background import BackgroundScheduler
-from datetime import datetime
+from datetime import datetime, timedelta
 from Laravel import LaravelQueueManager
 
 router = APIRouter()
@@ -39,7 +39,7 @@ def delete_video(id: str, backgroundtasks: BackgroundTasks):
     return {"message": f"Video is being processed with id: {id}"}
 
 def add_periodic_job(scheduler, job_function, interval_seconds):
-    scheduler.add_job(job_function, 'interval', seconds=interval_seconds, next_run_time=datetime.now())
+    scheduler.add_job(job_function, 'interval', seconds=interval_seconds, next_run_time=datetime.now()+timedelta(seconds=30))
 
 def setup_scheduler():
     manager = LaravelQueueManager()

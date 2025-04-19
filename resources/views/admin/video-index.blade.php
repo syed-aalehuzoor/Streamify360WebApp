@@ -49,7 +49,7 @@
                                         <img src="{{asset('storage/'.$video->thumbnail_url)}}" alt="Thumbnail" class="object-cover h-16 aspect-video">
                                         <div class="flex flex-col">
                                             @if ($video->status == 'live')
-                                                <a href="" target="_blank" class="text-blue-500 text-sm hover:underline cursor-pointer">
+                                                <a href="{{ route('admin-videos.show', $video->id) }}" target="_blank" class="text-blue-500 text-sm hover:underline cursor-pointer">
                                                     {{ $video->name }}
                                                 </a>
                                             @elseif ($video->status == 'Initiated' || $video->status == 'Processing')
@@ -64,7 +64,7 @@
                                                 <span class="text-red-500 text-sm flex items-center" title="Video Failed To Process!">
                                                     <i class="fa-solid fa-circle-exclamation mr-1"></i> Failed
                                                 </span>
-                                            @elseif ($video->status == 'Banned')
+                                            @elseif ($video->publication_status == 'Banned')
                                                 <span class="text-red-500 text-sm flex items-center">
                                                     <i class="fa-solid fa-ban mr-1"></i> Banned
                                                 </span>
@@ -78,10 +78,10 @@
                                                         @csrf
                                                         @method('PUT')
                                                         @php
-                                                            $newStatus = $video->status === 'banned' ? 'live' : 'banned';
-                                                            $icon = $video->status === 'banned' ? 'text-green-500 fa-check-to-slot' : 'text-yellow-500 fa-ban';
+                                                            $newStatus = $video->publication_status === 'banned' ? 'live' : 'banned';
+                                                            $icon = $video->publication_status === 'banned' ? 'text-green-500 fa-check-to-slot' : 'text-yellow-500 fa-ban';
                                                         @endphp
-                                                        <input type="hidden" name="status" value="{{ $newStatus }}">
+                                                        <input type="hidden" name="publication_status" value="{{ $newStatus }}">
                                                         <button type="submit" class="p-3 rounded-full hover:bg-gray-200 fa-solid {{ $icon }} bg-transparent border-none cursor-pointer"></button>
                                                     </form>                                                    
                                                     <button type="submit" class="p-3 rounded-full hover:bg-gray-200 hover:text-red-500 fa-solid fa-trash-can"></button>

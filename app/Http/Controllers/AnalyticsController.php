@@ -13,6 +13,12 @@ use App\Models\ViewsOverTime;
 use App\Models\AudienceInsight;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Spatie\Analytics\Facades\Analytics;
+use Spatie\Analytics\Period;
+use Google\Analytics\Data\V1beta\Filter;
+use Google\Analytics\Data\V1beta\FilterExpression;
+use Google\Analytics\Data\V1beta\Filter\StringFilter;
+use Google\Analytics\Data\V1beta\Filter\StringFilter\MatchType;
 
 class AnalyticsController extends Controller
 {
@@ -65,7 +71,7 @@ class AnalyticsController extends Controller
                 return $insightData;
             };
 
-            $audienceDimensions = ['country', 'region', 'city', 'device_type'];
+            $audienceDimensions = ['country', 'region', 'city', 'deviceCategory'];
             $audienceInsights = collect($audienceDimensions)->mapWithKeys(fn($dimension) => [
                 $dimension => $calculateInsightsPercentage($this->getTopTenDimensionViews($dimension, $videoId), $dimension)
             ]);
@@ -91,70 +97,137 @@ class AnalyticsController extends Controller
 
     public function showVideoPerformance($id, Request $request)
     {
+        $user = Auth::user();
+        $video = $user->videos()->where('id', $id)->first();
+        if (!$video) abort(404);
+        $pagePath = '/video/' . $id;
         $dateRange = $request->input('date_range', '');
-        $dates = explode(' to ', $dateRange);
-        $currentDate = now();
-
-        $firstAvailableDate = ViewsOverTime::where('videoid', $id)
-            ->orderBy('date', 'asc')
-            ->value('date') ?? $currentDate->subDays(28);
-
-        $startDate = !empty($dates[0]) 
-            ? max(\Carbon\Carbon::parse($dates[0]), \Carbon\Carbon::parse($firstAvailableDate)) 
-            : \Carbon\Carbon::parse($firstAvailableDate);
-
-        $endDate = !empty($dates[1]) 
-            ? min(\Carbon\Carbon::parse($dates[1]), $currentDate) 
-            : $currentDate;
-
-        $viewsTrend = ViewsOverTime::where('videoid', $id)
-            ->whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()])
-            ->orderBy('date', 'asc')
-            ->get()
-            ->keyBy('date');
-
-        $viewsTrend = collect($startDate->daysUntil($endDate))->map(function ($date) use ($viewsTrend) {
-            return $viewsTrend->get($date->toDateString(), ['date' => $date->toDateString(), 'views' => 0]);
+    
+        // Determine start and end dates based on input
+        if ($dateRange && count($dates = explode(' to ', $dateRange)) === 2) {
+            $startDate = Carbon::parse($dates[0]);
+            $endDate = Carbon::parse($dates[1]);
+        } else {
+            $endDate = Carbon::today();
+            $startDate = Carbon::today()->subDays(7);
+        }
+        
+        $period = Period::create($startDate, $endDate);
+    
+        $metrics = ['screenPageViews'];
+        $dimensions = ['date'];
+    
+        $dimensionFilter = new FilterExpression([
+            'filter' => new Filter([
+                'field_name' => 'pagePath',
+                'string_filter' => new StringFilter([
+                    'match_type' => MatchType::EXACT,
+                    'value' => $pagePath,
+                ]),
+            ]),
+        ]);
+    
+        $analyticsData = Analytics::get($period, $metrics, $dimensions, 10, [], 0, $dimensionFilter);
+    
+        // Build an associative array from the analytics data, keyed by date.
+        $analyticsViews = [];
+        if ($analyticsData && $analyticsData->count() > 0) {
+            foreach ($analyticsData as $row) {
+                $dateStr = $row['date']->toDateString();
+                $analyticsViews[$dateStr] = (int) $row['screenPageViews'];
+            }
+        }
+    
+        $viewsTrend = [];
+        $totalViews = 0;
+    
+        // Iterate over each day in the period
+        for ($date = $startDate->copy(); $date <= $endDate; $date->addDay()) {
+            $dateStr = $date->toDateString();
+            // Use the view count from analytics if available, otherwise default to zero.
+            $views = isset($analyticsViews[$dateStr]) ? $analyticsViews[$dateStr] : 0;
+            $viewsTrend[] = ['date' => $dateStr, 'views' => $views];
+            $totalViews += $views;
+        }
+    
+        usort($viewsTrend, function($a, $b) {
+            return strcmp($a['date'], $b['date']);
         });
-
-        $totalViews = $viewsTrend->sum('views');
-
+    
         return view('analytics.performance-trend', [
             'views_trend' => $viewsTrend,
-            'first_date' => $firstAvailableDate,
             'total_views' => $totalViews,
         ]);
     }
 
-    private function getTopTenDimensionViews($column, $videoId)
+    public function showVideoAudienceInsights($id, Request $request)
     {
-        return View::select($column, DB::raw('count(*) as views'))
-            ->where('videoid', $videoId)
-            ->groupBy($column)
-            ->orderByDesc('views')
-            ->limit(10)
-            ->get();
-    }
-
-    public function showVideoAudienceInsights($id)
-    {
-        $audienceDimensions = ['country', 'region', 'city', 'device_type'];
-        $insights = [];
-
-        foreach ($audienceDimensions as $type) {
-            $insights[$type] = AudienceInsight::where('videoid', $id)
-                ->where('type', $type)
-                ->orderByDesc('percentage')
-                ->get();
+        $user = Auth::user();
+        $video = $user->videos()->where('id', $id)->first();
+        if (!$video) {
+            #abort(404);
         }
+        
+        // Define the page path for the video
+        $pagePath = '/video/' . $id;
+        
+        // Set a default period (last 7 days)
+        $endDate = Carbon::today();
+        $startDate = Carbon::today()->subDays(7);
+        $period = Period::create($startDate, $endDate);
+    
+        // The audience dimensions we want to analyze
+        $audienceDimensions = ['country', 'region', 'city', 'deviceCategory'];
+        $insights = [];
+    
+        // Build a filter expression to limit the data to the current video page
+        $dimensionFilter = new FilterExpression([
+            'filter' => new Filter([
+                'field_name' => 'pagePath',
+                'string_filter' => new StringFilter([
+                    'match_type' => MatchType::EXACT,
+                    'value' => $pagePath,
+                ]),
+            ]),
+        ]);
+    
+        // Loop through each audience dimension to get analytics data
+        foreach ($audienceDimensions as $dimension) {
+            $analyticsData = Analytics::get($period, ['screenPageViews'], [$dimension], 10, [], 0, $dimensionFilter);
+            $dataPoints = [];
+            $totalViews = 0;
 
+            if ($analyticsData && $analyticsData->count() > 0) {
+                foreach ($analyticsData as $row) {
+                    $value = $row[$dimension];
+                    $views = (int) $row['screenPageViews'];
+                    $totalViews += $views;
+                    $dataPoints[] = ['name' => $value, 'views' => $views];
+                }
+            }
+    
+            // Calculate the percentage share for each item
+            $dimensionResult = [];
+            foreach ($dataPoints as $point) {
+                $percentage = $totalViews > 0 ? round(($point['views'] / $totalViews) * 100, 2) : 0;
+                $dimensionResult[] = [
+                    'name' => $point['name'],
+                    'percentage' => $percentage,
+                ];
+            }
+    
+            $insights[$dimension] = $dimensionResult;
+        }
+    
+        // Return the view with the analytics insights for each audience dimension
         return view('analytics.audience', [
-            'countries' => $insights['country'],
-            'regions' => $insights['region'],
-            'cities' => $insights['city'],
-            'devices' => $insights['device_type'],
+            'countries' => $insights['country'] ?? [],
+            'regions'   => $insights['region'] ?? [],
+            'cities'    => $insights['city'] ?? [],
+            'devices'   => $insights['deviceCategory'] ?? [],
         ]);
     }
+    
 
     public function listPerformanceVideos(Request $request)
     {

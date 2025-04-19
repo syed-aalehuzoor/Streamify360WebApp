@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Video;
+use App\Models\User;
+use App\Models\AbuseReport;
 
 class VideoAdminController extends Controller
 {
@@ -17,15 +19,16 @@ class VideoAdminController extends Controller
     
         if ($query) {
             $videos = Video::where('name', 'like', '%' . $query . '%')
-                         ->orWhere('id', 'like', '%' . $query . '%')
-                         ->paginate(10);
+                           ->orWhere('id', 'like', '%' . $query . '%')
+                           ->orderBy('created_at', 'desc');
         } else {
-            $videos = Video::paginate(10);
+            $videos = Video::orderBy('created_at', 'desc');
         }    
+    
         return view('admin.video-index', [
-            'videos' => $videos,
+            'videos' => $videos->paginate(10)->onEachSide(1),
         ]);
-    }
+    }    
 
     /**
      * Show the form for creating a new resource.
@@ -48,17 +51,34 @@ class VideoAdminController extends Controller
      */
     public function show(string $id)
     {
-        return $this->edit($id);
+        return $this->edit(request(), $id);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
         $video = Video::findOrFail($id);
-        return view('admin.edit-video', compact('video'));
+    
+        if ($request->filled('query')) {
+            $query = $request->input('query');
+            $reports = $video->abuseReports()
+                ->where(function ($q) use ($query) {
+                    $q->where('reason', 'LIKE', '%' . $query . '%')
+                      ->orWhere('details', 'LIKE', '%' . $query . '%');
+                })
+                ->paginate(10);
+        } else {
+            $reports = $video->abuseReports()->paginate(10);
+        }
+    
+        $domain = optional($video->user->userSetting)->player_domain;
+        $domain = $domain ?: config('system.playerDefaultDomain');
+    
+        return view('admin.edit-video', compact('video', 'domain', 'reports'));
     }
+    
 
     /**
      * Update the specified resource in storage.

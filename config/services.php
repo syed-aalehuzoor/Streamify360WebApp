@@ -19,6 +19,15 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
+    
+    'azure' => [
+        'client_secret' => env('AZURE_CLIENT_SECRET'),
+        'tenant_id' => env('AZURE_TENANT_ID'),
+        'client_id' => env('AZURE_CLIENT_ID'),
+        'storage_key' => env('AZURE_STORAGE_KEY'),
+        'storage_name' => env('AZURE_STORAGE_NAME'),
+        'storage_container' => env('AZURE_STORAGE_CONTAINER'),
+    ],
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
@@ -44,6 +53,12 @@ return [
         'email' => env('CLOUDFLARE_EMAIL'),
         'api_key' => env('CLOUDFLARE_API_KEY'),
         'account_id' => env('CLOUDFLARE_ACCOUNT_ID'),
+    ],
+    'sendgrid' => [
+        'key' => env('SENDGRID_API_KEY'),
+    ],
+    'recaptcha' => [
+        'secret' => env('RECAPTCHA_SECRET_KEY'),
     ],
 
 ];

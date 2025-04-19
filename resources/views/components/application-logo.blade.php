@@ -1,1 +1,1 @@
-<img viewBox="0 0 317 48" class="w-20 h-20" src="{{ asset('storage/brandings/logo icon.png') }}" alt="">
+<img viewBox="0 0 317 48" class="h-12" src="{{ asset('storage/brandings/2.png') }}" alt="">

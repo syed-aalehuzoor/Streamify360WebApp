@@ -10,7 +10,9 @@
         <h1 class="text-2xl font-extrabold text-gray-800 mb-4">Welcome, {{ $user->name }}!</h1>
         <p class="text-lg text-gray-600">Your Subscription Plan:</p>
         <p class="text-4xl font-bold text-blue-500 capitalize mt-2">{{ ucfirst($user->userplan) }}</p>
-        
+        @if ($user->userplan!= config('system.plans')[0])
+            <p>Your Plan Expires on {{$user->userplan_expiry}}</p>
+        @endif
         <div class="mt-4 border-t border-gray-200 pt-4">
             <p class="text-sm text-gray-500">
                 To upgrade, please contact 

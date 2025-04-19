@@ -24,13 +24,10 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const dateRangeInput = document.getElementById('date_range');
                 const form = document.getElementById('dateRangeForm');
-                const first_date = @json($first_date);
                 const maxDate = new Date();
-                const minDate = new Date(first_date);
                 flatpickr(dateRangeInput, {
                     mode: 'range',
                     dateFormat: 'Y-m-d',
-                    minDate: minDate,
                     maxDate: maxDate,
                     onClose: function(selectedDates, dateStr, instance) {
                         if (selectedDates.length === 2) {

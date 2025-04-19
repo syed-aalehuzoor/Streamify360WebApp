@@ -17,6 +17,7 @@ class UserSetting extends Model
         'logo_url',
         'website_name',
         'website_url',
+        'player',
         'player_domain',
         'player_domain_varified',
         'pop_ads_code',

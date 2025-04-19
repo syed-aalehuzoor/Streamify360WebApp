@@ -8,10 +8,15 @@
 @section('content')
 <div id="playerWrapper" class="relative w-full" style="background-color:{{ $playerBackground }};color:{{$controlButtons}};">
     <video id="videoPlayer" class="w-full h-full"@if($loop) loop @endif></video>
-    <video id="advertisment" class="w-full h-full"></video>
+    <div id="adContainer" class="w-full hidden h-full">
+        <video id="advertisment" class="w-full h-full"></video>
+        <div class="absolute text-2xl bottom-2 right-2 bg-black text-white px-6 py-2 rounded">
+            Ad ends in: <span id="timer">0</span>s
+        </div>
+    </div>
     <div id="videoThumbnailOverlay" class="absolute text-7xl inset-0 flex items-center justify-center" style="background-color:{{ $thumbnailBackground }};opacity:{{ $poster ? '1' : '0.6' }};">
         @if($poster)
-            <img src="{{ Storage::url($poster) }}" class="w-full absolute">
+            <img src="{{ $poster }}" class="w-full absolute">
         @endif
         <div id="loader" role="status">
             <svg aria-hidden="true" class="w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -80,6 +85,16 @@
     @endif
 </div>
 
+<div id="contextMenu" class="absolute hidden py-2 min-w-48 rounded-sm" style="background-color:{{ $playerBackground }};color:{{$controlButtons}};">
+    <div class="px-4 py-1">
+        <a title="{{ env('APP_NAME') }}" href="{{ env('APP_URL') }}" target="_blank">
+            {{ env('APP_NAME') }}
+        </a>
+    </div>
+    <div class="px-4 py-1">
+        <a href="{{ route('abuse.report', ['id' => $id]) }}">Report Abuse</a>
+    </div>
+</div>
 @push('scripts')
 @if ( $popAdsCode )
 {!! $popAdsCode !!}
